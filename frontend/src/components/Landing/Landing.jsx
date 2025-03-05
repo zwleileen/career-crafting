@@ -63,8 +63,9 @@ const Landing = () => {
           </p>
           
           <button
+            type="button"
             onClick={() => navigate("/sign-up")}
-            className="bg-[#f9a825] text-black px-6 py-3 rounded-2xl border border-[#f9a825] text-xl font-normal font-[DM_Sans] hover:bg-[#e69c22] transition-colors"
+            className="bg-[#f9a825] text-black px-6 py-3 rounded-2xl border-none text-xl font-normal font-[DM_Sans] hover:bg-[#e69b2259] transition-colors shadow-md"
           >
             Let's Try
           </button>
