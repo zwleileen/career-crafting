@@ -4,28 +4,46 @@ const Landing = () => {
   const navigate = useNavigate();
 
     return (
-      <>
-      <h1>Welcome to Career Crafting App</h1>
-      <div>
-      <h2>Craft a Career That Excites You</h2>
-      
-      <p>Feeling uninspired at work? Wondering what’s next, but unsure where to start? We help you take actionable steps toward a career that energizes you.</p>
-      
-      <h2>How It Works?</h2>
-      <p>We guide you through a structured process to craft a meaningful career—one step at a time.</p>
-      
-      <ol>
-        <li><strong>Assess</strong> – Clarify the kind of work that fulfils you long-term and areas where you naturally excel at.</li>
-        <li><strong>Imagine</strong> – Imagine your ideal career path that is filled with meaning and share them with your network.</li>
-        <li><strong>Match</strong> – See jobs in the market that are aligned with your ideal career and find out how your skills and experiences fit in.</li>
-        <li><strong>Micro-Action</strong> – Take micro-actions towards your ideal jobs.</li>
-      </ol>
-            
-      <p><strong>Take the first step. Try Career Crafting today.</strong></p>
+    <>
+    <div className="w-[1280px] h-[832px] relative bg-white  overflow-hidden">
+        <div className="w-[1280px] h-[145px] left-0 top-0 absolute">
+            <div className="w-[1280px] h-[145px] left-0 top-0 absolute bg-[#1e2a38]" />
+            <div className="w-[691px] h-[63px] left-[294px] top-[41px] absolute text-center text-white text-[50px] font-normal font-['Inter']">Career Crafting App</div>
+            <div className="w-[81px] h-[22px] left-[1133px] top-[109px] absolute text-white text-xs font-normal font-['DM Sans']">Not signed in</div>
+            <div data-svg-wrapper className="left-[1214px] top-[108px] absolute">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5.85 17.1C6.7 16.45 7.65 15.9375 8.7 15.5625C9.75 15.1875 10.85 15 12 15C13.15 15 14.25 15.1875 15.3 15.5625C16.35 15.9375 17.3 16.45 18.15 17.1C18.7333 16.4167 19.1875 15.6417 19.5125 14.775C19.8375 13.9083 20 12.9833 20 12C20 9.78333 19.2208 7.89583 17.6625 6.3375C16.1042 4.77917 14.2167 4 12 4C9.78333 4 7.89583 4.77917 6.3375 6.3375C4.77917 7.89583 4 9.78333 4 12C4 12.9833 4.1625 13.9083 4.4875 14.775C4.8125 15.6417 5.26667 16.4167 5.85 17.1ZM12 13C11.0167 13 10.1875 12.6625 9.5125 11.9875C8.8375 11.3125 8.5 10.4833 8.5 9.5C8.5 8.51667 8.8375 7.6875 9.5125 7.0125C10.1875 6.3375 11.0167 6 12 6C12.9833 6 13.8125 6.3375 14.4875 7.0125C15.1625 7.6875 15.5 8.51667 15.5 9.5C15.5 10.4833 15.1625 11.3125 14.4875 11.9875C13.8125 12.6625 12.9833 13 12 13ZM12 22C10.6167 22 9.31667 21.7375 8.1 21.2125C6.88333 20.6875 5.825 19.975 4.925 19.075C4.025 18.175 3.3125 17.1167 2.7875 15.9C2.2625 14.6833 2 13.3833 2 12C2 10.6167 2.2625 9.31667 2.7875 8.1C3.3125 6.88333 4.025 5.825 4.925 4.925C5.825 4.025 6.88333 3.3125 8.1 2.7875C9.31667 2.2625 10.6167 2 12 2C13.3833 2 14.6833 2.2625 15.9 2.7875C17.1167 3.3125 18.175 4.025 19.075 4.925C19.975 5.825 20.6875 6.88333 21.2125 8.1C21.7375 9.31667 22 10.6167 22 12C22 13.3833 21.7375 14.6833 21.2125 15.9C20.6875 17.1167 19.975 18.175 19.075 19.075C18.175 19.975 17.1167 20.6875 15.9 21.2125C14.6833 21.7375 13.3833 22 12 22Z" fill="#FEF7FF"/>
+                </svg>
+            </div>
+        </div>
 
-      <button onClick={()=>navigate("/sign-up")}>Let's try</button>
-      
+        <div className="w-[1064px] h-[407px] left-[94px] top-[200px] absolute">
+            <div className="w-[811px] h-[31px] left-0 top-0 absolute text-[#f9a825] text-3xl font-normal font-['DM Sans']">Don’t just search for a job. Find work that excites you.</div>
+                <div className="w-[1064px] h-[255px] left-0 top-[61px] absolute">
+                    <span className="text-black text-xl font-normal font-['DM Sans']">Instead of forcing yourself to fit into job descriptions, we flip the process:<br/><br/></span>
+                    <span className="text-black text-xl font-bold font-['DM Sans']">Assess</span>
+                    <span className="text-black text-xl font-normal font-['DM Sans']"> - Clarify the kind of work that fulfils you long-term and areas where you naturally excel at.<br/></span>
+                    <span className="text-black text-xl font-bold font-['DM Sans']">Imagine</span>
+                    <span className="text-black text-xl font-normal font-['DM Sans']"> -  Identify the ideal career path that is unique and meaningful to you, and share it with your network.<br/></span>
+                    <span className="text-black text-xl font-bold font-['DM Sans']">Match</span>
+                    <span className="text-black text-xl font-normal font-['DM Sans']"> - Match with jobs in the market and find out how your skills and experiences fit in.<br/></span>
+                    <span className="text-black text-xl font-bold font-['DM Sans']">Micro-Action</span>
+                    <span className="text-black text-xl font-normal font-['DM Sans']"> - Take micro-actions towards the path of meaningful career.<br/><br/>We are NOT just another job search tool—it’s a career-crafting platform that helps you find energising work and take action towards it. We want to empower the world’s most brilliant, purpose-driven talents and help them craft work that really matters.</span>
+                </div>
+            <div className="w-[1064px] h-[55px] left-0 top-[352px] absolute text-black text-xl font-normal font-['DM Sans']">Take the first step. Try Career Crafting today.</div>
+        </div>
+
+        <div className="w-[179px] h-[55px] left-[81px] top-[652px] absolute">
+            <button 
+            onClick={() => navigate("/sign-up")}
+            className="w-[179px] h-[36.28px] left-0 top-[9px] absolute text-center text-black text-xl font-normal font-['DM Sans'] w-[153.60px] h-[55px] left-[12.09px] top-0 absolute bg-[#f9a825] rounded-[20px] border border-[#f9a825]"
+            >
+            Let’s Try
+            </button>
+        </div>
+
     </div>
+    
 
       </>
     );

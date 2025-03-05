@@ -1,12 +1,12 @@
 import { useNavigate } from "react-router";
 
-const Dashboard = () => {
+const Homepage = () => {
     const navigate = useNavigate();
 
 
     return (
     <>
-    <h1>Welcome to Dashboard</h1>
+    <h1>Welcome to Homepage</h1>
     <div>
         <h2>Here's your values and strengths profile</h2>
         <button onClick={()=>navigate("/values/new")}>Strengths and values assessment</button>
@@ -23,4 +23,4 @@ const Dashboard = () => {
     )
 }
 
-export default Dashboard;
+export default Homepage;
