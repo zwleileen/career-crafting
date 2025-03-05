@@ -8,10 +8,22 @@ function App() {
   const { user } = useContext(UserContext);
 
   
-  return (
-    <>
-    <h1>Hello World</h1>
-    </>
+return (
+  <>
+  <NavBar />
+  <Routes>
+    {/* Routes available to all users */}
+    <Route path='/' element={!user ? <Landing /> : <Navigate to="/home" />} />
+    <Route path='/sign-up' element={!user ? <SignUpForm /> : <Navigate to="/home" />} />
+    <Route path='/sign-in' element={!user ? <SignInForm /> : <Navigate to="/home" />} />
+        
+    {/* Protected routes - only available when logged in */}
+    <Route path='/home' element={user ? <Dashboard /> : <Navigate to="/" />} />
+        
+    {/* Fallback route for any other paths */}
+    <Route path="*" element={<Navigate to={user ? "/home" : "/"} />} />
+  </Routes>
+  </>
   )
 }
 
