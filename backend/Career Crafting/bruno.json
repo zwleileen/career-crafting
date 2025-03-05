@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "Career Crafting",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
