@@ -13,9 +13,12 @@ const Landing = () => {
             Career Crafting App
           </h1>
         </div>
-          <div className="absolute right-4 md:right-8 bottom-4 flex items-center">
-            <span className="text-white text-xs font-normal font-[DM_Sans] mr-2">
-              Not signed in
+          <div 
+          className="absolute right-4 md:right-8 bottom-4 flex items-center cursor-pointer"
+          onClick={() => navigate("/sign-in")}
+          >
+            <span className="text-white text-xs font-normal font-[DM_Sans] mr-2 hover:text-[#f9a825]">
+              Sign In
             </span>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
@@ -65,7 +68,7 @@ const Landing = () => {
           <button
             type="button"
             onClick={() => navigate("/sign-up")}
-            className="bg-[#f9a825] text-black px-6 py-3 rounded-2xl border-none text-xl font-normal font-[DM_Sans] hover:bg-[#e69b2259] transition-colors shadow-md"
+            className="bg-[#f9a825] text-black px-4 py-2 rounded-2xl border-none text-lg font-normal font-[DM_Sans] hover:bg-[#e69b2259] transition-colors shadow-md cursor-pointer"
           >
             Let's Try
           </button>
