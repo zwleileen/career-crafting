@@ -132,20 +132,25 @@ const CareerForm = () => {
     const renderQuestionInput = (question) => {
         if (question.type === "select") {
             return (
-                <select 
-                    required 
-                    name={question.id} 
-                    id={question.id} 
-                    onChange={handleChange} 
-                    value={careerAnswers?.[question.id] || ""}
-                >
-                    <option value="">Select</option>
-                    {question.options.map(({value, label}) => (
-                        <option key={value} value={value}>
-                            {label}
-                        </option>
-                    ))}
-                </select>
+            <div key={question.id} className="mb-8">
+                <p className="text-[#D6A36A] text-lg md:text-xl font-normal font-[DM_Sans] mb-4">
+                {careerAnswers?.[question.id] || ""}
+                </p>
+                <div className="flex flex-col space-y-2">
+                {question.options.map(({ value, label }) => (
+                    <label key={value} className="flex items-start p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
+                        <input 
+                        type="radio"
+                        name={question.id}
+                        value={value}
+                        onChange={handleChange}
+                        className="mt-0.5 h-5 w-5 focus:ring-[#D6A36A]"
+                        />
+                        <span className="ml-3 text-[#586E75] text-base">{label}</span>
+                    </label>
+                ))}
+                </div>
+            </div>
             );
         } else if (question.type === "multiselect") {
             return (
@@ -198,13 +203,20 @@ const CareerForm = () => {
     };
 
     return (
+    <main className="min-h-screen flex flex-col bg-white">
+    <div className="flex-grow container mx-auto px-4 py-8 md:py-12">
+
     <form onSubmit={handleSubmit}>
-        <h1>Understanding your current status</h1>
-        <p>Please respond to all the questions below and choose the option that most resonates with you. We understand sometimes it's tough to choose one, just try to go with the one that feels the most right!</p>
+        <h1 className="text-[#D6A36A] text-2xl md:text-3xl font-normal font-[DM_Sans] mb-8">
+        Imagining your ideal career paths
+        </h1>
+        <p className="text-[#586E75] text-lg md:text-xl font-normal font-[DM_Sans] mb-8">
+        Please respond to all the questions below so that we can generate the most meaningful career paths for you.
+        </p>
         
         {careerQuestions.map((question) => (
-            <div key={question.id} style={{marginBottom:"15px"}}>
-                <label htmlFor={question.id} style={{ display: "block", fontWeight: "bold" }}>
+            <div key={question.id} className="mb-8">
+                <label htmlFor={question.id} className="text-[#D6A36A] text-lg md:text-xl font-normal font-[DM_Sans]">
                     {question.label}
                     {question.type === "multiselect" && "(Select up to 2 only)"}
                 </label>
@@ -216,6 +228,9 @@ const CareerForm = () => {
             Submit
         </button>
     </form>
+
+    </div>
+    </main>
     );
 };
 
