@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import * as valuesService from "../../services/valuesService"
 import { UserContext } from '../../contexts/UserContext';
 import { useNavigate } from "react-router";
@@ -118,7 +118,6 @@ const ValuesForm = () => {
         },
     ];
 
-
     const handleChange = (e) => {
         const { name, value } = e.target; // e.g. name="1", value="achievement, judgement, problem-solving"
         const questionObj = valuesQuestions.find((q) => q.id === name); // Find matching question
@@ -234,12 +233,10 @@ const ValuesForm = () => {
         <h1 className="text-[#D6A36A] text-2xl md:text-3xl font-normal font-[DM_Sans] mb-8">
         Clarifying your strengths and values
         </h1>
-        <p
-        className="text-[#586E75] text-lg md:text-xl font-normal font-[DM_Sans] mb-8"
-        >
-        Please respond to all the questions below and choose the option that most resonates with you. 
-        <br/>We understand sometimes it's tough to choose one, just try to go with the one that feels the most right!
+        <p className="text-[#586E75] text-lg md:text-xl font-normal font-[DM_Sans] mb-8">
+        There are 10 questions in total. Please respond to all the questions by selecting the option that most resonates with you. 
         </p>
+
         {valuesQuestions.map(({ id, label, options }) => (
         <div key={id} className="mb-8">
             <p className="text-[#D6A36A] text-lg md:text-xl font-normal font-[DM_Sans] mb-4">
