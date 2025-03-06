@@ -1,18 +1,21 @@
 import { UserContext } from './contexts/UserContext';
 import NavBar from "./components/NavBar/NavBar";
 import Landing from "./components/Landing/Landing";
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import SignUpForm from './components/SignUpForm/SignUpForm';
 import SignInForm from './components/SignInForm/SignInForm';
 import Homepage from './components/Homepage/Homepage';
 import { Navigate, Route, Routes } from 'react-router';
 import ValuesForm from './components/ValuesForm/ValuesForm';
 import ValuesResults from './components/ValuesResults/ValuesResults';
-// import ValuesForm from "./components/ValuesForm/ValuesForm";
-// import ValuesResults from "./components/ValuesResults/ValuesResults";
+import CareerForm from './components/CareerForm/CareerForm';
+import CareerResults from './components/CareerResults/CareerResults';
 
 function App() {
   const { user } = useContext(UserContext);
+  const [topValues, setTopValues] = useState([]);
+  const [topStrengths, setTopStrengths] = useState([]);
+
 
 return (
   <div className="min-h-screen flex flex-col bg-white">
@@ -25,10 +28,13 @@ return (
     <Route path='/sign-in' element={!user ? <SignInForm /> : <Navigate to="/home" />} />
         
     {/* Protected routes - only available when logged in */}
-    <Route path='/home' element={user ? <Homepage /> : <Navigate to="/" />} />
+    <Route path='/home' element={user ? <Homepage topValues={topValues} setTopValues={setTopValues} topStrengths={topStrengths} setTopStrengths={setTopStrengths} /> : <Navigate to="/" />} />
     <Route path="/values/new" element={user ? (<ValuesForm />) : <Navigate to="/" />} />
-    <Route path="/values/results" element={user ? (<ValuesResults />) : <Navigate to="/" />} />
-        
+    <Route path="/values/results" element={user ? (<ValuesResults setTopValues={setTopValues} topValues={topValues} setTopStrengths={setTopStrengths} topStrengths={topStrengths} />) : <Navigate to="/" />} />
+    <Route path="/career" element={user ? (<CareerForm />) : <Navigate to="/" />} />
+    <Route path="/career/results" element={user ? (<CareerResults />) : <Navigate to="/" />} />
+
+
   </Routes>
   </div>
   </div>

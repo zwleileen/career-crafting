@@ -16,7 +16,7 @@ const NavBar = () => {
         <div className="container mx-auto">
         <div className="flex items-center justify-center">
           <h1 className="text-[#586E75] text-3xl md:text-4xl lg:text-5xl font-normal font-[Single_Day] text-center">
-            Career Crafting
+            Career Crafting App
           </h1>
         </div>
         { user ? (
@@ -35,6 +35,14 @@ const NavBar = () => {
             >
             Insights
             </Link>
+
+            <Link 
+            to='/career/results'
+            className="text-[#586E75] text-sm font-normal font-[DM_Sans] ml-2 hover:text-[#f9a825]"
+            >
+            Career Paths
+            </Link>
+
         </div>
 
         <div className="absolute right-4 md:right-8 bottom-2 flex items-center cursor-pointer">

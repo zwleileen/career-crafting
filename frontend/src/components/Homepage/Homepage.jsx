@@ -1,8 +1,7 @@
 import { useNavigate } from "react-router";
 
-const Homepage = () => {
+const Homepage = ({topValues, topStrengths}) => {
     const navigate = useNavigate();
-
 
     return (
     <div className="min-h-screen flex flex-col bg-white">
@@ -12,16 +11,16 @@ const Homepage = () => {
         </h1>
 
         <div className="text-white text-lg md:text-xl font-normal font-[DM_Sans] space-y-4 mb-10">            
-            <p
-            className="bg-[#D6A36A] px-4 py-2 rounded-2xl border-none text-lg font-normal font-[DM_Sans] hover:bg-[#f9a825] transition-colors shadow-md cursor-pointer"
+            <div
+            className="bg-[#D6A36A] mb-10 px-5 py-5 rounded-2xl border-none text-lg font-normal font-[DM_Sans] hover:bg-[#f9a825] transition-colors shadow-md cursor-pointer"
             onClick={() => navigate('/values/results')}
             >
               <span className="font-bold">Insights</span>
-              <br/>Your top strengths are ... and top values are ...Your ideal career is...
-            </p>
+              <p>Your top values are {topValues. join(', ')} and top strengths are {topStrengths.join(', ')}.</p>
+            </div>
 
             <p
-            className="bg-[#D6A36A] px-4 py-2 rounded-2xl border-none text-lg font-normal font-[DM_Sans] hover:bg-[#f9a825] transition-colors shadow-md cursor-pointer"
+            className="bg-[#D6A36A] mb-10 px-5 py-5 rounded-2xl border-none text-lg font-normal font-[DM_Sans] hover:bg-[#f9a825] transition-colors shadow-md cursor-pointer"
             onClick={() => navigate('/career/results')}
             >
               <span className="font-bold">Career paths</span>
