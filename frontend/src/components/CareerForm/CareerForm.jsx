@@ -154,18 +154,18 @@ const CareerForm = () => {
             );
         } else if (question.type === "multiselect") {
             return (
-                <div className="checkbox-group" style={{ marginTop: "8px" }}>
+                <div className="space-y-2 mt-4">
                     {question.options.map(({value, label}) => (
-                        <div key={value} style={{ marginBottom: "6px" }}>
-                            <label style={{ display: "flex", alignItems: "flex-start", cursor: "pointer" }}>
+                        <div key={value}>
+                            <label className="flex items-start p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
                                 <input
                                     type="checkbox"
                                     name={`${question.id}-${value}`}
                                     checked={isOptionSelected(question.id, value)}
                                     onChange={(e) => handleMultiSelectChange(question.id, value, e.target.checked)}
-                                    style={{ marginRight: "8px", marginTop: "3px" }}
+                                    className="h-5 w-5 rounded text-[#D6A36A] focus:ring-[#D6A36A] border-gray-300"
                                 />
-                                <span>{label}</span>
+                                <span className="ml-3 text-[#586E75] text-base">{label}</span>
                             </label>
                         </div>
                     ))}
@@ -191,12 +191,7 @@ const CareerForm = () => {
                     value={careerAnswers?.[question.id] || ""}
                     placeholder={question.placeholder}
                     rows={4}
-                    style={{
-                        width: "80%", 
-                        padding: "8px", 
-                        borderRadius: "4px",
-                        border: "1px solid #ccc"
-                    }}
+                    className="w-full p-3 border border-gray-200 rounded-lg mt-4"
                 />
             );
         }
@@ -224,8 +219,11 @@ const CareerForm = () => {
             </div> 
         ))}
 
-        <button type="submit" style={{ marginTop: "20px", padding: "10px", fontSize: "16px" }}>
-            Submit
+        <button 
+        type="submit" 
+        className="mt-6 px-6 py-3 bg-[#D6A36A] text-white font-medium rounded-lg hover:bg-[#e69c23] transition-colors focus:outline-none focus:ring-2 focus:ring-[#f9a825] focus:ring-offset-2 cursor-pointer"
+        >
+        Submit
         </button>
     </form>
 
