@@ -67,13 +67,13 @@ const ValuesResults = () => {
     }
   
     return (
-        <>
-        <div className="p-6 bg-white shadow-md rounded-md">
-          <h2 className="text-xl font-semibold mb-4">Your Values & Strengths Insights</h2>
+    <>
+    <div className="p-6 bg-white shadow-md rounded-md">
+        <h2 className="text-2xl md:text-3xl text-[#f9a825] font-normal font-[DM_Sans] mb-8">Your Values & Strengths Insights</h2>
       
           {topValues && topValues.length > 0 && (
-            <div className="mb-4">
-              <h3 className="text-lg font-medium mb-2">Your Top Values:</h3>
+            <div className="bg-[#f9a825fe] text-black px-4 py-4 rounded-2xl border-none text-lg font-normal font-[DM_Sans] mb-4 w-xs">
+              <h3 className="font-semibold">Your Top Values:</h3>
               <ol className="list-decimal pl-6">
                 {topValues.map((value, index) => (
                   <li key={index}>{formatValueName(value)}</li>
@@ -83,8 +83,8 @@ const ValuesResults = () => {
           )}
 
           {topStrengths && topStrengths.length > 0 && (
-            <div className="mb-4">
-              <h3 className="text-lg font-medium mb-2">Your Top Strengths:</h3>
+            <div className="bg-[#f9a825fe] text-black px-4 py-4 rounded-2xl border-none text-lg font-normal font-[DM_Sans] mb-4 w-xs">
+              <h3 className="font-semibold">Your Top Strengths:</h3>
               <ol className="list-decimal pl-6">
                 {topStrengths.map((strength, index) => (
                   <li key={index}>{formatValueName(strength)}</li>
@@ -97,8 +97,8 @@ const ValuesResults = () => {
           <p><strong>Top Values:</strong> {response["Top values"]}</p>
           <p><strong>Top Strengths:</strong> {response["Top strengths"]}</p>
           <p><strong>Ideal Career:</strong> {response["Ideal career"]}</p>
-        </div>
-        </>
+    </div>
+    </>
     )
 };
 
