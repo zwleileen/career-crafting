@@ -71,7 +71,7 @@ const SignUpForm = () => {
         <div className=" text-black text-lg md:text-xl font-normal font-[DM_Sans] space-x-2 mb-5">
           <label htmlFor='username'>Username:</label>
           <input
-            className="border-1 border-[#f9a825] rounded-lg h-10 w-50"
+            className="border-1 border-[#f9a825] rounded-lg h-10 w-50 indent-2"
             type='text'
             id='name'
             value={username}
@@ -83,7 +83,7 @@ const SignUpForm = () => {
         <div className=" text-black text-lg md:text-xl font-normal font-[DM_Sans] space-x-2 mb-5">
           <label htmlFor='password'>Password:</label>
           <input
-            className="border-1 border-[#f9a825] rounded-lg h-10 w-50"
+            className="border-1 border-[#f9a825] rounded-lg h-10 w-50 indent-2"
             type='password'
             id='password'
             value={password}
@@ -95,7 +95,7 @@ const SignUpForm = () => {
         <div className=" text-black text-lg md:text-xl font-normal font-[DM_Sans] space-x-2 mb-10">
           <label htmlFor='confirm'>Confirm Password:</label>
           <input
-            className="border-1 border-[#f9a825] rounded-lg h-10 w-50"
+            className="border-1 border-[#f9a825] rounded-lg h-10 w-50 indent-2"
             type='password'
             id='confirm'
             value={passwordConf}
@@ -106,12 +106,14 @@ const SignUpForm = () => {
         </div>
         <div className=" text-black text-lg md:text-xl font-normal font-[DM_Sans] space-x-10">
           <button 
+          type="submit"
           disabled={isFormInvalid()}
           className="bg-[#f9a825] text-black px-4 py-2 rounded-2xl border-none text-lg font-normal font-[DM_Sans] hover:bg-[#e69b2259] transition-colors shadow-md cursor-pointer"
           >
             Sign Up
         </button>
           <button 
+          type="button"
           onClick={() => navigate('/')}
           className="bg-[#f9a825] text-black px-4 py-2 rounded-2xl border-none text-lg font-normal font-[DM_Sans] hover:bg-[#e69b2259] transition-colors shadow-md cursor-pointer"
           >

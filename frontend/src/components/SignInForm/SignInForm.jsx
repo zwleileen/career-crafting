@@ -64,7 +64,7 @@ const SignInForm = () => {
         <div className=" text-black text-lg md:text-xl font-normal font-[DM_Sans] space-x-2 mb-5">
           <label htmlFor='email'>Username:</label>
           <input
-            className="border-1 border-[#f9a825] rounded-lg h-10 w-50"
+            className="border-1 border-[#f9a825] rounded-lg h-10 w-50 indent-2"
             type='text'
             autoComplete='off'
             id='username'
@@ -77,7 +77,7 @@ const SignInForm = () => {
         <div className=" text-black text-lg md:text-xl font-normal font-[DM_Sans] space-x-2 mb-10">
           <label htmlFor='password'>Password:</label>
           <input
-            className="border-1 border-[#f9a825] rounded-lg h-10 w-50"
+            className="border-1 border-[#f9a825] rounded-lg h-10 w-50 indent-2"
             type='password'
             autoComplete='off'
             id='password'
@@ -89,12 +89,13 @@ const SignInForm = () => {
         </div>
         <div className=" text-black text-lg md:text-xl font-normal font-[DM_Sans] space-x-10">
         <button
+        type="submit"
         className="bg-[#f9a825] text-black px-4 py-2 rounded-2xl border-none text-lg font-normal font-[DM_Sans] hover:bg-[#e69b2259] transition-colors shadow-md cursor-pointer"
-        onClick={() => navigate('/home')}
         >
             Sign In
         </button>
         <button 
+        type="button"
         onClick={() => navigate('/')}
         className="bg-[#f9a825] text-black px-4 py-2 rounded-2xl border-none text-lg font-normal font-[DM_Sans] hover:bg-[#e69b2259] transition-colors shadow-md cursor-pointer"
         >
