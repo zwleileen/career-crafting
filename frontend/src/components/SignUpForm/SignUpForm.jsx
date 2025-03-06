@@ -45,14 +45,6 @@ const SignUpForm = () => {
             Career Crafting App
           </h1>
         </div>
-            <div
-            className="absolute left-4 md: bottom-3 flex items-center cursor-pointer"
-            onClick={() => navigate("/")}
-            >
-                <span className="text-white text-xs font-normal font-[DM_Sans] ml-2 hover:text-[#f9a825]">
-                Home
-                </span>
-            </div>
             <div 
             className="absolute right-4 md:right-8 bottom-2 flex items-center cursor-pointer"
             onClick={() => navigate("/sign-in")}
@@ -71,7 +63,6 @@ const SignUpForm = () => {
       </header>
 
       <div className="flex-grow container mx-auto px-4 py-8 md:py-12">
-        <section className="max-w-4xl mx-auto">
         <h2 className="text-[#f9a825] text-2xl md:text-3xl font-normal font-[DM_Sans] mb-8">
             Please sign up and create an account.
         </h2>
@@ -113,7 +104,7 @@ const SignUpForm = () => {
             required
           />
         </div>
-        <div className=" text-black text-lg md:text-xl font-normal font-[DM_Sans] space-x-20">
+        <div className=" text-black text-lg md:text-xl font-normal font-[DM_Sans] space-x-10">
           <button 
           disabled={isFormInvalid()}
           className="bg-[#f9a825] text-black px-4 py-2 rounded-2xl border-none text-lg font-normal font-[DM_Sans] hover:bg-[#e69b2259] transition-colors shadow-md cursor-pointer"
@@ -128,7 +119,6 @@ const SignUpForm = () => {
         </button>
         </div>
       </form>
-      </section>
       </div>
     </main>
   );
