@@ -6,7 +6,7 @@ const Landing = () => {
   return (
     <div className="min-h-screen flex flex-col bg-white">
       {/* Header */}
-      <header className="w-full bg-[#1e2a38] py-8 px-4 relative">
+      <header className="w-full bg-[#1e2a38] py-12 px-4 relative">
         <div className="container mx-auto">
         <div className="flex items-center justify-center">
           <h1 className="text-white text-3xl md:text-4xl lg:text-5xl font-normal font-[Inter] text-center">
@@ -14,7 +14,7 @@ const Landing = () => {
           </h1>
         </div>
           <div 
-          className="absolute right-4 md:right-8 bottom-4 flex items-center cursor-pointer"
+          className="absolute right-4 md:right-8 bottom-2 flex items-center cursor-pointer"
           onClick={() => navigate("/sign-in")}
           >
             <span className="text-white text-xs font-normal font-[DM_Sans] mr-2 hover:text-[#f9a825]">
