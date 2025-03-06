@@ -1,0 +1,15 @@
+meta {
+  name: Fetch values insights
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{HOST}}/values/:userId
+  body: json
+  auth: inherit
+}
+
+params:path {
+  userId: 67c7dd2c4e68951d5080c7ed
+}

@@ -227,28 +227,51 @@ const ValuesForm = () => {
     };
 
     return (
+    <main className="min-h-screen flex flex-col bg-white">
+    <div className="flex-grow container mx-auto px-4 py-8 md:py-12">
+
     <form onSubmit={handleSubmit}>
-        <h1>Clarifying your strengths and values</h1>
-        <p>Please respond to all the questions below and choose the option that most resonates with you. We understand sometimes it's tough to choose one, just try to go with the one that feels the most right!</p>
+        <h1 className="text-[#f9a825] text-2xl md:text-3xl font-normal font-[DM_Sans] mb-8">
+        Clarifying your strengths and values
+        </h1>
+        <p
+        className="text-black text-lg md:text-xl font-normal font-[DM_Sans] mb-8"
+        >
+        Please respond to all the questions below and choose the option that most resonates with you. 
+        <br/>We understand sometimes it's tough to choose one, just try to go with the one that feels the most right!
+        </p>
         {valuesQuestions.map(({ id, label, options }) => (
-        <div key={id} style={{marginBottom:"15px"}}>
-            <label htmlFor={id} style={{ display: "block", fontWeight: "bold" }}>
-                {label}
-            </label>
-            <select required name={id} id={id} onChange={handleChange}>
-                <option value="">Select</option>
-                {options.map (({value, label}) => (
-                    <option key={value} value={value}>
-                        {label}
-                    </option>
+        <div key={id} className="mb-8">
+            <p className="text-[#f9a825] text-lg md:text-xl font-normal font-[DM_Sans] mb-4">
+            {label}
+            </p>
+            <div className="flex flex-col space-y-2">
+            {options.map(({ value, label }) => (
+                <label key={value} className="lex items-start p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
+                    <input 
+                    type="radio"
+                    name={id}
+                    value={value}
+                    onChange={handleChange}
+                    className="mt-0.5 h-5 w-5 text-[#f9a825] border-gray-300 focus:ring-[#f9a825]"
+                    />
+                    <span className="ml-3 text-gray-800 text-base">{label}</span>
+                </label>
             ))}
-            </select>
+            </div>
         </div> 
         ))}
-        <button type="submit" style={{ marginTop: "20px", padding: "10px", fontSize: "16px" }}>
+
+        <button 
+        type="submit" 
+        className="mt-6 px-6 py-3 bg-[#f9a825] text-white font-medium rounded-lg hover:bg-[#e69c23] transition-colors focus:outline-none focus:ring-2 focus:ring-[#f9a825] focus:ring-offset-2"
+        >
         Submit
       </button>
     </form>
+
+    </div>
+    </main>
     )
 };
 

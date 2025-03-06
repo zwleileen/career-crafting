@@ -1,0 +1,11 @@
+meta {
+  name: Get all users
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{HOST}}/users
+  body: json
+  auth: inherit
+}

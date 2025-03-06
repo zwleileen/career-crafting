@@ -129,22 +129,22 @@ router.post("/results", async (req, res) => {
   }
 });
 
-router.get("/results", verifyToken, async (req, res) => {
-  try {
-    const response = await Value.findOne({ userId });
+// router.get("/results", verifyToken, async (req, res) => {
+//   try {
+//     const response = await Value.findOne({ userId });
 
-    if (!response)
-      return res.status(404).json({ message: "Response not found." });
+//     if (!response)
+//       return res.status(404).json({ message: "Response not found." });
 
-    const chatResponse = response.aiInsights;
-    console.log(chatResponse);
+//     const chatResponse = response.aiInsights;
+//     console.log(chatResponse);
 
-    res.status(200).json(chatResponse);
-  } catch (err) {
-    console.error("Error in GET /results:", err);
-    res.status(500).json({ err: err.message });
-  }
-});
+//     res.status(200).json(chatResponse);
+//   } catch (err) {
+//     console.error("Error in GET /results:", err);
+//     res.status(500).json({ err: err.message });
+//   }
+// });
 
 router.get("/:userId", verifyToken, async (req, res) => {
   try {

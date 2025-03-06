@@ -1,0 +1,69 @@
+meta {
+  name: Save values inputs
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{HOST}}/values
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "userId": "67c7dd2c4e68951d5080c7ed",
+    "answers": {
+      "1": {
+        "label": "I feel fulfilled when contributing to the greater good.",
+        "values": "benevolence, universalism, fairness"
+      },
+      "2": {
+        "label": "Persist and overcome obstacles",
+        "values": "achievement, perseverance, grit"
+      },
+      "3": {
+        "label": "Transforming how organizations and teams function",
+        "values": "universalism, benevolence, leadership, perspective, teamwork"
+      },
+      "4": {
+        "label": "Independently, managing my own work",
+        "values": "self-direction, perseverance, perspective"
+      },
+      "5": {
+        "label": "Standing up for what’s right",
+        "values": "universalism, bravery, fairness"
+      },
+      "6": {
+        "label": "Making an impact on society",
+        "values": "universalism, fairness, justice"
+      },
+      "7": {
+        "label": "When solving problems and making decisions",
+        "values": "achievement, judgement, perspective"
+      },
+      "8": {
+        "label": "Mission-driven and collaborative",
+        "values": "universalism, benevolence, fairness"
+      },
+      "9": {
+        "label": "My ability to solve problems logically",
+        "values": "achievement, judgement, perspective"
+      },
+      "10": {
+        "label": "I want to create positive societal change",
+        "values": "universalism, fairness, leadership"
+      }
+    },
+    "topValues": [
+      "universalism",
+      "benevolence",
+      "achievement"
+    ],
+    "topStrengths": [
+      "fairness",
+      "perspective",
+      "perseverance"
+    ]
+  }
+}
