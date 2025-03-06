@@ -16,7 +16,7 @@ function App() {
 
 return (
   <div className="min-h-screen flex flex-col bg-white">
-  { user ? <NavBar /> : ''}
+  <NavBar />
   <div className="flex-grow">
   <Routes>    
     {/* Routes available to all users */}
