@@ -15,7 +15,7 @@ function App() {
   
 return (
   <>
-  {user ? <NavBar /> : ""}
+  { user ? <NavBar />: ''}
   <Routes>
     {/* Routes available to all users */}
     <Route path='/' element={!user ? <Landing /> : <Navigate to="/home" />} />
