@@ -1,0 +1,15 @@
+meta {
+  name: Fetch career insights
+  type: http
+  seq: 10
+}
+
+get {
+  url: {{HOST}}/career/:userId
+  body: json
+  auth: inherit
+}
+
+params:path {
+  userId: 67c7dd2c4e68951d5080c7ed
+}

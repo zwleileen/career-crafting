@@ -1,0 +1,27 @@
+meta {
+  name: Save career inputs
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{HOST}}/career
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "userId": "67c7dd2c4e68951d5080c7ed",
+    "answers": {
+      "1": "My ideal world looks like one where everyone is mindful about their impact on others and environment, all working towards making the world a better place for people and planet to flourish. People are not working for self-centered means, but for a greater cause to make the world better, where everyday feels motivating and engaging.",
+      "2": [
+        "I’m not sure which career path is right for me.",
+        "I need financial stability and can’t take a big pay cut."
+      ],
+      "3": "I have 12 years of work experience in policy making, sustainable finance and venture building, with master's in finance, master's in international management, certification in design innovation, certification in foresight strategy, certification in software engineering.",
+      "4": "I am currently unemployed.",
+      "5": "I would like to explore side hustles or start a business on my own."
+    }
+  }
+}
