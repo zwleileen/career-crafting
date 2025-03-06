@@ -16,8 +16,20 @@ const SignUpForm = () => {
   const { username, password, passwordConf } = formData;
 
   const handleChange = (evt) => {
-    setMessage('');
-    setFormData({ ...formData, [evt.target.name]: evt.target.value });
+    const { name, value } = evt.target;
+    const updatedFormData = { ...formData, [name]: value };
+    setFormData(updatedFormData);
+
+    if (name === 'password' || name === 'passwordConf') {
+        if (
+          (name === 'password' && value !== updatedFormData.passwordConf && updatedFormData.passwordConf) || 
+          (name === 'passwordConf' && value !== updatedFormData.password)
+        ) {
+          setMessage("Your passwords do not match.");
+        } else {
+          setMessage('');
+        }
+      }
   };
 
   const handleSubmit = async (evt) => {
@@ -25,7 +37,7 @@ const SignUpForm = () => {
     try {
       const newUser = await signUp(formData);
       setUser(newUser);
-      navigate('/home');
+      navigate('/values/new');
     } catch (err) {
       setMessage(err.message);
     }
@@ -62,12 +74,14 @@ const SignUpForm = () => {
         </div>
       </header>
 
-      <div className="flex-grow container mx-auto px-4 py-8 md:py-12">
+    <div className="flex-grow container mx-auto px-4 py-8 md:py-12">
         <h2 className="text-[#f9a825] text-2xl md:text-3xl font-normal font-[DM_Sans] mb-8">
             Please sign up and create an account.
         </h2>
-      <p>{message}</p>
-      <form onSubmit={handleSubmit}>
+        <p className="text-[#f9a825] text-xl md:text-2xl font-normal font-[DM_Sans] mb-8">
+        {message}
+        </p>
+        <form onSubmit={handleSubmit}>
         <div className=" text-black text-lg md:text-xl font-normal font-[DM_Sans] space-x-2 mb-5">
           <label htmlFor='username'>Username:</label>
           <input
@@ -120,7 +134,7 @@ const SignUpForm = () => {
             Cancel
         </button>
         </div>
-      </form>
+        </form>
       </div>
     </main>
   );

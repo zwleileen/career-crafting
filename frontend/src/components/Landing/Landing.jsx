@@ -32,7 +32,6 @@ const Landing = () => {
 
       {/* Main Content */}
       <main className="flex-grow container mx-auto px-4 py-8 md:py-12">
-        <section className="max-w-4xl mx-auto">
           <h2 className="text-[#f9a825] text-2xl md:text-3xl font-normal font-[DM_Sans] mb-8">
             Don't just search for a job. Find work that excites you.
           </h2>
@@ -72,7 +71,6 @@ const Landing = () => {
           >
             Let's Try
           </button>
-        </section>
       </main>
     </div>
   );

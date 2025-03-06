@@ -1,7 +1,6 @@
 import { useContext } from 'react';
 import { Link } from 'react-router';
 import { UserContext } from '../../contexts/UserContext';
-import SignInForm from '../SignInForm/SignInForm';
 import Homepage from '../Homepage/Homepage';
 
 const NavBar = () => {
@@ -13,7 +12,6 @@ const NavBar = () => {
   };
 
   return (
-    <main className="min-h-screen flex flex-col bg-white">
     <nav className="w-full bg-[#1e2a38] py-12 px-4 relative">
         <div className="container mx-auto">
         <div className="flex items-center justify-center">
@@ -74,8 +72,6 @@ const NavBar = () => {
         )}
         </div>
     </nav>
-    <Homepage />
-    </main>
   );
 };
 
