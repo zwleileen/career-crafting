@@ -70,9 +70,9 @@ const ValuesResults = () => {
     <>
     <div className="p-6 bg-white shadow-md rounded-md">
         <h2 className="text-2xl md:text-3xl text-[#f9a825] font-normal font-[DM_Sans] mb-8">Your Values & Strengths Insights</h2>
-      
-          {topValues && topValues.length > 0 && (
-            <div className="bg-[#f9a825fe] text-black px-4 py-4 rounded-2xl border-none text-lg font-normal font-[DM_Sans] mb-4 w-xs">
+            <div className="flex gap-x-10">
+            {topValues && topValues.length > 0 && (
+            <div className="bg-[#f9a825fe] text-black flex flex-col justify-center items-center rounded-2xl border-none text-lg font-normal font-[DM_Sans] mb-4 w-xs h-40">
               <h3 className="font-semibold">Your Top Values:</h3>
               <ol className="list-decimal pl-6">
                 {topValues.map((value, index) => (
@@ -80,10 +80,10 @@ const ValuesResults = () => {
                 ))}
               </ol>
             </div>
-          )}
+            )}
 
-          {topStrengths && topStrengths.length > 0 && (
-            <div className="bg-[#f9a825fe] text-black px-4 py-4 rounded-2xl border-none text-lg font-normal font-[DM_Sans] mb-4 w-xs">
+            {topStrengths && topStrengths.length > 0 && (
+            <div className="bg-[#f9a825fe] text-black flex flex-col justify-center items-center rounded-2xl border-none text-lg font-normal font-[DM_Sans] mb-8 w-xs h-40">
               <h3 className="font-semibold">Your Top Strengths:</h3>
               <ol className="list-decimal pl-6">
                 {topStrengths.map((strength, index) => (
@@ -91,12 +91,22 @@ const ValuesResults = () => {
                 ))}
               </ol>
             </div>
-          )}
+            )}
+            </div>
       
-          <h3 className="text-lg font-medium mb-2">Insights:</h3>
-          <p><strong>Top Values:</strong> {response["Top values"]}</p>
-          <p><strong>Top Strengths:</strong> {response["Top strengths"]}</p>
-          <p><strong>Ideal Career:</strong> {response["Ideal career"]}</p>
+          <h3 className="text-2xl md:text-3xl text-[#f9a825] font-normal font-[DM_Sans] mb-8">Insights</h3>
+          <p className="text-base md:text-lg font-normal font-[DM_Sans] mb-4">
+            <span className="font-semibold">Top Values:</span> 
+            <br/>{response["Top values"]}
+          </p>
+          <p className="text-base md:text-lg font-normal font-[DM_Sans] mb-4">
+            <span className="font-semibold">Top Strengths:</span> 
+            <br/>{response["Top strengths"]}
+          </p>
+          <p className="text-base md:text-lg font-normal font-[DM_Sans] mb-4">
+            <span className="font-semibold">Ideal Career:</span> 
+            <br/>{response["Ideal career"]}
+          </p>
     </div>
     </>
     )
