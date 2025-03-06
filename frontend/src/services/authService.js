@@ -9,7 +9,7 @@ const signUp = async (formData) => {
     });
 
     const data = await res.json();
-    console.log(data);
+    // console.log(data);
 
     if (data.err) {
       throw new Error(data.err);

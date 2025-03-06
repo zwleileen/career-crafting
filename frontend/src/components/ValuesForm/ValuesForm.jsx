@@ -247,13 +247,13 @@ const ValuesForm = () => {
             </p>
             <div className="flex flex-col space-y-2">
             {options.map(({ value, label }) => (
-                <label key={value} className="lex items-start p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
+                <label key={value} className="flex items-start p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
                     <input 
                     type="radio"
                     name={id}
                     value={value}
                     onChange={handleChange}
-                    className="mt-0.5 h-5 w-5 text-[#f9a825] border-gray-300 focus:ring-[#f9a825]"
+                    className="mt-0.5 h-5 w-5 focus:ring-[#f9a825]"
                     />
                     <span className="ml-3 text-gray-800 text-base">{label}</span>
                 </label>
@@ -264,7 +264,7 @@ const ValuesForm = () => {
 
         <button 
         type="submit" 
-        className="mt-6 px-6 py-3 bg-[#f9a825] text-white font-medium rounded-lg hover:bg-[#e69c23] transition-colors focus:outline-none focus:ring-2 focus:ring-[#f9a825] focus:ring-offset-2"
+        className="mt-6 px-6 py-3 bg-[#f9a825] text-white font-medium rounded-lg hover:bg-[#e69c23] transition-colors focus:outline-none focus:ring-2 focus:ring-[#f9a825] focus:ring-offset-2 cursor-pointer"
         >
         Submit
       </button>

@@ -1,7 +1,7 @@
 import { UserContext } from './contexts/UserContext';
 import NavBar from "./components/NavBar/NavBar";
 import Landing from "./components/Landing/Landing";
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import SignUpForm from './components/SignUpForm/SignUpForm';
 import SignInForm from './components/SignInForm/SignInForm';
 import Homepage from './components/Homepage/Homepage';
