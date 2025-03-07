@@ -1,0 +1,21 @@
+meta {
+  name: Update values with userId
+  type: http
+  seq: 11
+}
+
+put {
+  url: {{HOST}}/values/update/:responseId
+  body: json
+  auth: inherit
+}
+
+params:path {
+  responseId: 67ca74beb9c06d75e3887819
+}
+
+body:json {
+  {
+    "userId": "67ca62bd6ab360f6f67ccb54"
+  }
+}

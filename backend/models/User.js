@@ -10,6 +10,11 @@ const userSchema = new mongoose.Schema({
     minLength: 4,
     required: true,
   },
+  status: {
+    type: String,
+    enum: ["paid", ""], // Allows only "paid" or ""
+    default: "",
+  },
 });
 
 userSchema.set("toJSON", {

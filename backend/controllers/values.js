@@ -169,6 +169,40 @@ router.get("/results/:responseId", async (req, res) => {
   }
 });
 
+router.put("/update/:responseId", verifyToken, async (req, res) => {
+  try {
+    const { responseId } = req.params;
+    const { userId } = req.body;
+
+    if (!userId || !responseId) {
+      return res
+        .status(400)
+        .json({ message: "User ID and response ID are required." });
+    }
+
+    // Find the Value entry with the given responseId
+    const updatedValue = await Value.findByIdAndUpdate(
+      responseId, // Find by responseId
+      { userId }, // Assign the new userId
+      { new: true } // Return the updated document
+    );
+
+    if (!updatedValue) {
+      return res
+        .status(404)
+        .json({ message: "No values found with the given responseId." });
+    }
+
+    res.status(200).json({
+      message: "User ID successfully added to values.",
+      updatedValue,
+    });
+  } catch (error) {
+    console.error("Error updating values with userId:", error);
+    res.status(500).json({ message: "Internal server error." });
+  }
+});
+
 router.get("/:userId", async (req, res) => {
   try {
     const response = await Value.findOne({
