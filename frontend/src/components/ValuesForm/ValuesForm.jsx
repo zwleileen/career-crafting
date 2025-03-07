@@ -195,14 +195,14 @@ const ValuesForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();        
 
-        if (!user || !user._id) {
-            console.error("No user logged in or missing user ID.");
-            return;
-        }
+        // if (!user || !user._id) {
+        //     console.error("No user logged in or missing user ID.");
+        //     return;
+        // }
         const { topValues, topStrengths } = countTopValues(valuesAnswers);
 
         const requestBody = {
-            userId: user._id, 
+            // userId: user._id, 
             answers: valuesAnswers, 
             topValues: topValues,
             topStrengths: topStrengths
@@ -218,8 +218,14 @@ const ValuesForm = () => {
         
         
         // console.log("Response with insights:", response);
+        if (response.responseId) {
+            localStorage.setItem('latestResponseId', response.responseId);
 
-        navigate("/values/results")
+            navigate(`/values/results/${response.responseId}`);
+        } else {
+            console.error("No responseId returned from the server");
+            throw new Error("No responseId returned from the server");
+        }
         } catch (error) {
         console.error("Form submission error:", error.message);
         }
@@ -259,12 +265,24 @@ const ValuesForm = () => {
         </div> 
         ))}
 
+        <div className="flex justify-between">
         <button 
         type="submit" 
         className="mt-6 px-6 py-3 bg-[#D6A36A] text-white font-medium rounded-lg hover:bg-[#e69c23] transition-colors focus:outline-none focus:ring-2 focus:ring-[#f9a825] focus:ring-offset-2 cursor-pointer"
         >
         Submit
-      </button>
+        </button>
+
+        <button 
+        type="button"
+        onClick={() => navigate('/')}
+        className="mt-6 px-6 py-3 bg-[#D6A36A] text-white font-medium rounded-lg hover:bg-[#e69c23] transition-colors focus:outline-none focus:ring-2 focus:ring-[#f9a825] focus:ring-offset-2 cursor-pointer"        
+        >
+        Cancel
+        </button>
+      
+      </div>
+    
     </form>
 
     </div>

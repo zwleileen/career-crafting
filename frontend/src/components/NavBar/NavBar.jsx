@@ -30,7 +30,7 @@ const NavBar = () => {
             </Link>
 
             <Link 
-            to='/values/results'
+            to='/values/results/:responseId'
             className="text-[#586E75] text-sm font-normal font-[DM_Sans] ml-2 hover:text-[#f9a825]"
             >
             Insights

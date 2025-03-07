@@ -25,7 +25,7 @@ return (
     {/* Routes available to users before sign-up */}
     <Route path='/' element={<Landing />} />
     <Route path="/values/new" element={<ValuesForm />} />
-    <Route path="/values/results" element={<ValuesResults setTopValues={setTopValues} topValues={topValues} setTopStrengths={setTopStrengths} topStrengths={topStrengths} />} />
+    <Route path="/values/results/:responseId" element={<ValuesResults setTopValues={setTopValues} topValues={topValues} setTopStrengths={setTopStrengths} topStrengths={topStrengths} />} />
     <Route path='/sign-up' element={<SignUpForm />} />
     <Route path='/sign-in' element={<SignInForm />} />
         

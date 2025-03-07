@@ -2,15 +2,15 @@ const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}/values`;
 
 const index = async () => {
   try {
-    const token = localStorage.getItem("token");
+    // const token = localStorage.getItem("token");
 
-    if (!token) {
-      throw new Error("No authentication token found"); //Prevents sending an unauthenticated request
-    }
+    // if (!token) {
+    //   throw new Error("No authentication token found"); //Prevents sending an unauthenticated request
+    // }
 
     const res = await fetch(BASE_URL, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        // Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
     });
@@ -33,11 +33,11 @@ const index = async () => {
 
 const create = async (requestBody) => {
   try {
-    const token = localStorage.getItem("token");
+    // const token = localStorage.getItem("token");
 
-    if (!token) {
-      throw new Error("No authentication token found");
-    }
+    // if (!token) {
+    //   throw new Error("No authentication token found");
+    // }
     console.log(
       "Sending data to backend:",
       JSON.stringify(requestBody, null, 2)
@@ -46,7 +46,7 @@ const create = async (requestBody) => {
     const res = await fetch(BASE_URL, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${token}`,
+        // Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(requestBody),
@@ -61,7 +61,7 @@ const create = async (requestBody) => {
 
     const saveResponse = await res.json();
 
-    const insightsResponse = await generateInsights(requestBody.userId);
+    const insightsResponse = await generateInsights(saveResponse.responseId);
 
     return {
       ...saveResponse,
@@ -72,21 +72,21 @@ const create = async (requestBody) => {
   }
 };
 
-const generateInsights = async (userId) => {
+const generateInsights = async (responseId) => {
   try {
-    const token = localStorage.getItem("token");
+    // const token = localStorage.getItem("token");
 
-    if (!token) {
-      throw new Error("No authentication token found");
-    }
+    // if (!token) {
+    //   throw new Error("No authentication token found");
+    // }
 
     const res = await fetch(`${BASE_URL}/results`, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${token}`,
+        // Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ userId }),
+      body: JSON.stringify({ responseId }),
     });
 
     if (!res.ok) {
@@ -103,15 +103,27 @@ const generateInsights = async (userId) => {
   }
 };
 
-const show = async (userId) => {
+const show = async (responseId) => {
   try {
-    const res = await fetch(`${BASE_URL}/${userId}`, {
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    const res = await fetch(`${BASE_URL}/results/${responseId}`, {
+      method: "GET",
+      headers: {
+        // Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "application/json",
+      },
     });
 
-    const responseData = await res.json();
+    if (!res.ok) {
+      const errorData = await res
+        .json()
+        .catch(() => ({ error: "Invalid JSON response" }));
+      throw new Error(errorData.error || "Failed to fetch results");
+    }
 
-    if (responseData?.aiInsights) {
+    const responseData = await res.json();
+    // console.log("Response data received:", responseData);
+
+    if (typeof responseData.aiInsights === "string") {
       try {
         responseData.aiInsights = JSON.parse(responseData.aiInsights);
       } catch (error) {
@@ -119,11 +131,16 @@ const show = async (userId) => {
         responseData.aiInsights = null; // If parsing fails, set it to `null` instead of causing a crash
       }
     }
-    console.log("API Response:", responseData);
+    // console.log("API Response:", responseData);
 
     return responseData;
   } catch (error) {
     console.log(error);
+    return {
+      topValues: [],
+      topStrengths: [],
+      aiInsights: null,
+    };
   }
 };
 

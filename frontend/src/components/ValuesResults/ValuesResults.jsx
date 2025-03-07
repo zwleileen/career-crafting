@@ -1,23 +1,31 @@
-import { useContext, useEffect, useState } from "react";
-import { UserContext } from '../../contexts/UserContext';
+import { useEffect, useState } from "react";
 import * as valuesService from '../../services/valuesService';
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 
 const ValuesResults = ({setTopValues, topValues, setTopStrengths, topStrengths}) => {
-    const { user } = useContext(UserContext);
     const [response, setResponse] = useState("");
     const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
 
+    const { responseId } = useParams();
 
     useEffect(() => {
       const fetchUserValues = async () => {
         try {
             setIsLoading(true);
 
-          if (user && user._id) {
-            const data = await valuesService.show(user._id);
-            // console.log("Fetched values results:", data);
+            if (!responseId) {
+                console.error("No responseId available");
+                setResponse(null);
+                setIsLoading(false);
+                return;
+              }
+  
+            //   console.log("Fetching results for responseId:", responseId);
+
+        //   if (user && user._id) {
+            const data = await valuesService.show(responseId);
+            console.log("Fetched values results:", data);
 
             if (data?.aiInsights) {
               setResponse(data.aiInsights);
@@ -31,9 +39,9 @@ const ValuesResults = ({setTopValues, topValues, setTopStrengths, topStrengths})
               setTopStrengths(data.topStrengths);
             }
 
-          } else {
-            throw new Error("User not logged in or invalid user ID");
-          }
+        //   } else {
+        //     throw new Error("User not logged in or invalid user ID");
+        //   }
 
         } catch (error) {
           console.error("Error fetching user-specific values:", error.message);
@@ -44,7 +52,7 @@ const ValuesResults = ({setTopValues, topValues, setTopStrengths, topStrengths})
       };
 
       fetchUserValues();
-    }, [user, setTopValues, setTopStrengths]);
+    }, [responseId, setTopValues, setTopStrengths]);
 
     const formatValueName = (value) => {
       return value.charAt(0).toUpperCase() + value.slice(1).replace(/-/g, ' ');
@@ -65,6 +73,7 @@ const ValuesResults = ({setTopValues, topValues, setTopStrengths, topStrengths})
         </div>
       );
     }
+    
   
     return (
     <>
@@ -118,7 +127,7 @@ const ValuesResults = ({setTopValues, topValues, setTopStrengths, topStrengths})
         </button>
 
         <button
-        type="button" 
+        type="submit" 
         onClick={() => navigate("/sign-up")}
         className="mt-6 px-6 py-3 bg-[#D6A36A] text-white font-medium rounded-lg hover:bg-[#e69c23] transition-colors focus:outline-none focus:ring-2 focus:ring-[#f9a825] focus:ring-offset-2 cursor-pointer"        
         >

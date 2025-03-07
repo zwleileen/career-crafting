@@ -8,42 +8,42 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 // Save user responses
 router.post("/", async (req, res) => {
   try {
-    const { userId, answers, topValues, topStrengths } = req.body;
-    if (!userId || !answers) {
-      return res
-        .status(400)
-        .json({ message: "User ID and answers are required." });
-    }
+    const { answers, topValues, topStrengths } = req.body;
+    // if (!userId || !answers) {
+    //   return res
+    //     .status(400)
+    //     .json({ message: "User ID and answers are required." });
+    // }
 
     // Check if a response already exists for this user
-    let existingResponse = await Value.findOne({ userId });
+    // let existingResponse = await Value.findOne({ userId });
 
-    if (existingResponse) {
-      existingResponse.answers = answers;
-      existingResponse.topValues = topValues;
-      existingResponse.topStrengths = topStrengths;
-      existingResponse.createdAt = new Date(); // Update timestamp
-      await existingResponse.save();
-      console.log(existingResponse);
+    // if (existingResponse) {
+    //   existingResponse.answers = answers;
+    //   existingResponse.topValues = topValues;
+    //   existingResponse.topStrengths = topStrengths;
+    //   existingResponse.createdAt = new Date(); // Update timestamp
+    //   await existingResponse.save();
+    //   console.log(existingResponse);
 
-      return res.status(200).json({
-        message: "Responses updated successfully!",
-        responseId: existingResponse._id,
-      });
-    } else {
-      const newResponse = new Value({
-        userId,
-        answers,
-        topValues,
-        topStrengths,
-      });
-      await newResponse.save();
+    //   return res.status(200).json({
+    //     message: "Responses updated successfully!",
+    //     responseId: existingResponse._id,
+    //   });
+    // } else {
+    const newResponse = new Value({
+      // userId,
+      answers,
+      topValues,
+      topStrengths,
+    });
+    await newResponse.save();
 
-      res.status(201).json({
-        message: "Responses saved successfully!",
-        responseId: newResponse._id,
-      });
-    }
+    res.status(201).json({
+      message: "Responses saved successfully!",
+      responseId: newResponse._id,
+    });
+    // }
   } catch (error) {
     console.error("Error saving responses:", error);
     res.status(500).json({ message: "Internal server error." });
@@ -53,12 +53,12 @@ router.post("/", async (req, res) => {
 // Generate ChatGPT insights based on user responses
 router.post("/results", async (req, res) => {
   try {
-    const { userId } = req.body;
-    if (!userId)
-      return res.status(400).json({ message: "User ID is required." });
+    const { responseId } = req.body;
+    // if (!userId)
+    //   return res.status(400).json({ message: "User ID is required." });
 
     // Fetch responses from MongoDB
-    const response = await Value.findOne({ userId });
+    const response = await Value.findById(responseId);
     if (!response)
       return res.status(404).json({ message: "Response not found." });
     // console.log(response);
@@ -88,8 +88,9 @@ router.post("/results", async (req, res) => {
               "Top strengths": "Explain how their strengths make them unique & valuable in the workforce.",
               "Ideal career": "Highlight the intersection of their values + strengths in real-world career scenarios. Focus on describing the ideal work environment, impact of the work, job nature and relationships where they would flourish. Do not suggest job roles as we want to allow imagination and inspiration. Make this feel deep, thoughtful and empowering.",
             }
-            Do not return any extra text, just the JSON object. Be empathetic, encouraging, succinct and clear. Speak directly to the user, make them feel seen and understood. Blend expert-level career advice with personal coaching style insights. Always end with a motivating statement that inspires action.
-          `,
+            IMPORTANT: Ensure your response is strictly valid JSON. Do not include any line breaks within the text values of your JSON fields.
+            Do not return any extra text, just the JSON object. Be empathetic, encouraging, succinct and clear. Speak directly to the user, make them feel seen and understood. Blend expert-level career advice with personal coaching style insights. Always end with a motivating statement that inspires action.          
+            `,
         },
         {
           role: "user",
@@ -113,7 +114,23 @@ router.post("/results", async (req, res) => {
       console.log("Parsed AI insights:", insight);
     } catch (error) {
       console.error("Failed to parse JSON from ChatGPT:", insight);
-      insight = {}; // Avoid saving broken JSON
+
+      try {
+        // Try to clean up the response by replacing newlines within JSON values
+        const cleanedInsight = insight.replace(
+          /([{,]\s*"[^"]+"\s*:\s*"[^"]*)\n([^"]*")/g,
+          "$1 $2"
+        );
+        insight = JSON.parse(cleanedInsight);
+        console.log("Successfully parsed after cleaning:", insight);
+      } catch (secondError) {
+        console.error("Failed to parse JSON even after cleanup:", secondError);
+        // Return a more informative error to the client
+        return res.status(500).json({
+          message: "Failed to process AI response",
+          error: "Invalid JSON format in AI response",
+        });
+      }
     }
 
     // Convert to a string before saving to MongoDB
@@ -129,22 +146,28 @@ router.post("/results", async (req, res) => {
   }
 });
 
-// router.get("/results", verifyToken, async (req, res) => {
-//   try {
-//     const response = await Value.findOne({ userId });
+router.get("/results/:responseId", async (req, res) => {
+  try {
+    const responseId = req.params.responseId;
+    const response = await Value.findById(responseId);
 
-//     if (!response)
-//       return res.status(404).json({ message: "Response not found." });
+    if (!response)
+      return res.status(404).json({ message: "Response not found." });
 
-//     const chatResponse = response.aiInsights;
-//     console.log(chatResponse);
+    const result = {
+      _id: response._id,
+      topValues: response.topValues,
+      topStrengths: response.topStrengths,
+      aiInsights: response.aiInsights,
+      createdAt: response.createdAt,
+    };
 
-//     res.status(200).json(chatResponse);
-//   } catch (err) {
-//     console.error("Error in GET /results:", err);
-//     res.status(500).json({ err: err.message });
-//   }
-// });
+    res.status(200).json(result);
+  } catch (err) {
+    console.error("Error in GET /results/:responseId:", err);
+    res.status(500).json({ err: err.message });
+  }
+});
 
 router.get("/:userId", async (req, res) => {
   try {
