@@ -46,31 +46,31 @@ const MatchJobs = () => {
 
     if (!jobs.length) {
       return (
-        <div className="p-4">
-          <p>No job matches found. Please choose another job role.</p>
-        </div>
+        <p className="text-base md:text-lg font-normal font-[DM_Sans] mb-8 text-[#586E75]">
+        No job matches found. Please choose another job role.
+        </p>
       );
     }
   
     return (
         <div className="p-6 bg-white shadow-md rounded-md">
-            <h2 className="text-xl font-semibold mb-4">Job Listings</h2>
+            <h2 className="text-2xl md:text-3xl text-[#D6A36A] font-normal font-[DM_Sans] mb-8">Job Listings</h2>
             
-            <ul className="space-y-4">
+            <div className="flex flex-col space-y-2 font-[DM_Sans]">
                 {jobs.map((job) => (
-                    <li key={job.id} className="p-4 border border-gray-300 rounded-md shadow-md">
-                        <h3 className="text-lg font-medium">
+                    <div key={job.id} className="flex flex-col items-start p-3 text-[#586E75] border border-gray-200 rounded-lg">
+                        <h3 className="text-lg font-semibold mb-2">
                             {job.title} 
-                            <span className="text-sm text-gray-600"> {job.company?.display_name && `- ${job.company?.display_name}`}</span>
+                            <span className="text-base text-gray-600"> {job.company?.display_name && `- ${job.company?.display_name}`}</span>
                         </h3>
-                        <p className="text-gray-700 text-sm mb-2">{job.description.substring(0, 150)}...</p>
-                        <p className="text-gray-500 text-sm">Location: {job.location?.display_name || "N/A"}</p>
-                        <a href={job.redirect_url} target="_blank" rel="noopener noreferrer" className="text-blue-500 font-medium">
+                        <p className="text-gray-700 text-base mb-2">{job.description.substring(0, 150)}...</p>
+                        <p className="text-gray-500 text-base">Location: {job.location?.display_name || "N/A"}</p>
+                        <a href={job.redirect_url} target="_blank" rel="noopener noreferrer" className="mt-2 text-[#D6A36A] font-sm hover:text-[#e69c23] cursor-pointer transition-colors">
                             View Job Details →
                         </a>
-                    </li>
-                ))}
-            </ul>
+                    </div>
+            ))}
+            </div>
         </div>
     )
 };
