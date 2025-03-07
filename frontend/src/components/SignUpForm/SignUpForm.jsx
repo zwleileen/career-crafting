@@ -1,19 +1,24 @@
 import { useState, useContext } from 'react';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { signUp } from '../../services/authService';
 import { UserContext } from '../../contexts/UserContext';
+import * as valuesService from "../../services/valuesService"
+
 
 const SignUpForm = () => {
-  const navigate = useNavigate();
-  const { setUser } = useContext(UserContext);
-  const [message, setMessage] = useState('');
-  const [formData, setFormData] = useState({
-    username: '',
-    password: '',
-    passwordConf: '',
-  });
+    const navigate = useNavigate();
+    const { setUser } = useContext(UserContext);
+    const [message, setMessage] = useState('');
+    const [formData, setFormData] = useState({
+        username: '',
+        password: '',
+        passwordConf: '',
+    });
 
-  const { username, password, passwordConf } = formData;
+    const { username, password, passwordConf } = formData;
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const responseId = queryParams.get("responseId");
 
   const handleChange = (evt) => {
     const { name, value } = evt.target;
@@ -35,8 +40,21 @@ const SignUpForm = () => {
   const handleSubmit = async (evt) => {
     evt.preventDefault();
     try {
-      const newUser = await signUp(formData);
-      setUser(newUser);
+        const newUser = await signUp(formData);
+
+        if (!newUser || !newUser._id) {
+            throw new Error("User ID is missing from response");
+        }
+
+        setUser(newUser);
+        console.log("Extracted responseId:", responseId);
+      
+        if (responseId) {
+        await valuesService.update(responseId, newUser._id);
+    } else {
+        console.warn("No responseId found, skipping update.");
+    }
+
       navigate('/home');
     } catch (err) {
       setMessage(err.message);
@@ -103,7 +121,7 @@ const SignUpForm = () => {
         </button>
           <button 
           type="button"
-          onClick={() => navigate('/values/results/:responseId')}
+          onClick={() => navigate(`/values/results/${responseId}`)}
           className="px-6 py-3 bg-[#D6A36A] text-white font-medium rounded-lg hover:bg-[#e69c23] transition-colors focus:outline-none focus:ring-2 focus:ring-[#f9a825] focus:ring-offset-2 cursor-pointer"        
           >
             Cancel

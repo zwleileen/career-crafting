@@ -1,10 +1,9 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import * as valuesService from "../../services/valuesService"
 import { UserContext } from '../../contexts/UserContext';
 import { useNavigate } from "react-router";
 
 const ValuesForm = () => {
-    const { user } = useContext(UserContext);
     const navigate = useNavigate();
     const [valuesAnswers, setValuesAnswers] = useState({});
   

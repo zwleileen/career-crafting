@@ -144,4 +144,38 @@ const show = async (responseId) => {
   }
 };
 
-export { index, create, generateInsights, show };
+const update = async (responseId, userId) => {
+  try {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      throw new Error("No authentication token found.");
+    }
+
+    console.log(
+      `Updating values for responseId: ${responseId} with userId: ${userId}`
+    );
+
+    const res = await fetch(`${BASE_URL}/update/${responseId}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userId }),
+    });
+
+    if (!res.ok) {
+      const errorData = await res
+        .json()
+        .catch(() => ({ error: "Invalid JSON response" }));
+      throw new Error(errorData.error || "Failed to update values with userId");
+    }
+
+    console.log("Successfully updated values with userId!");
+  } catch (error) {
+    console.error("Error updating values:", error.message);
+  }
+};
+
+export { index, create, generateInsights, show, update };
