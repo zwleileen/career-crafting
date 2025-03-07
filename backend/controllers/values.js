@@ -8,31 +8,29 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 // Save user responses
 router.post("/", async (req, res) => {
   try {
-    const { answers, topValues, topStrengths } = req.body;
-    // if (!userId || !answers) {
-    //   return res
-    //     .status(400)
-    //     .json({ message: "User ID and answers are required." });
-    // }
+    const { userId, answers, topValues, topStrengths } = req.body;
 
     // Check if a response already exists for this user
-    // let existingResponse = await Value.findOne({ userId });
+    if (userId) {
+      let existingResponse = await Value.findOne({ userId });
 
-    // if (existingResponse) {
-    //   existingResponse.answers = answers;
-    //   existingResponse.topValues = topValues;
-    //   existingResponse.topStrengths = topStrengths;
-    //   existingResponse.createdAt = new Date(); // Update timestamp
-    //   await existingResponse.save();
-    //   console.log(existingResponse);
+      if (existingResponse) {
+        existingResponse.answers = answers;
+        existingResponse.topValues = topValues;
+        existingResponse.topStrengths = topStrengths;
+        existingResponse.createdAt = new Date(); // Update timestamp
+        await existingResponse.save();
+        console.log(existingResponse);
 
-    //   return res.status(200).json({
-    //     message: "Responses updated successfully!",
-    //     responseId: existingResponse._id,
-    //   });
-    // } else {
+        return res.status(200).json({
+          message: "Responses updated successfully!",
+          responseId: existingResponse._id,
+        });
+      }
+    }
+
     const newResponse = new Value({
-      // userId,
+      userId: userId || null,
       answers,
       topValues,
       topStrengths,
@@ -54,8 +52,6 @@ router.post("/", async (req, res) => {
 router.post("/results", async (req, res) => {
   try {
     const { responseId } = req.body;
-    // if (!userId)
-    //   return res.status(400).json({ message: "User ID is required." });
 
     // Fetch responses from MongoDB
     const response = await Value.findById(responseId);

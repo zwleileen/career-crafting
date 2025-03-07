@@ -25,12 +25,13 @@ return (
     {/* Routes available to users before sign-up */}
     <Route path='/' element={<Landing />} />
     <Route path="/values/new" element={<ValuesForm />} />
-    <Route path="/values/:identifier" element={<ValuesResults setTopValues={setTopValues} topValues={topValues} setTopStrengths={setTopStrengths} topStrengths={topStrengths} />} />
+    <Route path="/values/results/:responseId" element={<ValuesResults setTopValues={setTopValues} topValues={topValues} setTopStrengths={setTopStrengths} topStrengths={topStrengths} />} />
     <Route path='/sign-up' element={<SignUpForm />} />
     <Route path='/sign-in' element={<SignInForm />} />
         
     {/* Protected routes - only available when logged in */}
     <Route path='/home' element={user ? <Homepage topValues={topValues} setTopValues={setTopValues} topStrengths={topStrengths} setTopStrengths={setTopStrengths} /> : <Navigate to="/" />} />
+    <Route path="/values/:userId" element={<ValuesResults setTopValues={setTopValues} topValues={topValues} setTopStrengths={setTopStrengths} topStrengths={topStrengths} />} />
     <Route path="/career" element={user ? (<CareerForm />) : <Navigate to="/" />} />
     <Route path="/career/results" element={user ? (<CareerResults />) : <Navigate to="/" />} />
     

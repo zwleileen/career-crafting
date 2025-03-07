@@ -8,13 +8,14 @@ const ValuesResults = ({setTopValues, topValues, setTopStrengths, topStrengths})
     const [response, setResponse] = useState("");
     const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
-    const { identifier } = useParams();
+    const { responseId, userId } = useParams(); 
 
     useEffect(() => {
       const fetchUserValues = async () => {
         try {
             setIsLoading(true);
 
+            let identifier = responseId || userId;
             if (!identifier) {
                 console.error("No identifier available");
                 setResponse(null);
@@ -52,7 +53,7 @@ const ValuesResults = ({setTopValues, topValues, setTopStrengths, topStrengths})
       };
 
       fetchUserValues();
-    }, [user, identifier, setTopValues, setTopStrengths]);
+    }, [user, responseId, userId, setTopValues, setTopStrengths]);
 
     const formatValueName = (value) => {
       return value.charAt(0).toUpperCase() + value.slice(1).replace(/-/g, ' ');
@@ -129,7 +130,7 @@ const ValuesResults = ({setTopValues, topValues, setTopStrengths, topStrengths})
         { !user ? (
         <button
         type="button" 
-        onClick={() => navigate(`/sign-up?responseId=${identifier}`)}
+        onClick={() => navigate(`/sign-up?responseId=${responseId}`)}
         className="mt-6 px-6 py-3 bg-[#D6A36A] text-white font-medium rounded-lg hover:bg-[#e69c23] transition-colors focus:outline-none focus:ring-2 focus:ring-[#f9a825] focus:ring-offset-2 cursor-pointer"        
         >
             Save results

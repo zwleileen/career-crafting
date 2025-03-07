@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import * as valuesService from "../../services/valuesService"
 import { UserContext } from '../../contexts/UserContext';
 import { useNavigate } from "react-router";
@@ -6,6 +6,8 @@ import { useNavigate } from "react-router";
 const ValuesForm = () => {
     const navigate = useNavigate();
     const [valuesAnswers, setValuesAnswers] = useState({});
+    const { user } = useContext(UserContext);
+    
   
     const valuesQuestions = [
         {
@@ -200,12 +202,9 @@ const ValuesForm = () => {
         // }
         const { topValues, topStrengths } = countTopValues(valuesAnswers);
 
-        const requestBody = {
-            // userId: user._id, 
-            answers: valuesAnswers, 
-            topValues: topValues,
-            topStrengths: topStrengths
-        };
+        const requestBody = user && user._id
+        ? { userId: user._id, answers: valuesAnswers, topValues: topValues, topStrengths: topStrengths }
+        : { answers: valuesAnswers, topValues: topValues, topStrengths: topStrengths };
         // console.log("Sending data to backend:", JSON.stringify(requestBody, null, 2));
 
         try {
@@ -220,7 +219,10 @@ const ValuesForm = () => {
         if (response.responseId) {
             localStorage.setItem('latestResponseId', response.responseId);
 
-            navigate(`/values/results/${response.responseId}`);
+            if(user) {
+                navigate(`/values/${user._id}`)
+            } else {
+            navigate(`/values/results/${response.responseId}`);}
         } else {
             console.error("No responseId returned from the server");
             throw new Error("No responseId returned from the server");
@@ -274,7 +276,7 @@ const ValuesForm = () => {
 
         <button 
         type="button"
-        onClick={() => navigate('/')}
+        onClick={() => user ? navigate('/home') : navigate('/')}
         className="mt-6 px-6 py-3 bg-[#D6A36A] text-white font-medium rounded-lg hover:bg-[#e69c23] transition-colors focus:outline-none focus:ring-2 focus:ring-[#f9a825] focus:ring-offset-2 cursor-pointer"        
         >
         Cancel
