@@ -146,7 +146,7 @@ router.post("/results", async (req, res) => {
 //   }
 // });
 
-router.get("/:userId", verifyToken, async (req, res) => {
+router.get("/:userId", async (req, res) => {
   try {
     const response = await Value.findOne({
       userId: req.params.userId,
