@@ -22,17 +22,19 @@ return (
   <NavBar />
   <div className="flex-grow">
   <Routes>    
-    {/* Routes available to all users */}
-    <Route path='/' element={ !user ? <Landing /> : <Navigate to="/home" />} />
-    <Route path='/sign-up' element={!user ? <SignUpForm /> : <Navigate to="/values/new" />} />
-    <Route path='/sign-in' element={!user ? <SignInForm /> : <Navigate to="/home" />} />
+    {/* Routes available to users before sign-up */}
+    <Route path='/' element={<Landing />} />
+    <Route path="/values/new" element={<ValuesForm />} />
+    <Route path="/values/results" element={<ValuesResults setTopValues={setTopValues} topValues={topValues} setTopStrengths={setTopStrengths} topStrengths={topStrengths} />} />
+    <Route path='/sign-up' element={<SignUpForm />} />
+    <Route path='/sign-in' element={<SignInForm />} />
         
     {/* Protected routes - only available when logged in */}
     <Route path='/home' element={user ? <Homepage topValues={topValues} setTopValues={setTopValues} topStrengths={topStrengths} setTopStrengths={setTopStrengths} /> : <Navigate to="/" />} />
-    <Route path="/values/new" element={user ? (<ValuesForm />) : <Navigate to="/" />} />
-    <Route path="/values/results" element={user ? (<ValuesResults setTopValues={setTopValues} topValues={topValues} setTopStrengths={setTopStrengths} topStrengths={topStrengths} />) : <Navigate to="/" />} />
     <Route path="/career" element={user ? (<CareerForm />) : <Navigate to="/" />} />
     <Route path="/career/results" element={user ? (<CareerResults />) : <Navigate to="/" />} />
+    
+    {/* Protected routes - only available when paid */}
 
 
   </Routes>
