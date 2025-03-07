@@ -10,6 +10,7 @@ import ValuesForm from './components/ValuesForm/ValuesForm';
 import ValuesResults from './components/ValuesResults/ValuesResults';
 import CareerForm from './components/CareerForm/CareerForm';
 import CareerResults from './components/CareerResults/CareerResults';
+import MatchJobs from './components/MatchJobs/MatchJobs';
 
 function App() {
   const { user } = useContext(UserContext);
@@ -36,6 +37,7 @@ return (
     <Route path="/career/results" element={user ? (<CareerResults />) : <Navigate to="/" />} />
     
     {/* Protected routes - only available when paid */}
+    <Route path="/jobs/results" element={user ? (<MatchJobs />) : <Navigate to="/" />} />
 
 
   </Routes>

@@ -1,0 +1,17 @@
+meta {
+  name: Generate jobkeywords
+  type: http
+  seq: 14
+}
+
+post {
+  url: {{HOST}}/jobkeywords/results
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "userId": "67caa338b9e567f89b33dcc4"
+  }
+}

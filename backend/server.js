@@ -10,8 +10,7 @@ const authRouter = require("./controllers/auth");
 const usersRouter = require("./controllers/users");
 const valuesRouter = require("./controllers/values");
 const careerRouter = require("./controllers/careers");
-// const jobrolesRouter = require("./controllers/jobroles");
-// const jobkeywordsRouter = require("./controllers/jobkeywords");
+const jobkeywordsRouter = require("./controllers/jobkeywords");
 // const matchJobsRouter = require("./controllers/matchjobs");
 
 // Connect to MongoDB using the connection string in the .env file
@@ -29,8 +28,7 @@ app.use("/auth", authRouter);
 app.use("/users", usersRouter);
 app.use("/values", valuesRouter);
 app.use("/career", careerRouter);
-// app.use("/jobroles", jobrolesRouter);
-// app.use("/jobkeywords", jobkeywordsRouter);
+app.use("/jobkeywords", jobkeywordsRouter);
 // app.use("/matchjobs", matchJobsRouter);
 
 const PORT = process.env.PORT || 3000;

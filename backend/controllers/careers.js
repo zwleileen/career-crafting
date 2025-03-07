@@ -6,7 +6,7 @@ const Status = require("../models/Career.js");
 const Value = require("../models/Value.js");
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-router.post("/", async (req, res) => {
+router.post("/", verifyToken, async (req, res) => {
   try {
     const { userId, answers } = req.body;
     if (!userId || !answers) {
@@ -87,7 +87,7 @@ router.post("/results", async (req, res) => {
                 "Possible career paths": [
                     {
                         "Career path": "Suggest the most relevant career direction/path that balances user's career aspirations on their ideal work (e.g. what excites them, impact they want to make) with user's career challenges and existing skills/experiences. Make sure the career direction is practical yet inspiring, make them feel empowered to overcome any challenges and move forward.",
-                        "Why it fits": "Explain why this path/direction aligns with their unique profile and career aspirations, while addressing their practical career challenges.", 
+                        "Why it fits": "Explain why this path/direction aligns with their unique profile and career aspirations, while addressing their practical career challenges. Explain the industry or department in which they can pursue this career path, that is aligned with their desired impact on the world.", 
                         "Narrative": "Suggest a brief storyline of a normal day in this career path, the types of stakeholders they work with, day-to-day tasks and the impact the work has in shaping the ideal world. Be realistic, relatable and inspiring. Optimise it as a prompt for DALL-E."
                     },
                     {

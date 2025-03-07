@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from '../../contexts/UserContext';
 import * as careerService from "../../services/careerService"
+import * as jobKeywordService from "../../services/jobKeywordService"
 import { useNavigate } from "react-router";
 
 const CareerResults = () => {
@@ -39,6 +40,31 @@ const CareerResults = () => {
 
       fetchUserStatus();
     }, [user]);
+
+    const handleFindJobs = async () => {
+        try {
+            if (selectedRoleIndex === null) {
+                return;
+            };
+
+            const selectedCareer = response["Possible career paths"][selectedRoleIndex];
+            const careerPath = selectedCareer["Career path"];
+            const whyItFits = selectedCareer["Why it fits"];
+
+            const result = await jobKeywordService.create({
+                userId: user._id,
+                careerPath: careerPath,
+                whyItFits: whyItFits
+            });
+
+            if (!result || result.error) {
+                throw new Error(result?.error || "Unexpected error");
+            }
+                navigate("/jobs/results");
+        } catch (error) {
+            console.error("Error saving career path:", error);
+        }
+    }
 
     if (isLoading) {
       return (
@@ -108,6 +134,16 @@ const CareerResults = () => {
         >
             Redo Questionnaire
         </button>
+        
+        <button
+        type="button"
+        onClick={handleFindJobs}
+        disabled={selectedRoleIndex === null}
+        className="mt-6 px-6 py-3 bg-[#D6A36A] text-white font-medium rounded-lg hover:bg-[#e69c23] transition-colors focus:outline-none focus:ring-2 focus:ring-[#f9a825] focus:ring-offset-2 cursor-pointer"        
+        >
+            Next: Match Jobs
+        </button>
+        
         </div>
 
         </div>
