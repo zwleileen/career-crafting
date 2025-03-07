@@ -1,7 +1,6 @@
 import { useContext } from 'react';
 import { Link } from 'react-router';
 import { UserContext } from '../../contexts/UserContext';
-import Homepage from '../Homepage/Homepage';
 
 const NavBar = () => {
   const { user, setUser } = useContext(UserContext);
@@ -28,14 +27,16 @@ const NavBar = () => {
             >
             Home
             </Link>
-
+            
+            {user._id && (
             <Link 
-            to='/values/results/:responseId'
+            to={`/values/${user._id}`}
             className="text-[#586E75] text-sm font-normal font-[DM_Sans] ml-2 hover:text-[#f9a825]"
             >
             Insights
             </Link>
-
+            )}
+            
             <Link 
             to='/career/results'
             className="text-[#586E75] text-sm font-normal font-[DM_Sans] ml-2 hover:text-[#f9a825]"

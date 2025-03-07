@@ -178,4 +178,45 @@ const update = async (responseId, userId) => {
   }
 };
 
-export { index, create, generateInsights, show, update };
+const showUserId = async (userId) => {
+  try {
+    const res = await fetch(`${BASE_URL}/${userId}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!res.ok) {
+      const errorData = await res
+        .json()
+        .catch(() => ({ error: "Invalid JSON response" }));
+      throw new Error(errorData.error || "Failed to fetch results");
+    }
+
+    const responseData = await res.json();
+    // console.log("Response data received:", responseData);
+
+    if (typeof responseData.aiInsights === "string") {
+      try {
+        responseData.aiInsights = JSON.parse(responseData.aiInsights);
+      } catch (error) {
+        console.error("Error parsing aiInsights:", error);
+        responseData.aiInsights = null; // If parsing fails, set it to `null` instead of causing a crash
+      }
+    }
+    // console.log("API Response:", responseData);
+
+    return responseData;
+  } catch (error) {
+    console.log(error);
+    return {
+      topValues: [],
+      topStrengths: [],
+      aiInsights: null,
+    };
+  }
+};
+
+export { index, create, generateInsights, show, update, showUserId };

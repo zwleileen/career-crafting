@@ -1,30 +1,30 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import * as valuesService from '../../services/valuesService';
 import { useNavigate, useParams } from "react-router";
+import { UserContext } from "../../contexts/UserContext";
 
 const ValuesResults = ({setTopValues, topValues, setTopStrengths, topStrengths}) => {
+    const { user } = useContext(UserContext);
     const [response, setResponse] = useState("");
     const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
-
-    const { responseId } = useParams();
+    const { identifier } = useParams();
 
     useEffect(() => {
       const fetchUserValues = async () => {
         try {
             setIsLoading(true);
 
-            if (!responseId) {
-                console.error("No responseId available");
+            if (!identifier) {
+                console.error("No identifier available");
                 setResponse(null);
                 setIsLoading(false);
                 return;
               }
   
-            //   console.log("Fetching results for responseId:", responseId);
+            //   console.log("Fetching results for identifier:", identifier);
 
-        //   if (user && user._id) {
-            const data = await valuesService.show(responseId);
+            const data = user ? await valuesService.showUserId(identifier) : await valuesService.show(identifier);
             console.log("Fetched values results:", data);
 
             if (data?.aiInsights) {
@@ -52,7 +52,7 @@ const ValuesResults = ({setTopValues, topValues, setTopStrengths, topStrengths})
       };
 
       fetchUserValues();
-    }, [responseId, setTopValues, setTopStrengths]);
+    }, [user, identifier, setTopValues, setTopStrengths]);
 
     const formatValueName = (value) => {
       return value.charAt(0).toUpperCase() + value.slice(1).replace(/-/g, ' ');
@@ -125,14 +125,24 @@ const ValuesResults = ({setTopValues, topValues, setTopStrengths, topStrengths})
         >
             Redo Questionnaire
         </button>
-
+        
+        { !user ? (
         <button
         type="button" 
-        onClick={() => navigate(`/sign-up?responseId=${responseId}`)}
+        onClick={() => navigate(`/sign-up?responseId=${identifier}`)}
         className="mt-6 px-6 py-3 bg-[#D6A36A] text-white font-medium rounded-lg hover:bg-[#e69c23] transition-colors focus:outline-none focus:ring-2 focus:ring-[#f9a825] focus:ring-offset-2 cursor-pointer"        
         >
             Save results
         </button>
+        ) : (
+        <button
+        type="button" 
+        onClick={() => navigate('/career')}
+        className="mt-6 px-6 py-3 bg-[#D6A36A] text-white font-medium rounded-lg hover:bg-[#e69c23] transition-colors focus:outline-none focus:ring-2 focus:ring-[#f9a825] focus:ring-offset-2 cursor-pointer"        
+        >
+        Next: Career Paths
+        </button>
+        )}
         </div>
 
     </div>
