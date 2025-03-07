@@ -144,7 +144,7 @@ const CareerForm = () => {
                         name={question.id}
                         value={value}
                         onChange={handleChange}
-                        className="mt-0.5 h-5 w-5 focus:ring-[#D6A36A]"
+                        className="mt-0.5 h-5 w-5"
                         />
                         <span className="ml-3 text-[#586E75] text-base">{label}</span>
                     </label>

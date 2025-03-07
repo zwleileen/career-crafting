@@ -65,38 +65,36 @@ const CareerResults = () => {
   
     return (
         <div className="p-6 bg-white shadow-md rounded-md">
-            <h2 className="text-xl font-semibold mb-4">Your Career Insights</h2>
+            <h2 className="text-2xl md:text-3xl text-[#D6A36A] font-normal font-[DM_Sans] mb-8">Your Career Insights</h2>
             
             {response["Summary"] && (
-                <div className="mb-4">
-                    <h3 className="text-lg font-medium">Summary:</h3>
-                    <p className="text-gray-700">{response["Summary"]}</p>
+                <div className="text-base md:text-lg font-normal font-[DM_Sans] mb-8 text-[#586E75]">
+                    <h3 className="font-semibold">Summary:</h3>
+                    <p>{response["Summary"]}</p>
                 </div>
             )}
 
             {response["Possible career paths"] && (
-                <div className="mb-4">
-                    <h3 className="text-lg font-medium">Select a Job Role:</h3>
-                    <ul className="list-disc list-inside text-gray-700">
+                <div className="flex flex-col font-[DM_Sans] text-[#586E75]">
+                    <h2 className="text-lg font-semibold mb-4">Select a job role below to see matching jobs:</h2>
+                    <div className="flex flex-col space-y-2">
                         {response["Possible career paths"].map((path, index) => (
-                            <li key={index} className="mb-4 p-4 border rounded-md shadow-sm bg-gray-50">
-                                <label className="flex items-center space-x-3 cursor-pointer">
-                                <input
-                                    type="radio"
-                                    name="jobRole"
-                                    value={index}
-                                    checked={selectedRoleIndex === index}
-                                    onChange={() => handleSelection(index)}
-                                    className="w-4 h-4"
-                                />
-                                    <div>
-                                        <p className="font-semibold">{path["Career path"]}</p>
-                                        <p>{path["Why it fits"]}</p>
-                                    </div>
-                                </label>
-                            </li>
+                            <label key={index} className="flex items-start p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
+                            <input
+                                type="radio"
+                                name="jobRole"
+                                value={index}
+                                checked={selectedRoleIndex === index}
+                                onChange={() => handleSelection(index)}
+                                className="mt-0.5 h-5 w-5"
+                            />
+                                <div className="ml-3 text-[#586E75] text-base">
+                                    <p>{path["Career path"]}</p>
+                                    <p>{path["Why it fits"]}</p>
+                                </div>
+                            </label>
                         ))}
-                    </ul>
+                    </div>
                 </div>
             )}
 
