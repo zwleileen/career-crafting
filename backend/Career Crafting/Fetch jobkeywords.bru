@@ -1,0 +1,15 @@
+meta {
+  name: Fetch jobkeywords
+  type: http
+  seq: 15
+}
+
+get {
+  url: {{HOST}}/jobkeywords/:userId
+  body: json
+  auth: inherit
+}
+
+params:path {
+  userId: 67caa338b9e567f89b33dcc4
+}

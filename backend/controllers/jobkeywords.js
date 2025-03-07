@@ -40,7 +40,7 @@ router.post("/", verifyToken, async (req, res) => {
 });
 
 // Generate ChatGPT insights based on user responses
-router.post("/results", async (req, res) => {
+router.post("/results", verifyToken, async (req, res) => {
   try {
     const { userId } = req.body;
     if (!userId)
@@ -133,17 +133,14 @@ router.post("/results", async (req, res) => {
 
 router.get("/:userId", verifyToken, async (req, res) => {
   try {
-    const response = await JobRole.findOne({
+    const response = await JobKeyword.findOne({
       userId: req.params.userId,
     }).populate("userId", "username");
 
     if (!response)
       return res.status(404).json({ message: "Response not found." });
 
-    const chatResponse = response.currentJobRoles.aiInsights;
-    // console.log("chatgpt response retrieved:", chatResponse);
-
-    res.status(200).json(chatResponse);
+    res.status(200).json(response);
   } catch (err) {
     console.error("Error in GET /:userId:", err);
     res.status(500).json({ err: err.message });

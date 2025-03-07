@@ -47,7 +47,7 @@ router.post("/", verifyToken, async (req, res) => {
 });
 
 // Generate ChatGPT insights based on user responses
-router.post("/results", async (req, res) => {
+router.post("/results", verifyToken, async (req, res) => {
   try {
     const { userId } = req.body;
     if (!userId)
