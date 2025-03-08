@@ -53,7 +53,10 @@ router.post("/results", verifyToken, async (req, res) => {
     // Convert answers to string for ChatGPT
     const formattedAnswers = `Job Title: ${response.jobTitle}\nWhy It Fits: ${response.jobDetails}`;
 
-    const careerAnswers = await Career.findOne(response.userId);
+    const careerAnswers = await Career.findOne({
+      userId: response.userId,
+    });
+    // console.log("careerAnswers retrieved:", careerAnswers);
     const skillsAndExperiences = `Existing skills and experiences: ${careerAnswers.answers[3]}`;
     console.log("Existing skills/experiences:", skillsAndExperiences);
 
