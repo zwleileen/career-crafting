@@ -53,6 +53,10 @@ router.post("/results", verifyToken, async (req, res) => {
     // Convert answers to string for ChatGPT
     const formattedAnswers = `Job Title: ${response.jobTitle}\nWhy It Fits: ${response.jobDetails}`;
 
+    const careerAnswers = await Career.findOne(response.userId);
+    const skillsAndExperiences = `Existing skills and experiences: ${careerAnswers.answers[3]}`;
+    console.log("Existing skills/experiences:", skillsAndExperiences);
+
     // Call OpenAI to analyze the responses
     const chatResponse = await openai.chat.completions.create({
       model: "gpt-4",
@@ -76,7 +80,7 @@ router.post("/results", verifyToken, async (req, res) => {
         },
         {
           role: "user",
-          content: `Here is the job role that have been suggested to me based on my personal profile, career aspirations, existing skills and experiences:\n${formattedAnswers}\nBased on the job title and job details, what are the most common and relevant industry keywords and essential skills keywords so that I can match them with the most relevant jobs?`,
+          content: `Here is the career path suggested to me based on my personal profile, career aspirations, existing skills and experiences:\n${formattedAnswers}\nBased on these details, as well as my \n${skillsAndExperiences}\n, what are the relevant industry keywords and skills keywords that can be inferred or extracted so that I can match them with the most relevant jobs?`,
         },
       ],
       max_tokens: 150,

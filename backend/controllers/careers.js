@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const OpenAI = require("openai");
 const verifyToken = require("../middleware/verify-token");
-const Status = require("../models/Career.js");
+const Career = require("../models/Career.js");
 const Value = require("../models/Value.js");
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
@@ -19,7 +19,7 @@ router.post("/", verifyToken, async (req, res) => {
     const valuesInsights = previousValue ? previousValue.aiInsights : "";
 
     // Check if a response already exists for this user
-    let existingResponse = await Status.findOne({ userId });
+    let existingResponse = await Career.findOne({ userId });
 
     if (existingResponse) {
       existingResponse.answers = answers;
@@ -32,7 +32,7 @@ router.post("/", verifyToken, async (req, res) => {
         responseId: existingResponse._id,
       });
     } else {
-      const newResponse = new Status({ userId, answers, valuesInsights });
+      const newResponse = new Career({ userId, answers, valuesInsights });
       await newResponse.save();
 
       res.status(201).json({
@@ -54,7 +54,7 @@ router.post("/results", verifyToken, async (req, res) => {
       return res.status(400).json({ message: "User ID is required." });
 
     // Fetch responses from MongoDB
-    const response = await Status.findOne({ userId });
+    const response = await Career.findOne({ userId });
     if (!response)
       return res.status(404).json({ message: "Response not found." });
 
@@ -83,12 +83,12 @@ router.post("/results", verifyToken, async (req, res) => {
           
             Important: Present the response succinctly in structured JSON format as follows:
                 {
-                "Summary": "Provide a brief summary of the user's ideal world vision and how their intrinsic values and strengths position them uniquely to contribute towards shaping that world. Acknowledge user's career challenges, but assure and encourage them that they will be able to overcome these challenges. Make it emotionally resonant, compelling, and inspiring.",
+                "Summary": "Provide a succinct yet inspiring summary of the user's ideal world vision and how their intrinsic values and strengths position them uniquely to contribute towards shaping that world. Acknowledge user's career challenges, but assure and encourage them that they will be able to overcome these challenges. Make it emotionally resonant, compelling, and inspiring.",
                 "Possible career paths": [
                     {
-                        "Career path": "Suggest the most relevant career direction/path that balances user's career aspirations on their ideal work (e.g. what excites them, impact they want to make) with user's career challenges and existing skills/experiences. Make sure the career direction is practical yet diverse and inspiring. Make the user feel in awe at such a brilliant suggestion.",
+                        "Career path": "Suggest the most relevant career direction/path that balances user's career aspirations on their ideal work (e.g. what excites them, impact they want to make) with user's career challenges and existing skills/experiences. Make sure the career path considers user's years of work experience or the seniority level, in order for it to be practical yet and inspiring.",
                         "Why it fits": "Explain why this path/direction aligns with their unique profile and career aspirations, while addressing their practical career challenges. Suggest the ideal industry or department in which they can pursue this career path, the work environment and job tasks that are typical in such career.", 
-                        "Narrative": "Suggest a brief storyline of a normal day in this career path, the types of stakeholders they work with, day-to-day tasks and the impact the work has in shaping the ideal world. Be realistic, relatable and inspiring. Optimise it as a prompt for DALL-E."
+                        "Narrative": "Suggest a brief storyline of a normal day in this career path, the types of stakeholders they work with, day-to-day tasks and the impact the work has in shaping the ideal world. Be realistic, relatable and inspiring."
                     },
                     {
                         "Career path": "You must suggest a second career path that is still highly relevant to user's profile yet interestingly different and refreshing compared to the other suggested career paths.",
@@ -159,7 +159,7 @@ router.post("/results", verifyToken, async (req, res) => {
 
 router.get("/:userId", verifyToken, async (req, res) => {
   try {
-    const response = await Status.findOne({
+    const response = await Career.findOne({
       userId: req.params.userId,
     }).populate("userId", "username");
 

@@ -63,10 +63,10 @@ const CareerForm = () => {
     ];
 
     const handleChange = (e) => {
-        const { id, value } = e.target; 
+        const { name, value } = e.target; 
         setCareerAnswers((prev) => ({
             ...prev, 
-            [id]: value //store the value under the questionID key
+            [name]: value //store the value under the questionID key
             }))
     };
 
@@ -102,6 +102,7 @@ const CareerForm = () => {
             userId: user._id,
             answers: careerAnswers 
         };
+        console.log("Request body before submission:", JSON.stringify(requestBody, null, 2)); 
 
         try {
         const response = await careerService.create(requestBody);
@@ -111,7 +112,7 @@ const CareerForm = () => {
             }
         
         
-        console.log("Response with insights:", response);
+        // console.log("Response with insights:", response);
 
         navigate("/career/results")
         } catch (error) {
@@ -143,6 +144,7 @@ const CareerForm = () => {
                         type="radio"
                         name={question.id}
                         value={value}
+                        checked={careerAnswers[question.id] === value}
                         onChange={handleChange}
                         className="mt-0.5 h-5 w-5"
                         />
