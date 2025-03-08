@@ -37,7 +37,7 @@ return (
     <Route path="/career/results" element={user ? (<CareerResults />) : <Navigate to="/" />} />
     
     {/* Protected routes - only available when paid */}
-    <Route path="/jobs/results" element={user ? (<MatchJobs />) : <Navigate to="/" />} />
+    <Route path="/jobs/results/:responseId" element={user ? (<MatchJobs />) : <Navigate to="/" />} />
 
 
   </Routes>

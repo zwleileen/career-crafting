@@ -62,7 +62,7 @@ const create = async (requestBody) => {
 
     const saveResponse = await res.json();
 
-    const keyWordResponse = await generateKeyWords(requestBody.userId);
+    const keyWordResponse = await generateKeyWords(saveResponse.responseId);
 
     return {
       ...saveResponse,
@@ -73,7 +73,7 @@ const create = async (requestBody) => {
   }
 };
 
-const generateKeyWords = async (userId) => {
+const generateKeyWords = async (responseId) => {
   try {
     const token = localStorage.getItem("token");
 
@@ -87,7 +87,7 @@ const generateKeyWords = async (userId) => {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ userId }),
+      body: JSON.stringify({ responseId }),
     });
 
     if (!res.ok) {
@@ -104,9 +104,9 @@ const generateKeyWords = async (userId) => {
   }
 };
 
-const show = async (userId) => {
+const show = async (responseId) => {
   try {
-    const res = await fetch(`${BASE_URL}/${userId}`, {
+    const res = await fetch(`${BASE_URL}/${responseId}`, {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     });
 

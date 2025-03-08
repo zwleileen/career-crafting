@@ -60,7 +60,11 @@ const CareerResults = () => {
             if (!result || result.error) {
                 throw new Error(result?.error || "Unexpected error");
             }
-                navigate("/jobs/results");
+
+            if (result.responseId) {
+                localStorage.setItem("latestResponseId:", result.responseId)
+            }
+                navigate(`/jobs/results/${result.responseId}`);
         } catch (error) {
             console.error("Error saving career path:", error);
         }

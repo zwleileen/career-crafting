@@ -1,19 +1,28 @@
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from '../../contexts/UserContext';
 import * as matchJobService from "../../services/matchJobService"
+import { useParams } from "react-router";
 
 const MatchJobs = () => {
     const { user } = useContext(UserContext);
     const [jobs, setJobs] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const { responseId } = useParams();
+    const [response, setResponse] = useState("");
 
     useEffect(() => {
       const fetchMatchedJobs = async () => {
         try {
             setIsLoading(true);
 
-          if (user && user._id) {
-            const data = await matchJobService.show(user._id);
+          if (!responseId) {
+            console.error("No responseId");
+            setResponse(null);
+            setIsLoading(false);
+            return;
+          }
+
+            const data = await matchJobService.show(responseId);
             // console.log("Fetched values results:", data);
 
             if (Array.isArray(data) && data.length > 0) {
@@ -21,9 +30,6 @@ const MatchJobs = () => {
             } else {
                 setJobs([]);  
             }
-        } else {
-            throw new Error("User not logged in or invalid user ID");
-        }
 
         } catch (error) {
           console.error("Error fetching matched jobs:", error.message);
@@ -34,7 +40,7 @@ const MatchJobs = () => {
       };
 
       fetchMatchedJobs();
-    }, [user]);
+    }, [responseId]);
 
     if (isLoading) {
       return (

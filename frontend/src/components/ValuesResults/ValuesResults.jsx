@@ -40,10 +40,6 @@ const ValuesResults = ({setTopValues, topValues, setTopStrengths, topStrengths})
               setTopStrengths(data.topStrengths);
             }
 
-        //   } else {
-        //     throw new Error("User not logged in or invalid user ID");
-        //   }
-
         } catch (error) {
           console.error("Error fetching user-specific values:", error.message);
           setResponse(null);

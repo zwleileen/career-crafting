@@ -217,7 +217,7 @@ const ValuesForm = () => {
         
         // console.log("Response with insights:", response);
         if (response.responseId) {
-            localStorage.setItem('latestResponseId', response.responseId);
+            localStorage.setItem('latestResponseId:', response.responseId);
 
             if(user) {
                 navigate(`/values/${user._id}`)

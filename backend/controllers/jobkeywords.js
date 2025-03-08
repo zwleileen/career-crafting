@@ -31,6 +31,7 @@ router.post("/", verifyToken, async (req, res) => {
 
     res.status(201).json({
       message: "Selected career path saved successfully!",
+      responseId: newResponse._id,
     });
     // }
   } catch (error) {
@@ -42,12 +43,10 @@ router.post("/", verifyToken, async (req, res) => {
 // Generate ChatGPT insights based on user responses
 router.post("/results", verifyToken, async (req, res) => {
   try {
-    const { userId } = req.body;
-    if (!userId)
-      return res.status(400).json({ message: "User ID is required." });
+    const { responseId } = req.body;
 
     // Fetch responses from MongoDB
-    const response = await JobKeyword.findOne({ userId });
+    const response = await JobKeyword.findById(responseId);
     if (!response)
       return res.status(404).json({ message: "Response not found." });
 
