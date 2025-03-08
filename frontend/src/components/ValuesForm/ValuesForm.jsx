@@ -14,12 +14,12 @@ const ValuesForm = () => {
             id: "1", 
             label: "What kind of work excites and energises you the most on a day-to-day?",
             options: [
-                { value: "universalism, appreciation of beauty, self-direction", label: "I love working with ideas and storytelling." },
-                { value: "benevolence, universalism, fairness", label: "I feel fulfilled when contributing to the greater good." },
-                { value: 'self-direction, creativity, zest', label: 'I love building new products, solutions, or businesses.' },
-                { value: 'power, leadership, perspective', label: 'I thrive in leadership roles that empower people.' },
-                { value: 'achievement, judgement, perseverance', label: 'I want to analyze, strategize, and solve complex problems.' },
-                { value: 'security, prudence, self-regulation', label: 'I thrive in structured, goal-oriented work environments.' },
+                { value: "universalism, appreciation of beauty, self-direction", label: "Exploring and expressing ideas through writing, storytelling, or design" },
+                { value: "benevolence, universalism, fairness", label: "Contributing to social causes and making a tangible difference" },
+                { value: 'self-direction, creativity, zest', label: 'Building new products, solutions, or businesses from the ground up' },
+                { value: 'power, leadership, perspective', label: 'Leading and empowering people to reach their full potential' },
+                { value: 'achievement, judgement, perseverance', label: 'Analyzing data, solving complex problems, and making strategic decisions' },
+                { value: 'security, prudence, self-regulation', label: 'Executing well-defined tasks in structured, goal-oriented environments' },
             ],
         },
         {
@@ -35,24 +35,24 @@ const ValuesForm = () => {
         },
         {
             id: "3", 
-            label: "What's the one problem or challenge you would most like to address through your work?",
+            label: "What impact do you want your work to create in the world?",
             options: [
-                { value: "benevolence, love, kindness, social intelligence", label: "Helping individuals grow and thrive" },
-                { value: "universalism, justice, fairness, leadership, bravery", label: "Advocating for fairness and justice in society " },
-                { value: 'self-direction, creativity, curiosity, perspective', label: 'Driving innovation and progress' },
-                { value: 'achievement, power, leadership, perseverance, judgement', label: 'Achieving personal and financial success' },
-                { value: 'universalism, appreciation of beauty, spirituality, hope', label: 'Creating beauty, meaning, or inspiration' },
-                { value: 'universalism, benevolence, leadership, perspective, teamwork', label: 'Transforming how organizations and teams function' },
+                { value: "benevolence, love, kindness, social intelligence", label: "Empowering individuals through education, mentorship, or personal development" },
+                { value: "universalism, justice, fairness, leadership, bravery", label: "Creating a fairer and more just society through advocacy or systemic change" },
+                { value: 'self-direction, creativity, curiosity, perspective', label: 'Pioneering innovation in technology, science, or creative industries' },
+                { value: 'achievement, power, leadership, judgement', label: 'Building financial success while creating opportunities for others' },
+                { value: 'universalism, appreciation of beauty, spirituality, hope', label: 'Elevating human experience through art, culture, or meaningful storytelling' },
+                { value: 'universalism, benevolence, leadership, perspective, teamwork', label: 'Transforming workplaces or industries for long-term positive impact' },
             ],
         },
         {
             id: "4", 
             label: "How do you like to work best?",
             options: [
-                { value: "security, prudence, self-regulation", label: "In structured roles with clear expectations" },
-                { value: "stimulation, zest, creativity", label: "In dynamic and fast-paced environments" },
-                { value: 'self-direction, perseverance, perspective', label: 'Independently, managing my own work' },
-                { value: 'benevolence, teamwork, social intelligence', label: 'Collaborating closely with a team' },
+                { value: "security, prudence, self-regulation", label: "I excel in structured processes with clear expectations" },
+                { value: "stimulation, zest, creativity", label: "I thrive in flexible, fast-paced environments with evolving tasks" },
+                { value: 'self-direction, perseverance, perspective', label: 'I prefer independent work with full autonomy over my decisions' },
+                { value: 'benevolence, teamwork, social intelligence', label: 'I thrive when closely collaborating and co-creating with others' },
             ],
         },
         {
@@ -69,21 +69,21 @@ const ValuesForm = () => {
             id: "6", 
             label: "How do you define success in your career?",
             options: [
-                { value: "universalism, fairness, justice", label: "Making an impact on society" },
-                { value: "security, power, prudence", label: "Financial stability and security" },
-                { value: 'self-direction, love of learning, curiosity', label: 'Continuous learning and growth' },
-                { value: 'achievement, bravery, perseverance', label: 'Recognition and achievement' },
-                { value: 'benevolence, kindness, social intelligence', label: 'Building strong relationships' },
+                { value: "universalism, fairness, justice", label: "Making a meaningful impact on people and communities" },
+                { value: "security, power, prudence", label: "Achieving financial stability and personal security" },
+                { value: 'self-direction, love of learning, curiosity', label: 'Constantly learning and expanding my knowledge' },
+                { value: 'achievement, bravery, perseverance', label: 'Being recognized for my achievements and expertise' },
+                { value: 'benevolence, kindness, social intelligence', label: 'Building strong, meaningful professional relationships' },
             ],
         },
         {
             id: "7", 
             label: "When have you felt truly “in the zone” at work?",
             options: [
-                { value: "achievement, judgement, perspective", label: "When solving problems and making decisions" },
-                { value: "benevolence, kindness, leadership", label: "When helping or mentoring others" },
-                { value: 'self-direction, creativity, curiosity', label: 'When brainstorming new ideas' },
-                { value: 'self-direction, love of learning, curiosity', label: 'When I am learning something new' },
+                { value: "achievement, judgement, perspective", label: "When solving complex problems and making strategic decisions" },
+                { value: "benevolence, kindness, leadership", label: "When helping, mentoring, or coaching others to succeed" },
+                { value: 'self-direction, creativity, curiosity', label: 'When brainstorming creative ideas and exploring new possibilities' },
+                { value: 'perseverance, love of learning, curiosity', label: 'When mastering a new skill or deepening my expertise' },
             ],
         },
         {
@@ -100,21 +100,31 @@ const ValuesForm = () => {
             id: "9", 
             label: "What do others often appreciate about you at work?",
             options: [
-                { value: "achievement, judgement, perspective", label: "My ability to solve problems logically" },
-                { value: "self-direction, creativity, curiosity", label: "My creativity and innovative ideas" },
-                { value: 'benevolence, social intelligence, kindness', label: 'My ability to connect and support others' },
-                { value: 'power, achievement, leadership, zest', label: 'My leadership and ability to inspire people' },
+                { value: "achievement, judgement, perspective", label: "My ability to analyze problems and make sound decisions" },
+                { value: "self-direction, creativity, curiosity", label: "My creativity and ability to generate new ideas" },
+                { value: 'benevolence, social intelligence, kindness', label: 'My empathy and ability to connect with and support others' },
+                { value: 'power, achievement, leadership, zest', label: 'My leadership, vision, and ability to inspire people' },
             ],
         },
         {
             id: "10", 
-            label: "In the long-run, what’s the deeper purpose that would make your career feel truly meaningful??",
+            label: "What type of work relationships make you thrive?",
             options: [
-                { value: "self-direction, creativity, curiosity", label: "I want to push boundaries and create impact" },
-                { value: "benevolence, kindness, social intelligence", label: "I feel fulfilled when improving lives" },
-                { value: 'achievement, security, prudence', label: 'I prioritize security and prosperity' },
-                { value: 'universalism, fairness, leadership', label: 'I want to create positive societal change' },
-                { value: 'universalism, appreciation of beauty, spirituality', label: 'I want to inspire, express, or elevate human experience' },
+                { value: "benevolence, social intelligence, teamwork", label: "Collaborating closely with a team where we support and challenge each other" },
+                { value: "self-direction, perspective, prudence", label: "Having independence with occasional expert guidance when needed" },
+                { value: 'love of learning, leadership, judgement', label: 'Working in a mentorship-driven environment where I can learn from experienced leaders' },
+                { value: 'leadership, power, kindness, social intelligence', label: 'Leading, coaching, and inspiring others to reach their full potential' },
+            ],
+        },
+        {
+            id: "11", 
+            label: "In the long-run, what’s the deeper purpose that would make your career feel truly meaningful?",
+            options: [
+                { value: "self-direction, creativity, curiosity", label: "Creating groundbreaking ideas or innovations that redefine industries and possibilities" },
+                { value: "benevolence, kindness, social intelligence", label: "Directly improving the well-being of individuals and communities" },
+                { value: 'achievement, security, prudence', label: 'Achieving financial success and long-term security for myself and my family' },
+                { value: 'universalism, fairness, leadership', label: 'Driving systemic change to create a more just, fair, and sustainable society' },
+                { value: 'universalism, appreciation of beauty, spirituality', label: 'Inspiring and elevating human experiences through art, storytelling, or culture' },
             ],
         },
     ];
@@ -241,7 +251,7 @@ const ValuesForm = () => {
         Clarifying your strengths and values
         </h1>
         <p className="text-[#586E75] text-lg md:text-xl font-normal font-[DM_Sans] mb-8">
-        There are 10 questions in total. Please respond to all the questions by selecting the option that most resonates with you. 
+        There are 11 questions in total. Please respond to all the questions by selecting the option that most resonates with you. 
         </p>
 
         {valuesQuestions.map(({ id, label, options }) => (

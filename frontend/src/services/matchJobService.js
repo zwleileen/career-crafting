@@ -31,11 +31,18 @@ const index = async () => {
   }
 };
 
-const show = async (userId) => {
+const show = async (responseId) => {
   try {
-    const res = await fetch(`${BASE_URL}/${userId}`, {
+    const res = await fetch(`${BASE_URL}/results/${responseId}`, {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     });
+
+    if (!res.ok) {
+      const errorData = await res
+        .json()
+        .catch(() => ({ error: "Invalid JSON response" }));
+      throw new Error(errorData.error || "Failed to fetch results");
+    }
 
     let responseData = await res.json();
     // console.log("API Response:", responseData);

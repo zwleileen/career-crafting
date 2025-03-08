@@ -1,14 +1,12 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { UserContext } from '../../contexts/UserContext';
 import * as matchJobService from "../../services/matchJobService"
 import { useParams } from "react-router";
 
 const MatchJobs = () => {
-    const { user } = useContext(UserContext);
     const [jobs, setJobs] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const { responseId } = useParams();
-    const [response, setResponse] = useState("");
 
     useEffect(() => {
       const fetchMatchedJobs = async () => {
@@ -17,13 +15,13 @@ const MatchJobs = () => {
 
           if (!responseId) {
             console.error("No responseId");
-            setResponse(null);
+            setJobs([]);
             setIsLoading(false);
             return;
           }
 
             const data = await matchJobService.show(responseId);
-            // console.log("Fetched values results:", data);
+            console.log("Fetched values results:", data);
 
             if (Array.isArray(data) && data.length > 0) {
                 setJobs(data);  
@@ -44,7 +42,7 @@ const MatchJobs = () => {
 
     if (isLoading) {
       return (
-        <div className="flex justify-center items-center h-64">
+        <div className="flex justify-center items-center h-64 text-base md:text-lg font-[DM_Sans] text-[#586E75]">
           <p>Loading your results...</p>
         </div>
       );
@@ -52,7 +50,7 @@ const MatchJobs = () => {
 
     if (!jobs.length) {
       return (
-        <p className="text-base md:text-lg font-normal font-[DM_Sans] mb-8 text-[#586E75]">
+        <p className="p-6 text-base md:text-lg font-normal font-[DM_Sans] mb-8 text-[#586E75]">
         No job matches found. Please choose another job role.
         </p>
       );
@@ -67,10 +65,11 @@ const MatchJobs = () => {
                     <div key={job.id} className="flex flex-col items-start p-3 text-[#586E75] border border-gray-200 rounded-lg">
                         <h3 className="text-lg font-semibold mb-2">
                             {job.title} 
-                            <span className="text-base text-gray-600"> {job.company?.display_name && `- ${job.company?.display_name}`}</span>
                         </h3>
-                        <p className="text-gray-700 text-base mb-2">{job.description.substring(0, 150)}...</p>
-                        <p className="text-gray-500 text-base">Location: {job.location?.display_name || "N/A"}</p>
+                        <p className="text-lg mb-2 font-[DM_Sans] text-[#586E75]">{job.company?.display_name && `${job.company?.display_name}`}</p>
+                        <p className="text-[#586E75] text-base mb-4">{job.description.substring(0, 500)}...</p>
+                        <p className="text-[#586E75] text-base">Keywords matched: {job.matchedKeywords.join(', ')}</p>
+                        <p className="text-[#586E75] text-base">Location: {job.location?.display_name || "N/A"}</p>
                         <a href={job.redirect_url} target="_blank" rel="noopener noreferrer" className="mt-2 text-[#D6A36A] font-sm hover:text-[#e69c23] cursor-pointer transition-colors">
                             View Job Details →
                         </a>

@@ -71,7 +71,7 @@ router.post("/results", verifyToken, async (req, res) => {
                 "industryKeywords": ["Sustainability Consulting", "Tech Policy", "Corporate ESG"],
                 "skillsKeywords": ["Policy Development", "Stakeholder Engagement", "Sustainability Strategy"]
                 }
-            Do not return any extra text, just the JSON object. 
+            Do not return any extra text, just the JSON object. Be as comprehensive and relevant as possible. 
           `,
         },
         {
