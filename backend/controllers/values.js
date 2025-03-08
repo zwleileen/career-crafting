@@ -85,7 +85,7 @@ router.post("/results", async (req, res) => {
               "Ideal career": "Highlight the intersection of their values + strengths in real-world career scenarios. Focus on describing the ideal work environment, impact of the work, job nature and relationships where they would flourish. Do not suggest job roles as we want to allow imagination and inspiration. Make this feel deep, thoughtful and empowering.",
             }
             IMPORTANT: Ensure your response is strictly valid JSON. Do not include any line breaks within the text values of your JSON fields.
-            Do not return any extra text, just the JSON object. Be empathetic, encouraging, succinct and clear. Speak directly to the user, make them feel seen and understood. Blend expert-level career advice with personal coaching style insights. Always end with a motivating statement that inspires action.          
+            Do not return any extra text, just the JSON object. Be empathetic, encouraging, succinct and clear. Speak directly to the user, make them feel seen and understood, and be in awe at such brilliant suggestions and insights. Always end with a motivating statement that inspires action.          
             `,
         },
         {

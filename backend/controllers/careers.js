@@ -86,12 +86,12 @@ router.post("/results", verifyToken, async (req, res) => {
                 "Summary": "Provide a brief summary of the user's ideal world vision and how their intrinsic values and strengths position them uniquely to contribute towards shaping that world. Acknowledge user's career challenges, but assure and encourage them that they will be able to overcome these challenges. Make it emotionally resonant, compelling, and inspiring.",
                 "Possible career paths": [
                     {
-                        "Career path": "Suggest the most relevant career direction/path that balances user's career aspirations on their ideal work (e.g. what excites them, impact they want to make) with user's career challenges and existing skills/experiences. Make sure the career direction is practical yet inspiring, make them feel empowered to overcome any challenges and move forward.",
-                        "Why it fits": "Explain why this path/direction aligns with their unique profile and career aspirations, while addressing their practical career challenges. Explain the industry or department in which they can pursue this career path, that is aligned with their desired impact on the world.", 
+                        "Career path": "Suggest the most relevant career direction/path that balances user's career aspirations on their ideal work (e.g. what excites them, impact they want to make) with user's career challenges and existing skills/experiences. Make sure the career direction is practical yet diverse and inspiring. Make the user feel in awe at such a brilliant suggestion.",
+                        "Why it fits": "Explain why this path/direction aligns with their unique profile and career aspirations, while addressing their practical career challenges. Suggest the ideal industry or department in which they can pursue this career path, the work environment and job tasks that are typical in such career.", 
                         "Narrative": "Suggest a brief storyline of a normal day in this career path, the types of stakeholders they work with, day-to-day tasks and the impact the work has in shaping the ideal world. Be realistic, relatable and inspiring. Optimise it as a prompt for DALL-E."
                     },
                     {
-                        "Career path": "You must suggest a second relevant career direction that the user can embark on that is different from the other suggested directions.",
+                        "Career path": "You must suggest a second career path that is still highly relevant to user's profile yet interestingly different and refreshing compared to the other suggested career paths.",
                         "Why it fits": "Explanation",
                         "Narrative": "Suggestion"
                     },
@@ -102,7 +102,7 @@ router.post("/results", verifyToken, async (req, res) => {
                     }
                 ],
                 }
-            Do not return any extra text, just the JSON object. Be empathetic, encouraging, succinct and clear. Speak directly to the user, make them feel seen and understood. Blend expert-level career advice with personal coaching style insights.
+            Do not return any extra text, just the JSON object. Be empathetic, encouraging, succinct and clear. Speak directly to the user, make them feel seen and understood, and be in awe at such brilliant suggestions and insights.
           `,
         },
         {
