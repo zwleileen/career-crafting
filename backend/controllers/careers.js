@@ -88,7 +88,7 @@ router.post("/results", verifyToken, async (req, res) => {
                     {
                         "Career path": "Suggest the most relevant yet diverse career direction/path that balances user's ideal career with user's career challenges and existing skills/experiences. Make sure the career path considers user's years of work experience or the seniority level, in order for it to be practical yet inspiring.",
                         "Why it fits": "Explain why this path/direction aligns with their unique profile and career aspirations, while addressing their practical career challenges. Suggest the ideal industry or department in which they can pursue this career path, the work environment and job tasks that are typical in such career.", 
-                        "Narrative": "Suggest a brief storyline of a normal day in this career path, the types of stakeholders they work with, day-to-day tasks and the impact the work has in shaping the ideal world. Be realistic, relatable and inspiring."
+                        "Narrative": "Suggest a storyline of a normal day in this career path, the types of stakeholders they work with, day-to-day tasks and the impact that the work has in shaping the ideal world. Be realistic, relatable and inspiring, and help user imagine themselves on this career path."
                     },
                     {
                         "Career path": "You must suggest a second career path that is still highly relevant to user's profile yet interestingly different and refreshing compared to the other suggested career paths.",

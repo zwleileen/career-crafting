@@ -79,12 +79,14 @@ const CareerResults = () => {
 
             const selectedCareer = response["Possible career paths"][selectedRoleIndex];
             const careerPath = selectedCareer["Career path"];
+            const whyItFits = selectedCareer["Why it fits"];
             const narrative = selectedCareer["Narrative"];
 
 
             const result = await imagineService.create({
                 userId: user._id,
                 careerPath: careerPath,
+                whyItFits: whyItFits,
                 narrative: narrative
             });
 
