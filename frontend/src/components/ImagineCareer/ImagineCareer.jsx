@@ -52,27 +52,27 @@ const ImagineCareer = () => {
     }
   
     return (
-        <div className="p-6 bg-white shadow-md rounded-md">
+        <div className="p-6 bg-white shadow-md rounded-md flex flex-col items-center text-center">
             <h2 className="text-2xl md:text-3xl text-[#D6A36A] font-normal font-[DM_Sans] mb-8">A day in the life of {responses.jobTitle}</h2>
-            <p className="text-lg mb-2 font-[DM_Sans] text-[#586E75]">{responses.narrative}</p>
+            <p className="text-lg mb-6 font-[DM_Sans] text-[#586E75] max-w-2xl">{responses.narrative}</p>
 
             {responses.images?.dayInJob && (
                 <div className="mt-6">
-                <h3 className="text-lg font-semibold text-[#586E75]">A Day in the Job</h3>
+                <h3 className="text-lg font-semibold text-[#586E75] mb-2">A Day in the Job</h3>
                 <img 
                     src={responses.images.dayInJob} 
                     alt="A day in the job scene" 
-                    className="w-full rounded-lg shadow-lg mt-2"
+                    className="w-full max-w-lg h-auto rounded-lg shadow-lg object-cover mx-auto"
                 />
             </div>
             )}
             {responses.images?.impact && (
             <div className="mt-6">
-                <h3 className="text-lg font-semibold text-[#586E75]">Impact of the Work</h3>
+                <h3 className="text-lg font-semibold text-[#586E75] mb-2">Impact of the Work</h3>
                 <img 
                     src={responses.images.impact} 
                     alt="Impact of the work scene" 
-                    className="w-full rounded-lg shadow-lg mt-2"
+                    className="w-full max-w-lg h-auto rounded-lg shadow-lg object-cover mx-auto"
                 />
             </div>
         )}
