@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import * as imagineService from "../../services/imagineService"
+import { UserContext } from "../../contexts/UserContext";
 
 
 const ImagineCareer = () => {
     const [responses, setResponses] = useState({});
     const [isLoading, setIsLoading] = useState(true);
     const { responseId } = useParams();
+
 
     useEffect(() => {
       const fetchImages = async () => {
@@ -56,26 +58,38 @@ const ImagineCareer = () => {
             <h2 className="text-2xl md:text-3xl text-[#D6A36A] font-normal font-[DM_Sans] mb-8">A day in the life of {responses.jobTitle}</h2>
             <p className="text-lg mb-6 font-[DM_Sans] text-[#586E75] max-w-2xl">{responses.narrative}</p>
 
-            {responses.images?.dayInJob && (
+            {responses.images?.morningInJob && (
                 <div className="mt-6">
-                <h3 className="text-lg font-semibold text-[#586E75] mb-2">A Day in the Job</h3>
+                <h3 className="text-lg font-semibold text-[#586E75] mb-2">A morning in the job</h3>
                 <img 
-                    src={responses.images.dayInJob} 
+                    src={responses.images.morningInJob} 
                     alt="A day in the job scene" 
                     className="w-full max-w-lg h-auto rounded-lg shadow-lg object-cover mx-auto"
                 />
             </div>
             )}
+
+            {responses.images?.afternoonInJob && (
+                <div className="mt-6">
+                <h3 className="text-lg font-semibold text-[#586E75] mb-2">An afternoon in the job</h3>
+                <img 
+                    src={responses.images.afternoonInJob} 
+                    alt="A day in the job scene" 
+                    className="w-full max-w-lg h-auto rounded-lg shadow-lg object-cover mx-auto"
+                />
+            </div>
+            )}
+
             {responses.images?.impact && (
             <div className="mt-6">
-                <h3 className="text-lg font-semibold text-[#586E75] mb-2">Impact of the Work</h3>
+                <h3 className="text-lg font-semibold text-[#586E75] mb-2">Impact at the end of day</h3>
                 <img 
                     src={responses.images.impact} 
                     alt="Impact of the work scene" 
                     className="w-full max-w-lg h-auto rounded-lg shadow-lg object-cover mx-auto"
                 />
             </div>
-        )}
+            )}
         </div>
     )
 

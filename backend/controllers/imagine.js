@@ -64,14 +64,42 @@ router.post("/results", verifyToken, async (req, res) => {
         {
           role: "system",
           content: `
-            Important: You are an expert in crafting precise and effective prompts for DALL·E. Your task is to generate three separate impressionistic-style image prompts that are structured, precise, and optimized for high-quality image generation. 
+            Important: You are an expert in crafting precise and effective prompts for DALL·E. Your task is to generate three separate cinematic-style image prompts that are structured, precise, and optimized for high-quality image generation.  
             
             Goal:
-            The prompts should instruct DALL·E to generate three visually engaging images that are realistic, relatable yet aspirational, and should evoke inspiration and excitement about meaningful careers and societal change:
-            1. A morning in the job: A realistic, relatable and emotionally engaging scene depicting the professional in action in a typical morning at work.  
-            2. An afternoon in the job: A realistic, relatable and emotionally engaging scene depicting the professional in action in a typical afternoon.  
-            2. Impact of the work: A visual representation of the inspiring, positive transformation their work creates in society or the environment at the end of the day.  
+            The prompts should instruct DALL·E to generate three **highly realistic, relatable, and emotionally compelling** images that immerse the viewer into the world of this professional. These images should **evoke awe, inspiration, and a sense of purpose** by using **cinematic composition, dramatic lighting, and rich environmental storytelling**.
+            
+            Key Elements:
+            - **Cinematic Composition:** Use depth of field, dynamic angles, rule of thirds, and leading lines.
+            - **Lighting:** Natural light, moody contrast, golden hour effects, or dramatic spotlighting.
+            - **Human Emotion & Engagement:** Expressions, body language, interaction with stakeholders.
+            - **Texture & Detail:** Rich, tactile surfaces, professional attire, authentic work environments.
+            - **Lifelike Diversity:** Represent inclusive, real-world people and settings.
+            
+            Scenes to Generate:
+            1. A morning in the job: 
+            - A realistic, immersive scene showing the professional in action at the start of their day.  
+            - Highlight **a specific task**, such as strategizing, designing, problem-solving, or leading discussions.  
+            - Show the **types of stakeholders they work with** (e.g., investors, engineers, policymakers, community members).  
+            - **Setting:** Office, fieldwork, innovation hub, courtroom, or any relevant location.  
+            - Capture **expressions, body language, and work atmosphere** to create a strong emotional connection.
 
+            2. An afternoon in the job: 
+            - A different, dynamic moment in their workday that contrasts with the morning.  
+            - Focus on **another key task or challenge**—e.g., presenting, negotiating, testing a prototype, mentoring a team.  
+            - Include **different interactions** (e.g., clients, communities, high-stakes decision-makers).  
+            - Use a **new setting** (e.g., conference hall, remote site, urban setting, factory floor).  
+            - Emphasize **cinematic lighting and a sense of urgency or energy**.            
+            
+            3. Impact of the work: 
+            - A **visual transformation** showcasing the real-world effect of their efforts.  
+            - Contrast the **"before and after"** impact in a striking, cinematic way.  
+            - Examples:  
+                - A once-polluted city now lush and green due to sustainability policies.  
+                - A thriving startup hub created by the entrepreneur's vision.  
+                - A rural village empowered by new technology, education, or infrastructure.  
+            - Capture **emotion, scale, and societal change** to create a sense of awe and admiration.
+            
             Output format:
             Return the response as a structured JSON object with no extra text, formatted exactly like this:
                 {
@@ -83,7 +111,7 @@ router.post("/results", verifyToken, async (req, res) => {
         },
         {
           role: "user",
-          content: `Here is the career path suggested to me based on my personal profile, career aspirations, existing skills and experiences:\n${formattedAnswers}\n\n Based on my gender, job title and job narrative, generate three highly relatable and detailed DALL·E prompts describing a day in the job: one describing an impressionistic style of "A morning in the job", another describing "An afternoon in the job" and lastly depicting the "Impact of the work".`,
+          content: `Here is the career path suggested to me based on my personal profile, career aspirations, existing skills and experiences:\n${formattedAnswers}\n\n Based on my gender, job title and job narrative, generate three **highly cinematic and photorealistic** DALL·E prompts that bring my career journey to life: one for "A morning in the job," another for "An afternoon in the job," and lastly for "The impact of the work." Make them detailed, immersive, and awe-inspiring.`,
         },
       ],
       max_tokens: 500,
@@ -132,6 +160,11 @@ router.post("/images", verifyToken, async (req, res) => {
 
     //function to generate image
     async function generateImage(prompt) {
+      if (!prompt || prompt.trim() === "") {
+        console.error(`Skipping image generation: Prompt is missing.`);
+        return null; // Skip image generation if prompt is missing
+      }
+
       try {
         const dallEResponse = await openai.images.generate({
           model: "dall-e-3",
@@ -141,24 +174,17 @@ router.post("/images", verifyToken, async (req, res) => {
           response_format: "url",
         });
 
-        if (!dallEResponse.data || dallEResponse.data.length === 0) {
-          throw new Error("DALL·E response does not contain any images.");
-        }
-        console.log("Generated image URL:", dallEResponse.data[0].url);
-
+        console.log(`Generated image URL:`, dallEResponse.data[0].url);
         return dallEResponse.data[0].url;
       } catch (error) {
         console.error("Error generating images backend:", error.message);
         return null;
       }
     }
-    //call the function
-    const [morningInJobImage, afternoonInJobImage, impactImage] =
-      await Promise.all([
-        generateImage(morningInJobPrompt),
-        generateImage(afternoonInJobPrompt),
-        generateImage(impactPrompt),
-      ]);
+    // Generate images for each prompt
+    const morningInJobImage = await generateImage(morningInJobPrompt);
+    const afternoonInJobImage = await generateImage(afternoonInJobPrompt);
+    const impactImage = await generateImage(impactPrompt);
 
     // Ensure we do not overwrite existing data if an image fails
     response.dallEImages = {

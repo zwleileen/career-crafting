@@ -125,12 +125,12 @@ const generateImages = async (responseId) => {
       const errorData = await res
         .json()
         .catch(() => ({ error: "Invalid JSON response" }));
-      throw new Error(errorData.error || "Failed to generate key words");
+      throw new Error(errorData.error || "Failed to generate images");
     }
 
     return await res.json();
   } catch (error) {
-    console.error("Error generating insights:", error.message);
+    console.error("Error generating images:", error.message);
     return { error: error.message };
   }
 };

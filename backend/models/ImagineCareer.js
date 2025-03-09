@@ -6,10 +6,18 @@ const ImagineCareerSchema = new mongoose.Schema({
   jobTitle: { type: String, required: true },
   jobDetails: { type: String, required: true },
   jobNarrative: { type: String, required: true },
-  dallEPrompt: { type: mongoose.Schema.Types.Mixed, default: {} },
+  dallEPrompt: {
+    type: mongoose.Schema.Types.Mixed,
+    default: {
+      "A morning in the job": "",
+      "An afternoon in the job": "",
+      "Impact of the work": "",
+    },
+  },
   dallEImages: {
-    dayInJob: { type: String },
-    impact: { type: String },
+    morningInJob: { type: String, default: "" },
+    afternoonInJob: { type: String, default: "" },
+    impact: { type: String, default: "" },
   },
   createdAt: { type: Date, default: Date.now },
 });

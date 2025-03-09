@@ -7,15 +7,16 @@ import * as valuesService from "../../services/valuesService"
 
 const SignUpForm = () => {
     const navigate = useNavigate();
-    const { setUser } = useContext(UserContext);
+    const { user, setUser } = useContext(UserContext);
     const [message, setMessage] = useState('');
     const [formData, setFormData] = useState({
         username: '',
         password: '',
         passwordConf: '',
+        gender: '',
     });
 
-    const { username, password, passwordConf } = formData;
+    const { username, password, passwordConf, gender } = formData;
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const responseId = queryParams.get("responseId");
@@ -55,7 +56,7 @@ const SignUpForm = () => {
         console.warn("No responseId found, skipping update.");
     }
 
-      navigate('/home');
+      navigate(`/values/${user._id}`);
     } catch (err) {
       setMessage(err.message);
     }
@@ -111,6 +112,22 @@ const SignUpForm = () => {
             required
           />
         </div>
+        <div className=" text-[#586E75] text-lg md:text-xl font-normal font-[DM_Sans] space-x-2 mb-5">
+          <label htmlFor='gender'>Gender you identify with:</label>
+            <select
+                className="border-1 border-[#D6A36A] rounded-lg h-10 w-50 indent-2"
+                id='gender'
+                value={gender}
+                name='gender'
+                onChange={handleChange}
+                required
+            >
+                <option value="" disabled>Select</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+            </select>
+        </div>
+
         <div className=" text-[#586E75] text-lg md:text-xl font-normal font-[DM_Sans] space-x-10">
           <button 
           type="submit"
