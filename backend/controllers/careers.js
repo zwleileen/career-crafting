@@ -66,7 +66,7 @@ router.post("/results", verifyToken, async (req, res) => {
       .join("\n");
 
     const previousInsightsText = response.valuesInsights
-      ? `\n\nPrevious insights about their values and strengths: ${response.valuesInsights}`
+      ? `\n\nPrevious insights about my ideal career based on intrinsic values/strengths: ${response.valuesInsights}`
       : "";
 
     // Call OpenAI to analyze the responses
@@ -77,16 +77,16 @@ router.post("/results", verifyToken, async (req, res) => {
           role: "system",
           content: `
             You are an expert career strategist and AI-powered coach specializing in career transitions, meaningful work, and life design. 
-            You help professionals clarify their intrinsic values, strengths, and career direction by providing highly personalized, strategic, and practical career insights. 
+            You help professionals clarify their ideal work environment based on intrinsic values/strengths, as well as their work meaning based on their ideal world vision, then empower them to craft their ideal and meaningful career path by providing highly personalized, strategic, and practical career insights. 
             Your responses should feel like a mix of a career coach, psychologist, and industry mentor—blending self-awareness, motivation, and actionable guidance.
             Your goal is to analyze the user's responses and generate deeply insightful career reflections that make them feel seen, validated, and inspired, while also offering concrete next steps they can act on immediately.
           
             Important: Present the response succinctly in structured JSON format as follows:
                 {
-                "Summary": "Provide a succinct yet inspiring summary of the user's ideal world vision and how their intrinsic values and strengths position them uniquely to contribute towards shaping that world. Acknowledge user's career challenges, but assure and encourage them that they will be able to overcome these challenges. Make it emotionally resonant, compelling, and inspiring.",
+                "Summary": "Provide a succinct yet inspiring summary of the user's ideal world vision and how their intrinsic values and strengths position them uniquely to contribute towards shaping that ideal world. Acknowledge user's career challenges, but assure and encourage them that they will be able to overcome these challenges. Make it emotionally resonant, compelling, and inspiring.",
                 "Possible career paths": [
                     {
-                        "Career path": "Suggest the most relevant career direction/path that balances user's career aspirations on their ideal work (e.g. what excites them, impact they want to make) with user's career challenges and existing skills/experiences. Make sure the career path considers user's years of work experience or the seniority level, in order for it to be practical yet and inspiring.",
+                        "Career path": "Suggest the most relevant yet diverse career direction/path that balances user's ideal career with user's career challenges and existing skills/experiences. Make sure the career path considers user's years of work experience or the seniority level, in order for it to be practical yet inspiring.",
                         "Why it fits": "Explain why this path/direction aligns with their unique profile and career aspirations, while addressing their practical career challenges. Suggest the ideal industry or department in which they can pursue this career path, the work environment and job tasks that are typical in such career.", 
                         "Narrative": "Suggest a brief storyline of a normal day in this career path, the types of stakeholders they work with, day-to-day tasks and the impact the work has in shaping the ideal world. Be realistic, relatable and inspiring."
                     },
@@ -96,7 +96,17 @@ router.post("/results", verifyToken, async (req, res) => {
                         "Narrative": "Suggestion"
                     },
                     {
-                        "Career path": "You must suggest a second relevant career direction that the user can embark on that is different from the other suggested directions.",
+                        "Career path": "You must suggest a third career path that is still highly relevant to user's profile yet interestingly different and refreshing compared to the other suggested career paths.",
+                        "Why it fits": "Explanation",
+                        "Narrative": "Suggestion"
+                    },
+                                        {
+                        "Career path": "You must suggest a fourth career path that is still highly relevant to user's profile yet interestingly different and refreshing compared to the other suggested career paths.",
+                        "Why it fits": "Explanation",
+                        "Narrative": "Suggestion"
+                    },
+                                        {
+                        "Career path": "You must suggest a fifth career path that is still highly relevant to user's profile yet interestingly different and refreshing compared to the other suggested career paths.",
                         "Why it fits": "Explanation",
                         "Narrative": "Suggestion"
                     }
@@ -107,10 +117,10 @@ router.post("/results", verifyToken, async (req, res) => {
         },
         {
           role: "user",
-          content: `Here are the impact I want to make, my career challenges, as well as existing skills and experiences:\n${formattedAnswers}\nBased on this and ${previousInsightsText}, what are the most feasible and relevant career directions/paths and how to get there?`,
+          content: `Here are the impact I want to make, my career challenges, as well as existing skills and experiences:\n${formattedAnswers}\nBased on this and ${previousInsightsText}, what are the most relevant yet diverse career paths that satisfy me ideal career and allow me to shape my ideal world vision at the same time?`,
         },
       ],
-      max_tokens: 800,
+      max_tokens: 1500,
       stop: null, //Prevents premature stopping
       frequency_penalty: 0,
       presence_penalty: 0,
