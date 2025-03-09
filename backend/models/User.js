@@ -10,6 +10,11 @@ const userSchema = new mongoose.Schema({
     minLength: 4,
     required: true,
   },
+  gender: {
+    type: String,
+    enum: ["male", "female"], // Allows only "paid" or ""
+    default: "",
+  },
   status: {
     type: String,
     enum: ["paid", ""], // Allows only "paid" or ""

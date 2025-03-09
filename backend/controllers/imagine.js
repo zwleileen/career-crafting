@@ -3,11 +3,14 @@ const router = express.Router();
 const OpenAI = require("openai");
 const verifyToken = require("../middleware/verify-token");
 const ImagineCareer = require("../models/ImagineCareer.js");
+const User = require("../models/User.js");
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 router.post("/", verifyToken, async (req, res) => {
   try {
     const { userId, careerPath, whyItFits, narrative } = req.body;
+
+    const user = await User.findById(userId);
     if (!userId || !careerPath || !whyItFits) {
       return res
         .status(400)
@@ -23,6 +26,7 @@ router.post("/", verifyToken, async (req, res) => {
 
     const newResponse = new ImagineCareer({
       userId,
+      gender: user.gender,
       jobTitle,
       jobDetails,
       jobNarrative,
@@ -51,7 +55,7 @@ router.post("/results", verifyToken, async (req, res) => {
       return res.status(404).json({ message: "Response not found." });
 
     // Convert answers to string for ChatGPT
-    const formattedAnswers = `Job Title: ${response.jobTitle}\nWhy It Fits: ${response.jobDetails}\nA day in the job:${response.jobNarrative}`;
+    const formattedAnswers = `Job Title: ${response.jobTitle}\nWhy It Fits: ${response.jobDetails}\nA day in the job:${response.jobNarrative}\nGender of professional:${response.gender}`;
 
     // Call OpenAI to analyze the responses
     const chatResponse = await openai.chat.completions.create({
@@ -60,24 +64,26 @@ router.post("/results", verifyToken, async (req, res) => {
         {
           role: "system",
           content: `
-            Important: You are an expert in crafting precise and effective prompts for DALL·E. Your task is to generate two separate cinematic-style image prompts that are structured, precise, and optimized for high-quality image generation. 
+            Important: You are an expert in crafting precise and effective prompts for DALL·E. Your task is to generate three separate impressionistic-style image prompts that are structured, precise, and optimized for high-quality image generation. 
             
             Goal:
-            The prompts should instruct DALL·E to generate two visually engaging images that are realistic yet aspirational, and should evoke inspiration and excitement about meaningful careers and societal change:
-            1. A Day in the Job: A realistic, relatable and emotionally engaging scene depicting the professional in action.  
-            2. Impact of the Work: A visual representation of the inspiring, positive transformation their work creates in society or the environment.  
+            The prompts should instruct DALL·E to generate three visually engaging images that are realistic, relatable yet aspirational, and should evoke inspiration and excitement about meaningful careers and societal change:
+            1. A morning in the job: A realistic, relatable and emotionally engaging scene depicting the professional in action in a typical morning at work.  
+            2. An afternoon in the job: A realistic, relatable and emotionally engaging scene depicting the professional in action in a typical afternoon.  
+            2. Impact of the work: A visual representation of the inspiring, positive transformation their work creates in society or the environment at the end of the day.  
 
             Output format:
             Return the response as a structured JSON object with no extra text, formatted exactly like this:
                 {
-                "A day in the job": "Generated prompt for DALL·E...",
+                "A morning in the job": "Generated prompt for DALL·E...",
+                "An afternoon in the job": "Generated prompt for DALL·E...",
                 "Impact of the work": "Generated prompt for DALL·E..."
                 }
             `,
         },
         {
           role: "user",
-          content: `Here is the career path suggested to me based on my personal profile, career aspirations, existing skills and experiences:\n${formattedAnswers}\n\n Based on the job title and job narrative, generate two highly relatable and detailed DALL·E prompts: one describing a cinematic still of a "Day in the Job" and another depicting the "Impact of the Work."`,
+          content: `Here is the career path suggested to me based on my personal profile, career aspirations, existing skills and experiences:\n${formattedAnswers}\n\n Based on my gender, job title and job narrative, generate three highly relatable and detailed DALL·E prompts describing a day in the job: one describing an impressionistic style of "A morning in the job", another describing "An afternoon in the job" and lastly depicting the "Impact of the work".`,
         },
       ],
       max_tokens: 500,
@@ -119,32 +125,49 @@ router.post("/images", verifyToken, async (req, res) => {
     }
 
     const {
-      "A day in the job": dayInJobPrompt,
+      "A morning in the job": morningInJobPrompt,
+      "An afternoon in the job": afternoonInJobPrompt,
       "Impact of the work": impactPrompt,
     } = response.dallEPrompt;
 
     //function to generate image
     async function generateImage(prompt) {
-      const dallEResponse = await openai.images.generate({
-        model: "dall-e-3",
-        prompt: prompt,
-        n: 1, // Generate 1 image
-        size: "1024x1024", // Standard size, change if needed
-        response_format: "url", // Returns a direct image URL
-      });
+      try {
+        const dallEResponse = await openai.images.generate({
+          model: "dall-e-3",
+          prompt: prompt,
+          n: 1, // Generate 1 image
+          size: "1024x1024",
+          response_format: "url",
+        });
 
-      return dallEResponse.data[0].url;
+        if (!dallEResponse.data || dallEResponse.data.length === 0) {
+          throw new Error("DALL·E response does not contain any images.");
+        }
+        console.log("Generated image URL:", dallEResponse.data[0].url);
+
+        return dallEResponse.data[0].url;
+      } catch (error) {
+        console.error("Error generating images backend:", error.message);
+        return null;
+      }
     }
-
     //call the function
-    const dayInJobImage = await generateImage(dayInJobPrompt);
-    const impactImage = await generateImage(impactPrompt);
+    const [morningInJobImage, afternoonInJobImage, impactImage] =
+      await Promise.all([
+        generateImage(morningInJobPrompt),
+        generateImage(afternoonInJobPrompt),
+        generateImage(impactPrompt),
+      ]);
 
-    //save image URLs to the database
+    // Ensure we do not overwrite existing data if an image fails
     response.dallEImages = {
-      dayInJob: dayInJobImage,
-      impact: impactImage,
+      morningInJob: morningInJobImage || response.dallEImages?.morningInJob,
+      afternoonInJob:
+        afternoonInJobImage || response.dallEImages?.afternoonInJob,
+      impact: impactImage || response.dallEImages?.impact,
     };
+
     await response.save();
 
     res.status(200).json({

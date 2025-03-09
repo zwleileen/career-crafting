@@ -18,9 +18,14 @@ router.post("/sign-up", async (req, res) => {
     const user = await User.create({
       username: req.body.username,
       hashedPassword: bcrypt.hashSync(req.body.password, saltRounds),
+      gender: req.body.gender,
     });
 
-    const payload = { username: user.username, _id: user._id };
+    const payload = {
+      username: user.username,
+      _id: user._id,
+      gender: user.gender,
+    };
 
     const token = jwt.sign({ payload }, process.env.JWT_SECRET, {
       expiresIn: "1d",
@@ -47,7 +52,11 @@ router.post("/sign-in", async (req, res) => {
       return res.status(401).json({ err: "Invalid credentials." });
     }
 
-    const payload = { username: user.username, _id: user._id };
+    const payload = {
+      username: user.username,
+      _id: user._id,
+      gender: user.gender,
+    };
 
     const token = jwt.sign({ payload }, process.env.JWT_SECRET, {
       expiresIn: "1d",
