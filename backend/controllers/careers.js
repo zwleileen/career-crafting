@@ -120,7 +120,7 @@ router.post("/results", verifyToken, async (req, res) => {
           content: `Here are the impact I want to make, my career challenges, as well as existing skills and experiences:\n${formattedAnswers}\nBased on this and ${previousInsightsText}, what are the most relevant yet diverse career paths that satisfy me ideal career and allow me to shape my ideal world vision at the same time?`,
         },
       ],
-      max_tokens: 1500,
+      max_tokens: 1000,
       stop: null, //Prevents premature stopping
       frequency_penalty: 0,
       presence_penalty: 0,

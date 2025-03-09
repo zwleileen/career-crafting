@@ -5,7 +5,11 @@ const ImagineCareerSchema = new mongoose.Schema({
   jobTitle: { type: String, required: true },
   jobDetails: { type: String, required: true },
   jobNarrative: { type: String, required: true },
-  dallEPrompt: { type: String, required: true },
+  dallEPrompt: { type: mongoose.Schema.Types.Mixed, default: {} },
+  dallEImages: {
+    dayInJob: { type: String },
+    impact: { type: String },
+  },
   createdAt: { type: Date, default: Date.now },
 });
 

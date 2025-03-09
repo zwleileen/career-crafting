@@ -62,18 +62,18 @@ const create = async (requestBody) => {
 
     const saveResponse = await res.json();
 
-    const keyWordResponse = await generateKeyWords(saveResponse.responseId);
+    const promptResponse = await generateDallEPrompt(saveResponse.responseId);
 
     return {
       ...saveResponse,
-      keywords: keyWordResponse,
+      prompt: promptResponse,
     };
   } catch (error) {
     return { error: error.message };
   }
 };
 
-const generateKeyWords = async (responseId) => {
+const generateDallEPrompt = async (responseId) => {
   try {
     const token = localStorage.getItem("token");
 
@@ -82,6 +82,37 @@ const generateKeyWords = async (responseId) => {
     }
 
     const res = await fetch(`${BASE_URL}/results`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ responseId }),
+    });
+
+    if (!res.ok) {
+      const errorData = await res
+        .json()
+        .catch(() => ({ error: "Invalid JSON response" }));
+      throw new Error(errorData.error || "Failed to generate key words");
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.error("Error generating insights:", error.message);
+    return { error: error.message };
+  }
+};
+
+const generateImages = async (responseId) => {
+  try {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      throw new Error("No authentication token found");
+    }
+
+    const res = await fetch(`${BASE_URL}/images`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -130,4 +161,4 @@ const show = async (responseId) => {
   }
 };
 
-export { index, create, generateKeyWords, show };
+export { index, create, generateDallEPrompt, generateImages, show };

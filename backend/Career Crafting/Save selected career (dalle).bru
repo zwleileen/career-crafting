@@ -1,0 +1,20 @@
+meta {
+  name: Save selected career (dalle)
+  type: http
+  seq: 13
+}
+
+post {
+  url: {{HOST}}/imagine
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "userId": "67caa338b9e567f89b33dcc4",
+    "careerPath": "Policy Advisor",
+    "whyItFits": "As an experienced policy maker, you could use your background to champion policies that balance both social and environmental concerns, and foster business practices that contribute towards a better world.",
+    "narrative": "In this role, your day could involve researching and drafting policies, lobbying for policy changes, meeting with stakeholders, and presenting your findings to policymakers. Your work would have a direct impact on shaping a world that works towards people and planet flourishing."
+  }
+}

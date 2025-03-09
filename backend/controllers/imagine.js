@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const OpenAI = require("openai");
 const verifyToken = require("../middleware/verify-token");
-const Career = require("../models/Career.js");
 const ImagineCareer = require("../models/ImagineCareer.js");
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
@@ -19,13 +18,14 @@ router.post("/", verifyToken, async (req, res) => {
       typeof careerPath === "string" ? careerPath : JSON.stringify(careerPath);
     const jobDetails =
       typeof whyItFits === "string" ? whyItFits : JSON.stringify(whyItFits);
+    const jobNarrative =
+      typeof narrative === "string" ? narrative : JSON.stringify(narrative);
 
     const newResponse = new ImagineCareer({
       userId,
       jobTitle,
       jobDetails,
-      industryKeywords: [],
-      skillsKeywords: [],
+      jobNarrative,
     });
     await newResponse.save();
 
@@ -46,19 +46,12 @@ router.post("/results", verifyToken, async (req, res) => {
     const { responseId } = req.body;
 
     // Fetch responses from MongoDB
-    const response = await JobKeyword.findById(responseId);
+    const response = await ImagineCareer.findById(responseId);
     if (!response)
       return res.status(404).json({ message: "Response not found." });
 
     // Convert answers to string for ChatGPT
-    const formattedAnswers = `Job Title: ${response.jobTitle}\nWhy It Fits: ${response.jobDetails}`;
-
-    const careerAnswers = await Career.findOne({
-      userId: response.userId,
-    });
-    // console.log("careerAnswers retrieved:", careerAnswers);
-    const skillsAndExperiences = `Existing skills and experiences: ${careerAnswers.answers[3]}`;
-    console.log("Existing skills/experiences:", skillsAndExperiences);
+    const formattedAnswers = `Job Title: ${response.jobTitle}\nWhy It Fits: ${response.jobDetails}\nA day in the job:${response.jobNarrative}`;
 
     // Call OpenAI to analyze the responses
     const chatResponse = await openai.chat.completions.create({
@@ -67,26 +60,27 @@ router.post("/results", verifyToken, async (req, res) => {
         {
           role: "system",
           content: `
-            You are an AI specializing in analyzing job roles to infer relevant industry keywords and essential skills keywords most commonly used in job descriptions in order to match with the most relevant jobs in the market.  
-  
-            Based on the provided job title and reasons why the job role is suggested for the user, infer the most relevant industry categories and core skills required for success in this role. Be as comprehensive as possible. 
-            Industry Keywords: Broad, standardized categories such as "Sustainability Consulting", "Tech Policy", "Corporate ESG" (Environmental, Social, Governance), etc.  
-            Skills Keywords: Technical and soft skills necessary for this role, such as "Policy Development", "Stakeholder Engagement", "Sustainability Strategy", etc.  
+            Important: You are an expert in crafting precise and effective prompts for DALL·E. Your task is to generate two separate cinematic-style image prompts that are structured, precise, and optimized for high-quality image generation. 
+            
+            Goal:
+            The prompts should instruct DALL·E to generate two visually engaging images that are realistic yet aspirational, and should evoke inspiration and excitement about meaningful careers and societal change:
+            1. A Day in the Job: A realistic, relatable and emotionally engaging scene depicting the professional in action.  
+            2. Impact of the Work: A visual representation of the inspiring, positive transformation their work creates in society or the environment.  
 
-            Important: Present the response in structured JSON format as follows:
+            Output format:
+            Return the response as a structured JSON object with no extra text, formatted exactly like this:
                 {
-                "industryKeywords": ["Sustainability Consulting", "Tech Policy", "Corporate ESG"],
-                "skillsKeywords": ["Policy Development", "Stakeholder Engagement", "Sustainability Strategy"]
+                "A day in the job": "Generated prompt for DALL·E...",
+                "Impact of the work": "Generated prompt for DALL·E..."
                 }
-            Do not return any extra text, just the JSON object. Be as comprehensive and relevant as possible. 
-          `,
+            `,
         },
         {
           role: "user",
-          content: `Here is the career path suggested to me based on my personal profile, career aspirations, existing skills and experiences:\n${formattedAnswers}\nBased on these details, as well as my \n${skillsAndExperiences}\n, what are the relevant industry keywords and skills keywords that can be inferred or extracted so that I can match them with the most relevant jobs?`,
+          content: `Here is the career path suggested to me based on my personal profile, career aspirations, existing skills and experiences:\n${formattedAnswers}\n\n Based on the job title and job narrative, generate two highly relatable and detailed DALL·E prompts: one describing a cinematic still of a "Day in the Job" and another depicting the "Impact of the Work."`,
         },
       ],
-      max_tokens: 150,
+      max_tokens: 500,
     });
 
     const insight = chatResponse.choices[0].message.content;
@@ -100,23 +94,68 @@ router.post("/results", verifyToken, async (req, res) => {
       parsedInsight = {}; // Prevent saving broken JSON
     }
 
-    console.log("Sending response to frontend:", JSON.stringify(parsedInsight));
+    console.log("Generated Dall-E prompts:", JSON.stringify(parsedInsight));
 
-    response.industryKeywords = parsedInsight.industryKeywords;
-    response.skillsKeywords = parsedInsight.skillsKeywords;
+    response.dallEPrompt = parsedInsight;
     await response.save();
 
-    if (!parsedInsight || Object.keys(parsedInsight).length === 0) {
-      return res.status(500).json({ message: "Failed to generate keywords." });
-    }
-
     res.status(200).json({
-      insight: parsedInsight,
-      message: "AI insights saved successfully",
+      prompt: parsedInsight,
+      message: "Dall-E prompts saved successfully",
     });
   } catch (error) {
-    console.error("Error generating AI insights:", error);
+    console.error("Error generating Dall-E prompts:", error);
     res.status(500).json({ message: "Internal server error." });
+  }
+});
+
+router.post("/images", verifyToken, async (req, res) => {
+  try {
+    const { responseId } = req.body;
+
+    const response = await ImagineCareer.findById(responseId);
+    if (!response || !response.dallEPrompt) {
+      return res.status(404).json({ message: "Dall-E prompts not found" });
+    }
+
+    const {
+      "A day in the job": dayInJobPrompt,
+      "Impact of the work": impactPrompt,
+    } = response.dallEPrompt;
+
+    //function to generate image
+    async function generateImage(prompt) {
+      const dallEResponse = await openai.images.generate({
+        model: "dall-e-3",
+        prompt: prompt,
+        n: 1, // Generate 1 image
+        size: "1024x1024", // Standard size, change if needed
+        response_format: "url", // Returns a direct image URL
+      });
+
+      return dallEResponse.data[0].url;
+    }
+
+    //call the function
+    const dayInJobImage = await generateImage(dayInJobPrompt);
+    const impactImage = await generateImage(impactPrompt);
+
+    //save image URLs to the database
+    response.dallEImages = {
+      dayInJob: dayInJobImage,
+      impact: impactImage,
+    };
+    await response.save();
+
+    res.status(200).json({
+      message: "DALL·E images generated successfully",
+      jobTitle: response.jobTitle,
+      narrative: response.jobNarrative,
+      images: response.dallEImages,
+    });
+  } catch (error) {
+    console.error("Error generating images:", error);
+    res.status(500).json({ message: "Failed to generate images" });
   }
 });
 

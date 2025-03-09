@@ -4,40 +4,43 @@ import * as imagineService from "../../services/imagineService"
 
 
 const ImagineCareer = () => {
-    const [jobs, setJobs] = useState([]);
+    const [responses, setResponses] = useState({});
     const [isLoading, setIsLoading] = useState(true);
     const { responseId } = useParams();
 
     useEffect(() => {
-      const fetchMatchedJobs = async () => {
+      const fetchImages = async () => {
         try {
             setIsLoading(true);
 
           if (!responseId) {
             console.error("No responseId");
-            setJobs([]);
+            setResponses({});
             setIsLoading(false);
             return;
           }
 
-            const data = await imagineService.show(responseId);
-            console.log("Fetched values results:", data);
+            const data = await imagineService.generateImages(responseId);
+            console.log("Fetched images urls:", data);
 
-            if (Array.isArray(data) && data.length > 0) {
-                setJobs(data);  
+            if (data) {
+                setResponses({
+                    jobTitle: data.jobTitle,
+                    narrative: data.narrative,
+                    images: data.images
+                });  
             } else {
-                setJobs([]);  
+                setResponses({});  
             }
 
         } catch (error) {
           console.error("Error fetching matched jobs:", error.message);
-          setJobs([]);
+          setResponses({});
         } finally {
           setIsLoading(false);
         }
       };
-
-      fetchMatchedJobs();
+      fetchImages();
     }, [responseId]);
 
     if (isLoading) {
@@ -47,35 +50,32 @@ const ImagineCareer = () => {
         </div>
       );
     }
-
-    if (!jobs.length) {
-      return (
-        <p className="p-6 text-base md:text-lg font-normal font-[DM_Sans] mb-8 text-[#586E75]">
-        No job matches found. Please choose another job role.
-        </p>
-      );
-    }
   
     return (
         <div className="p-6 bg-white shadow-md rounded-md">
-            <h2 className="text-2xl md:text-3xl text-[#D6A36A] font-normal font-[DM_Sans] mb-8">Job Listings</h2>
-            
-            <div className="flex flex-col space-y-2 font-[DM_Sans]">
-                {jobs.map((job) => (
-                    <div key={job.id} className="flex flex-col items-start p-3 text-[#586E75] border border-gray-200 rounded-lg">
-                        <h3 className="text-lg font-semibold mb-2">
-                            {job.title} 
-                        </h3>
-                        <p className="text-lg mb-2 font-[DM_Sans] text-[#586E75]">{job.company?.display_name && `${job.company?.display_name}`}</p>
-                        <p className="text-[#586E75] text-base mb-4">{job.description.substring(0, 500)}...</p>
-                        <p className="text-[#586E75] text-base">Keywords matched: {job.matchedKeywords.join(', ')}</p>
-                        <p className="text-[#586E75] text-base">Location: {job.location?.display_name || "N/A"}</p>
-                        <a href={job.redirect_url} target="_blank" rel="noopener noreferrer" className="mt-2 text-[#D6A36A] font-sm hover:text-[#e69c23] cursor-pointer transition-colors">
-                            View Job Details →
-                        </a>
-                    </div>
-            ))}
+            <h2 className="text-2xl md:text-3xl text-[#D6A36A] font-normal font-[DM_Sans] mb-8">A day in the life of {responses.jobTitle}</h2>
+            <p className="text-lg mb-2 font-[DM_Sans] text-[#586E75]">{responses.narrative}</p>
+
+            {responses.images?.dayInJob && (
+                <div className="mt-6">
+                <h3 className="text-lg font-semibold text-[#586E75]">A Day in the Job</h3>
+                <img 
+                    src={responses.images.dayInJob} 
+                    alt="A day in the job scene" 
+                    className="w-full rounded-lg shadow-lg mt-2"
+                />
             </div>
+            )}
+            {responses.images?.impact && (
+            <div className="mt-6">
+                <h3 className="text-lg font-semibold text-[#586E75]">Impact of the Work</h3>
+                <img 
+                    src={responses.images.impact} 
+                    alt="Impact of the work scene" 
+                    className="w-full rounded-lg shadow-lg mt-2"
+                />
+            </div>
+        )}
         </div>
     )
 

@@ -1,0 +1,17 @@
+meta {
+  name: Generate dalle prompt
+  type: http
+  seq: 17
+}
+
+post {
+  url: {{HOST}}/imagine/results
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "responseId": "67cd7561f40606391289f851"
+  }
+}
