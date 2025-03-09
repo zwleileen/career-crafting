@@ -11,6 +11,7 @@ import ValuesResults from './components/ValuesResults/ValuesResults';
 import CareerForm from './components/CareerForm/CareerForm';
 import CareerResults from './components/CareerResults/CareerResults';
 import MatchJobs from './components/MatchJobs/MatchJobs';
+import ImagineCareer from './components/ImagineCareer/ImagineCareer';
 
 function App() {
   const { user } = useContext(UserContext);
@@ -35,6 +36,8 @@ return (
     <Route path="/values/:userId" element={<ValuesResults setTopValues={setTopValues} topValues={topValues} setTopStrengths={setTopStrengths} topStrengths={topStrengths} />} />
     <Route path="/career" element={user ? (<CareerForm />) : <Navigate to="/" />} />
     <Route path="/career/results" element={user ? (<CareerResults />) : <Navigate to="/" />} />
+    <Route path="/career/imagine/:responseId" element={user ? (<ImagineCareer />) : <Navigate to="/" />} />
+
     
     {/* Protected routes - only available when paid */}
     <Route path="/jobs/results/:responseId" element={user ? (<MatchJobs />) : <Navigate to="/" />} />
