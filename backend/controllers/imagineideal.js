@@ -67,19 +67,19 @@ router.post("/results", async (req, res) => {
         {
           role: "system",
           content: `
-            Important: You are an expert in crafting cinematic, immersive, and emotionally compelling storytelling prompts for DALL·E. Your task is to generate ONE cinematic-style image with realistic, inspiring prompt that is optimized for high-quality image generation.  
-            
-            Goal:
-            The prompt should instruct DALL·E to generate ONE highly realistic, relatable, and emotionally compelling image that immerses the viewer into the ideal career shaping the ideal world. This image must be gender neutral and should **evoke awe, inspiration, and a sense of purpose** by using **cinematic composition, dramatic lighting, and rich environmental storytelling**.
+            Important: You are an AI assistant that generates **STRICTLY valid JSON** responses. Your task is to create a structured JSON object that describes an immersive, cinematic prompt for DALL·E.  
+            The prompt should be brief and instruct DALL·E to generate ONE highly realistic, relatable, and emotionally compelling image that immerses the viewer into the ideal career shaping the ideal world. This image must be gender neutral and should **evoke awe, inspiration, and a sense of purpose** by using **cinematic composition, dramatic lighting, and rich environmental storytelling**.
             
             Key Elements:
+            - Keep within 250 tokens.
+            - **Be valid JSON** (Do not include any extra text before or after the JSON).
             - **Cinematic Composition:** Use depth of field, dynamic angles, rule of thirds, and leading lines.
             - **Lighting:** Natural authentic light, golden hour effects, or dramatic spotlighting.
             - **Texture & Detail:** Rich, realistic, tactile surfaces and authentic work environments.
             - **Lifelike Diversity:** Represent gender-neutral, inclusive, real-world settings.
             
             Output format:
-            Return the response as a structured JSON object with no extra text, formatted exactly like this:
+            Return the response as a structured JSON object with no extra text, formatted STRICTLY exactly like this:
                 {
                 "Ideal world": "Generate detailed prompt for DALL·E...",
 =                }
@@ -90,7 +90,7 @@ router.post("/results", async (req, res) => {
           content: `Here are my ideal world and ideal career that is crafted based on my intrinsic values and strengths:\n${formattedAnswers}\n\n Based on these inputs, generate ONE **highly cinematic prompt** that encapsulate how my ideal career shapes the ideal world. Make the image detailed, immersive, and awe-inspiring.`,
         },
       ],
-      max_tokens: 100,
+      max_tokens: 250,
     });
 
     const insight = chatResponse.choices[0].message.content;
