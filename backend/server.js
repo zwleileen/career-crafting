@@ -13,6 +13,7 @@ const careerRouter = require("./controllers/careers");
 const jobkeywordsRouter = require("./controllers/jobkeywords");
 const matchJobsRouter = require("./controllers/matchjobs");
 const imagineRouter = require("./controllers/imagine");
+const imagineIdealRouter = require("./controllers/imagineideal");
 
 // Connect to MongoDB using the connection string in the .env file
 mongoose.connect(process.env.MONGODB_URI);
@@ -32,6 +33,7 @@ app.use("/career", careerRouter);
 app.use("/jobkeywords", jobkeywordsRouter);
 app.use("/matchjobs", matchJobsRouter);
 app.use("/imagine", imagineRouter);
+app.use("/imagineideal", imagineIdealRouter);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
