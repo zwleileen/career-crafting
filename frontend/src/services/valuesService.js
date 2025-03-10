@@ -183,7 +183,7 @@ const showUserId = async (userId) => {
     const res = await fetch(`${BASE_URL}/${userId}`, {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        // Authorization: `Bearer ${localStorage.getItem("token")}`,
         "Content-Type": "application/json",
       },
     });

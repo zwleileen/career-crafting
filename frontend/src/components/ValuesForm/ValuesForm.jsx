@@ -6,7 +6,7 @@ import { useNavigate } from "react-router";
 const ValuesForm = () => {
     const navigate = useNavigate();
     const [valuesAnswers, setValuesAnswers] = useState({});
-    const { user } = useContext(UserContext);
+    const { user, valuesId } = useContext(UserContext);
     
   
     const valuesQuestions = [
@@ -206,10 +206,6 @@ const ValuesForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();        
 
-        // if (!user || !user._id) {
-        //     console.error("No user logged in or missing user ID.");
-        //     return;
-        // }
         const { topValues, topStrengths } = countTopValues(valuesAnswers);
 
         const requestBody = user && user._id
@@ -230,7 +226,7 @@ const ValuesForm = () => {
             localStorage.setItem('latestResponseId:', response.responseId);
 
             if(user) {
-                navigate(`/values/${user._id}`)
+                navigate(`/values/results/${valuesId}`)
             } else {
             navigate(`/values/results/${response.responseId}`);}
         } else {

@@ -1,6 +1,11 @@
 const mongoose = require("mongoose");
 
 const ImagineIdealSchema = new mongoose.Schema({
+  referenceId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Value",
+    default: null,
+  },
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", default: null },
   worldVision: { type: String, required: true },
   valuesInsights: { type: mongoose.Schema.Types.Mixed, default: {} },

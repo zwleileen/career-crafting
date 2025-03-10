@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import { UserContext } from '../../contexts/UserContext';
 
 const NavBar = () => {
-  const { user, setUser } = useContext(UserContext);
+  const { user, setUser, valuesId, careersId, imagesIds } = useContext(UserContext);
 
   const handleSignOut = () => {
     localStorage.removeItem('token');
@@ -30,7 +30,7 @@ const NavBar = () => {
             
             {user._id && (
             <Link 
-            to={`/values/${user._id}`}
+            to={`/values/results/${valuesId}`}
             className="text-[#586E75] text-sm font-normal font-[DM_Sans] ml-2 hover:text-[#f9a825]"
             >
             Insights
@@ -38,18 +38,30 @@ const NavBar = () => {
             )}
 
             <Link 
-            to='/career/results'
+            to={`/career/results/${careersId}`}
             className="text-[#586E75] text-sm font-normal font-[DM_Sans] ml-2 hover:text-[#f9a825]"
             >
             Career Paths
             </Link>
 
-            <Link 
-            to={`/career/imagine/${user._id}`}
-            className="text-[#586E75] text-sm font-normal font-[DM_Sans] ml-2 hover:text-[#f9a825]"
-            >
-            Career Reimagined
-            </Link>
+            {imagesIds.length > 0 && (
+            <div className="dropdown">
+                <button className="text-[#586E75] text-sm font-normal font-[DM_Sans] ml-2 hover:text-[#f9a825]">
+                Career Reimagined ▼
+                </button>
+                <div className="dropdown-menu">
+                {imagesIds.map((id) => (
+                    <Link 
+                    key={id} 
+                    to={`/career/imagine/${id}`} 
+                    className="dropdown-item text-[#586E75] text-sm font-normal font-[DM_Sans] ml-2 hover:text-[#f9a825]"
+                    >
+                    View Career {id.slice(-4)} {/* Show last 4 characters for identification */}
+                    </Link>
+                ))}
+                </div>
+            </div>
+)}
 
 
         </div>

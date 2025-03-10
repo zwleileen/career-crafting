@@ -111,14 +111,14 @@ router.post("/results", async (req, res) => {
     }
 
     // Save in MongoDB as object
-    response.aiInsights = insight;
+    response.valuesInsights = insight;
     await response.save();
 
     res
       .status(200)
-      .json({ insight, message: "AI insights saved successfully" });
+      .json({ insight, message: "Values insights saved successfully" });
   } catch (error) {
-    console.error("Error generating AI insights:", error);
+    console.error("Error generating values insights:", error);
     res.status(500).json({ message: "Internal server error." });
   }
 });
@@ -135,7 +135,7 @@ router.get("/results/:responseId", async (req, res) => {
       _id: response._id,
       topValues: response.topValues,
       topStrengths: response.topStrengths,
-      aiInsights: response.aiInsights,
+      valuesInsights: response.valuesInsights,
       createdAt: response.createdAt,
     };
 
@@ -146,7 +146,39 @@ router.get("/results/:responseId", async (req, res) => {
   }
 });
 
-router.put("/update/:responseId", verifyToken, async (req, res) => {
+router.put("/updateWorldVision/:responseId", async (req, res) => {
+  try {
+    const { responseId } = req.params;
+    const { worldVision } = req.body;
+
+    if (!responseId) {
+      return res.status(400).json({ message: "Response ID is required." });
+    }
+
+    // Find the Value entry with the given responseId
+    const updatedValue = await Value.findByIdAndUpdate(
+      responseId, // Find by responseId
+      { worldVision: worldVision },
+      { new: true } // Return the updated document
+    );
+
+    if (!updatedValue) {
+      return res
+        .status(404)
+        .json({ message: "No values found with the given responseId." });
+    }
+
+    res.status(200).json({
+      message: "worldVision successfully added to values.",
+      updatedValue,
+    });
+  } catch (error) {
+    console.error("Error updating values with worldVision:", error);
+    res.status(500).json({ message: "Internal server error." });
+  }
+});
+
+router.put("/updateId/:responseId", verifyToken, async (req, res) => {
   try {
     const { responseId } = req.params;
     const { userId } = req.body;

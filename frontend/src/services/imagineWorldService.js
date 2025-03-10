@@ -1,4 +1,4 @@
-const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}/imagine`;
+const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}/imagineideal`;
 
 const index = async () => {
   try {
@@ -33,21 +33,10 @@ const index = async () => {
 
 const create = async (requestBody) => {
   try {
-    const token = localStorage.getItem("token");
-
-    if (!token) {
-      throw new Error("No authentication token found");
-    }
-
-    console.log(
-      "Sending data to backend:",
-      JSON.stringify(requestBody, null, 2)
-    );
-
     const res = await fetch(BASE_URL, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${token}`,
+        // Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(requestBody),
@@ -57,12 +46,12 @@ const create = async (requestBody) => {
       const errorData = await res
         .json()
         .catch(() => ({ error: "Invalid JSON response" }));
-      throw new Error(errorData.error || "Failed to send answers");
+      throw new Error(errorData.error || "Failed to send requestBody");
     }
 
     const saveResponse = await res.json();
 
-    const promptResponse = await generateDallEPrompt(saveResponse.responseId);
+    const promptResponse = await generateDallEPrompt(saveResponse.referenceId);
 
     return {
       ...saveResponse,
@@ -73,72 +62,60 @@ const create = async (requestBody) => {
   }
 };
 
-const generateDallEPrompt = async (responseId) => {
+const generateDallEPrompt = async (referenceId) => {
   try {
-    const token = localStorage.getItem("token");
-
-    if (!token) {
-      throw new Error("No authentication token found");
-    }
-
     const res = await fetch(`${BASE_URL}/results`, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${token}`,
+        // Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ responseId }),
+      body: JSON.stringify({ referenceId }),
     });
 
     if (!res.ok) {
       const errorData = await res
         .json()
         .catch(() => ({ error: "Invalid JSON response" }));
-      throw new Error(errorData.error || "Failed to generate key words");
+      throw new Error(errorData.error || "Failed to generate prompt");
     }
 
     return await res.json();
   } catch (error) {
-    console.error("Error generating insights:", error.message);
+    console.error("Error generating prompt:", error.message);
     return { error: error.message };
   }
 };
 
-const generateImages = async (responseId) => {
+const generateImages = async (referenceId) => {
   try {
-    const token = localStorage.getItem("token");
-
-    if (!token) {
-      throw new Error("No authentication token found");
-    }
-
-    const res = await fetch(`${BASE_URL}/images`, {
+    const res = await fetch(`${BASE_URL}/image`, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${token}`,
+        // Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ responseId }),
+      body: JSON.stringify({ referenceId }),
     });
 
     if (!res.ok) {
       const errorData = await res
         .json()
         .catch(() => ({ error: "Invalid JSON response" }));
-      throw new Error(errorData.error || "Failed to generate images");
+      throw new Error(errorData.error || "Failed to generate image");
     }
 
     return await res.json();
   } catch (error) {
-    console.error("Error generating images:", error.message);
+    console.error("Error generating image:", error.message);
     return { error: error.message };
   }
 };
 
-const show = async (responseId) => {
+const show = async (referenceId) => {
   try {
-    const res = await fetch(`${BASE_URL}/images/${responseId}`, {
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    const res = await fetch(`${BASE_URL}/image/${referenceId}`, {
+      //   headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     });
 
     let responseData = await res.json();
@@ -164,7 +141,7 @@ const show = async (responseId) => {
 const showUserId = async (userId) => {
   try {
     const res = await fetch(`${BASE_URL}/${userId}`, {
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      //   headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     });
     return await res.json();
   } catch (error) {

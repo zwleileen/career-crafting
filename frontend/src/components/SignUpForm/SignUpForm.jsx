@@ -7,7 +7,7 @@ import * as valuesService from "../../services/valuesService"
 
 const SignUpForm = () => {
     const navigate = useNavigate();
-    const { user, setUser } = useContext(UserContext);
+    const { setUser, valuesId } = useContext(UserContext);
     const [message, setMessage] = useState('');
     const [formData, setFormData] = useState({
         username: '',
@@ -56,7 +56,7 @@ const SignUpForm = () => {
         console.warn("No responseId found, skipping update.");
     }
 
-      navigate(`/values/${user._id}`);
+      navigate(`/values/results/${valuesId}`);
     } catch (err) {
       setMessage(err.message);
     }

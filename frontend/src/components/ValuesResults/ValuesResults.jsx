@@ -4,18 +4,18 @@ import { useNavigate, useParams } from "react-router";
 import { UserContext } from "../../contexts/UserContext";
 
 const ValuesResults = ({setTopValues, topValues, setTopStrengths, topStrengths}) => {
-    const { user } = useContext(UserContext);
+    const { user, valuesId } = useContext(UserContext);
     const [response, setResponse] = useState("");
     const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
-    const { responseId, userId } = useParams(); 
+    const { responseId } = useParams(); 
 
     useEffect(() => {
       const fetchUserValues = async () => {
         try {
             setIsLoading(true);
 
-            let identifier = responseId || userId;
+            let identifier = responseId || valuesId;
             if (!identifier) {
                 console.error("No identifier available");
                 setResponse(null);
@@ -23,13 +23,11 @@ const ValuesResults = ({setTopValues, topValues, setTopStrengths, topStrengths})
                 return;
               }
   
-            //   console.log("Fetching results for identifier:", identifier);
-
-            const data = user ? await valuesService.showUserId(identifier) : await valuesService.show(identifier);
+            const data = user ? await valuesService.show(valuesId) : await valuesService.show(responseId);
             console.log("Fetched values results:", data);
 
-            if (data?.aiInsights) {
-              setResponse(data.aiInsights);
+            if (data?.valuesInsights) {
+              setResponse(data.valuesInsights);
             } else {
               setResponse(null);
             }
@@ -49,7 +47,7 @@ const ValuesResults = ({setTopValues, topValues, setTopStrengths, topStrengths})
       };
 
       fetchUserValues();
-    }, [user, responseId, userId, setTopValues, setTopStrengths]);
+    }, [user, responseId, valuesId, setTopValues, setTopStrengths]);
 
     const formatValueName = (value) => {
       return value.charAt(0).toUpperCase() + value.slice(1).replace(/-/g, ' ');
@@ -123,23 +121,13 @@ const ValuesResults = ({setTopValues, topValues, setTopStrengths, topStrengths})
             Redo Questionnaire
         </button>
         
-        { !user ? (
         <button
         type="button" 
-        onClick={() => navigate(`/sign-up?responseId=${responseId}`)}
-        className="mt-6 px-6 py-3 bg-[#D6A36A] text-white font-medium rounded-lg hover:bg-[#e69c23] transition-colors focus:outline-none focus:ring-2 focus:ring-[#f9a825] focus:ring-offset-2 cursor-pointer"        
-        >
-            Save results
-        </button>
-        ) : (
-        <button
-        type="button" 
-        onClick={() => navigate('/career')}
+        onClick={() => navigate(`/ideal/${responseId}`)}
         className="mt-6 px-6 py-3 bg-[#D6A36A] text-white font-medium rounded-lg hover:bg-[#e69c23] transition-colors focus:outline-none focus:ring-2 focus:ring-[#f9a825] focus:ring-offset-2 cursor-pointer"        
         >
         Next: Career Paths
         </button>
-        )}
         </div>
 
     </div>

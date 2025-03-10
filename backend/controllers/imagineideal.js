@@ -8,15 +8,19 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 router.post("/", async (req, res) => {
   try {
-    const { userId, worldVision } = req.body;
+    const { userId, responseId, worldVision } = req.body;
+    // console.log(responseId);
 
-    const previousValue = await Value.findOne({ userId });
-    const valuesInsights = previousValue.aiInsights;
+    const previousValue = await Value.findById(responseId);
+    // console.log(previousValue);
+    const valuesInsights = previousValue.valuesInsights;
+    const referenceId = previousValue._id;
 
     if (userId) {
       let existingResponse = await ImagineIdeal.findOne({ userId });
 
       if (existingResponse) {
+        existingResponse.referenceId = referenceId;
         existingResponse.worldVision = worldVision;
         existingResponse.valuesInsights = valuesInsights;
         existingResponse.createdAt = new Date(); // Update timestamp
@@ -31,6 +35,7 @@ router.post("/", async (req, res) => {
     }
 
     const newResponse = new ImagineIdeal({
+      referenceId,
       userId: userId || null,
       worldVision,
       valuesInsights,
@@ -40,6 +45,7 @@ router.post("/", async (req, res) => {
     res.status(201).json({
       message: "Ideal world saved successfully!",
       responseId: newResponse._id,
+      referenceId: newResponse.referenceId,
     });
     // }
   } catch (error) {
@@ -50,10 +56,10 @@ router.post("/", async (req, res) => {
 
 router.post("/results", async (req, res) => {
   try {
-    const { responseId } = req.body;
+    const { referenceId } = req.body;
 
     // Fetch responses from MongoDB
-    const response = await ImagineIdeal.findById(responseId);
+    const response = await ImagineIdeal.findOne({ referenceId });
     if (!response)
       return res.status(404).json({ message: "Response not found." });
 
@@ -70,19 +76,20 @@ router.post("/results", async (req, res) => {
             Important: You are an AI assistant that generates **STRICTLY valid JSON** responses. Your task is to create a structured JSON object that describes an immersive, cinematic prompt for DALL·E.  
             The prompt should be brief and instruct DALL·E to generate ONE highly realistic, relatable, and emotionally compelling image that immerses the viewer into the ideal career shaping the ideal world. This image must be gender neutral and should **evoke awe, inspiration, and a sense of purpose** by using **cinematic composition, dramatic lighting, and rich environmental storytelling**.
             
-            Key Elements:
-            - Keep within 250 tokens.
-            - **Be valid JSON** (Do not include any extra text before or after the JSON).
+            Rules for response formatting:
+            - **ONLY return valid JSON** (Do not include any extra text before or after the JSON).
+            - **NO line breaks inside JSON values** (Use space instead).
+            - **ENSURE JSON is complete** (No missing brackets).
             - **Cinematic Composition:** Use depth of field, dynamic angles, rule of thirds, and leading lines.
             - **Lighting:** Natural authentic light, golden hour effects, or dramatic spotlighting.
             - **Texture & Detail:** Rich, realistic, tactile surfaces and authentic work environments.
             - **Lifelike Diversity:** Represent gender-neutral, inclusive, real-world settings.
             
-            Output format:
-            Return the response as a structured JSON object with no extra text, formatted STRICTLY exactly like this:
+            STRICTLY this output format:
                 {
-                "Ideal world": "Generate detailed prompt for DALL·E...",
-=                }
+                "Ideal world": "Generate prompt for DALL·E...",
+                }
+            Do not exceed 250 tokens.
             `,
         },
         {
@@ -90,7 +97,7 @@ router.post("/results", async (req, res) => {
           content: `Here are my ideal world and ideal career that is crafted based on my intrinsic values and strengths:\n${formattedAnswers}\n\n Based on these inputs, generate ONE **highly cinematic prompt** that encapsulate how my ideal career shapes the ideal world. Make the image detailed, immersive, and awe-inspiring.`,
         },
       ],
-      max_tokens: 250,
+      max_tokens: 300,
     });
 
     const insight = chatResponse.choices[0].message.content;
@@ -101,7 +108,18 @@ router.post("/results", async (req, res) => {
       parsedInsight = JSON.parse(insight);
     } catch (e) {
       console.error("Error parsing ChatGPT response:", e);
-      parsedInsight = {}; // Prevent saving broken JSON
+      // Attempt to clean up JSON before retrying
+      const cleanedInsight = insight
+        .replace(/[\n\r]/g, "") // Remove newlines
+        .replace(/([{,])\s*([^":\s]+)\s*:/g, '$1"$2":') // Fix missing quotes around keys
+        .replace(/:\s*([^",\]\}]+)\s*([,\}])/g, ': "$1"$2'); // Fix missing quotes around values
+
+      try {
+        parsedInsight = JSON.parse(cleanedInsight);
+      } catch (secondError) {
+        console.error("Failed to parse JSON even after cleanup:", secondError);
+        parsedInsight = {}; // Prevent saving broken JSON
+      }
     }
 
     console.log("Generated Dall-E prompt:", JSON.stringify(parsedInsight));
@@ -119,11 +137,11 @@ router.post("/results", async (req, res) => {
   }
 });
 
-router.post("/image", verifyToken, async (req, res) => {
+router.post("/image", async (req, res) => {
   try {
-    const { responseId } = req.body;
+    const { referenceId } = req.body;
 
-    const response = await ImagineIdeal.findById(responseId);
+    const response = await ImagineIdeal.findOne({ referenceId });
     if (!response || !response.dallEPrompt) {
       return res.status(404).json({ message: "Dall-E prompts not found" });
     }
@@ -171,10 +189,10 @@ router.post("/image", verifyToken, async (req, res) => {
   }
 });
 
-router.get("/image/:responseId", verifyToken, async (req, res) => {
+router.get("/image/:referenceId", async (req, res) => {
   try {
-    const { responseId } = req.params;
-    const response = await ImagineIdeal.findById(responseId);
+    const { referenceId } = req.params;
+    const response = await ImagineIdeal.findOne({ referenceId });
 
     if (!response)
       return res.status(404).json({ message: "Response not found." });
