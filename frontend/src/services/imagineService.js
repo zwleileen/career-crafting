@@ -137,7 +137,7 @@ const generateImages = async (responseId) => {
 
 const show = async (responseId) => {
   try {
-    const res = await fetch(`${BASE_URL}/${responseId}`, {
+    const res = await fetch(`${BASE_URL}/images/${responseId}`, {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     });
 

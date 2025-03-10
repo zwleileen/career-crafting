@@ -15,9 +15,18 @@ const ImagineCareerSchema = new mongoose.Schema({
     },
   },
   dallEImages: {
-    morningInJob: { type: String, default: "" },
-    afternoonInJob: { type: String, default: "" },
-    impact: { type: String, default: "" },
+    morningInJob: {
+      url: { type: String, default: "" },
+      prompt: { type: String, default: "" },
+    },
+    afternoonInJob: {
+      url: { type: String, default: "" },
+      prompt: { type: String, default: "" },
+    },
+    impact: {
+      url: { type: String, default: "" },
+      prompt: { type: String, default: "" },
+    },
   },
   createdAt: { type: Date, default: Date.now },
 });

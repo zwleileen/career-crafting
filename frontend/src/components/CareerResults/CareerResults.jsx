@@ -133,18 +133,18 @@ const CareerResults = () => {
             <h2 className="text-2xl md:text-3xl text-[#D6A36A] font-normal font-[DM_Sans] mb-8">Your Career Insights</h2>
             
             {response["Summary"] && (
-                <div className="font-normal font-[DM_Sans] mb-8 text-[#586E75]">
-                    <h3 className="font-semibold text-lg md:text-xl mb-4">Summary:</h3>
-                    <p className="text-base md:text-lg">{response["Summary"]}</p>
+                <div className="font-[DM_Sans] mb-8 text-[#586E75]">
+                    <h3 className="font-semibold text-lg mb-4">Summary:</h3>
+                    <p className="text-base">{response["Summary"]}</p>
                 </div>
             )}
 
             {response["Possible career paths"] && (
                 <div className="flex flex-col font-[DM_Sans] text-[#586E75]">
-                    <h2 className="text-lg md:text-xl font-semibold mb-4">Select a career path below to have a glimpse into a day on that path:</h2>
+                    <h2 className="text-lg font-semibold mb-4">Select a career path below to have a glimpse into a day on that path:</h2>
                     <div className="flex flex-col space-y-2">
                         {response["Possible career paths"].map((path, index) => (
-                            <label key={index} className="flex items-start p-3 text-base md:text-lg border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
+                            <label key={index} className="flex items-start p-3 text-base border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
                             <input
                                 type="radio"
                                 name="jobRole"
@@ -153,8 +153,8 @@ const CareerResults = () => {
                                 onChange={() => handleSelection(index)}
                                 className="mt-0.5 h-5 w-5"
                             />
-                                <div className="ml-3 text-[#586E75] text-base md:text-lg">
-                                    <p>{path["Career path"]}</p>
+                                <div className="ml-3 text-[#586E75] text-base">
+                                    <p className="font-semibold">{path["Career path"]}</p>
                                     <p>{path["Why it fits"]}</p>
                                 </div>
                             </label>

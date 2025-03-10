@@ -36,13 +36,21 @@ const NavBar = () => {
             Insights
             </Link>
             )}
-            
+
             <Link 
             to='/career/results'
             className="text-[#586E75] text-sm font-normal font-[DM_Sans] ml-2 hover:text-[#f9a825]"
             >
             Career Paths
             </Link>
+
+            <Link 
+            to={`/career/imagine/${user._id}`}
+            className="text-[#586E75] text-sm font-normal font-[DM_Sans] ml-2 hover:text-[#f9a825]"
+            >
+            Career Reimagined
+            </Link>
+
 
         </div>
 

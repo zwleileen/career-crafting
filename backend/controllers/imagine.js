@@ -64,34 +64,35 @@ router.post("/results", verifyToken, async (req, res) => {
         {
           role: "system",
           content: `
-            Important: You are an expert in crafting precise and effective prompts for DALL·E. Your task is to generate three separate cinematic-style image prompts that are structured, precise, and optimized for high-quality image generation.  
+            Important: You are an expert in crafting cinematic, immersive, and emotionally compelling storytelling prompts for DALL·E. Your task is to generate three separate cinematic-style image with realistic, inspiring storytelling prompts that are optimized for high-quality image generation.  
             
             Goal:
             The prompts should instruct DALL·E to generate three **highly realistic, relatable, and emotionally compelling** images that immerse the viewer into the world of this professional. These images should **evoke awe, inspiration, and a sense of purpose** by using **cinematic composition, dramatic lighting, and rich environmental storytelling**.
             
             Key Elements:
+            - **Narrative Flow**: Each prompt should **read like a short story** about the professional’s daily life.
             - **Cinematic Composition:** Use depth of field, dynamic angles, rule of thirds, and leading lines.
-            - **Lighting:** Natural light, moody contrast, golden hour effects, or dramatic spotlighting.
-            - **Human Emotion & Engagement:** Expressions, body language, interaction with stakeholders.
-            - **Texture & Detail:** Rich, tactile surfaces, professional attire, authentic work environments.
+            - **Lighting:** Natural authentic light, golden hour effects, or dramatic spotlighting.
+            - **Human Emotion & Engagement:** Describe expressions, body language, interaction with stakeholders.
+            - **Texture & Detail:** Rich, realistic, tactile surfaces and authentic work environments.
             - **Lifelike Diversity:** Represent inclusive, real-world people and settings.
             
             Scenes to Generate:
-            1. A morning in the job: 
+            1. A morning in the job: Describe a specific moment in the professional's morning
             - A realistic, immersive scene showing the professional in action at the start of their day.  
             - Highlight **a specific task**, such as strategizing, designing, problem-solving, or leading discussions.  
             - Show the **types of stakeholders they work with** (e.g., investors, engineers, policymakers, community members).  
             - **Setting:** Office, fieldwork, innovation hub, courtroom, or any relevant location.  
             - Capture **expressions, body language, and work atmosphere** to create a strong emotional connection.
 
-            2. An afternoon in the job: 
+            2. An afternoon in the job: Describe a different moment later in the day highlighting different aspect of their role
             - A different, dynamic moment in their workday that contrasts with the morning.  
             - Focus on **another key task or challenge**—e.g., presenting, negotiating, testing a prototype, mentoring a team.  
             - Include **different interactions** (e.g., clients, communities, high-stakes decision-makers).  
             - Use a **new setting** (e.g., conference hall, remote site, urban setting, factory floor).  
             - Emphasize **cinematic lighting and a sense of urgency or energy**.            
             
-            3. Impact of the work: 
+            3. Impact of the work: Describe the impact of the professional's work at the end of the day
             - A **visual transformation** showcasing the real-world effect of their efforts.  
             - Contrast the **"before and after"** impact in a striking, cinematic way.  
             - Examples:  
@@ -103,15 +104,15 @@ router.post("/results", verifyToken, async (req, res) => {
             Output format:
             Return the response as a structured JSON object with no extra text, formatted exactly like this:
                 {
-                "A morning in the job": "Generated prompt for DALL·E...",
-                "An afternoon in the job": "Generated prompt for DALL·E...",
-                "Impact of the work": "Generated prompt for DALL·E..."
+                "A morning in the job": "A 2-liner summary of the storytelling prompt for DALL·E...",
+                "An afternoon in the job": "A 2-liner summary of the storytelling prompt for DALL·E...",
+                "Impact of the work": "A 2-liner summary of the storytelling prompt for DALL·E..."
                 }
             `,
         },
         {
           role: "user",
-          content: `Here is the career path suggested to me based on my personal profile, career aspirations, existing skills and experiences:\n${formattedAnswers}\n\n Based on my gender, job title and job narrative, generate three **highly cinematic and photorealistic** DALL·E prompts that bring my career journey to life: one for "A morning in the job," another for "An afternoon in the job," and lastly for "The impact of the work." Make them detailed, immersive, and awe-inspiring.`,
+          content: `Here is the career path suggested to me based on my personal profile, career aspirations, existing skills and experiences:\n${formattedAnswers}\n\n Based on my gender, job title and job narrative, generate three **highly cinematic storytelling prompts** that bring my career journey to life: one for "A morning in the job," another for "An afternoon in the job," and lastly for "The impact of the work." Make them detailed, immersive, and awe-inspiring.`,
         },
       ],
       max_tokens: 500,
@@ -188,10 +189,20 @@ router.post("/images", verifyToken, async (req, res) => {
 
     // Ensure we do not overwrite existing data if an image fails
     response.dallEImages = {
-      morningInJob: morningInJobImage || response.dallEImages?.morningInJob,
-      afternoonInJob:
-        afternoonInJobImage || response.dallEImages?.afternoonInJob,
-      impact: impactImage || response.dallEImages?.impact,
+      morningInJob: {
+        url: morningInJobImage || response.dallEImages?.morningInJob?.url,
+        prompt:
+          morningInJobPrompt || response.dallEImages?.morningInJob?.prompt,
+      },
+      afternoonInJob: {
+        url: afternoonInJobImage || response.dallEImages?.afternoonInJob?.url,
+        prompt:
+          afternoonInJobPrompt || response.dallEImages?.afternoonInJob?.prompt,
+      },
+      impact: {
+        url: impactImage || response.dallEImages?.impact?.url,
+        prompt: impactPrompt || response.dallEImages?.impact?.prompt,
+      },
     };
 
     await response.save();
@@ -208,35 +219,21 @@ router.post("/images", verifyToken, async (req, res) => {
   }
 });
 
-// router.get("/results", verifyToken, async (req, res) => {
-//   try {
-//     const response = await JobRole.findOne({ userId });
-
-//     if (!response)
-//       return res.status(404).json({ message: "Response not found." });
-
-//     const chatResponse = response.aiInsights;
-//     console.log(chatResponse);
-
-//     res.status(200).json(chatResponse);
-//   } catch (err) {
-//     console.error("Error in GET /results:", err);
-//     res.status(500).json({ err: err.message });
-//   }
-// });
-
-router.get("/:userId", verifyToken, async (req, res) => {
+router.get("/images/:responseId", verifyToken, async (req, res) => {
   try {
-    const response = await JobKeyword.findOne({
-      userId: req.params.userId,
-    }).populate("userId", "username");
+    const { responseId } = req.params;
+    const response = await ImagineCareer.findById(responseId);
 
     if (!response)
       return res.status(404).json({ message: "Response not found." });
 
-    res.status(200).json(response);
+    res.status(200).json({
+      jobTitle: response.jobTitle,
+      narrative: response.jobNarrative,
+      images: response.dallEImages,
+    });
   } catch (err) {
-    console.error("Error in GET /:userId:", err);
+    console.error("Error in GET /:responseId for images:", err);
     res.status(500).json({ err: err.message });
   }
 });
