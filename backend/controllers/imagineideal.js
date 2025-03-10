@@ -210,19 +210,19 @@ router.get("/results/:referenceId", async (req, res) => {
   }
 });
 
-router.put("/updateId/:responseId", verifyToken, async (req, res) => {
+router.put("/updateId/:referenceId", verifyToken, async (req, res) => {
   try {
-    const { responseId } = req.params;
+    const { referenceId } = req.params;
     const { userId } = req.body;
 
-    if (!userId || !responseId) {
+    if (!userId || !referenceId) {
       return res
         .status(400)
         .json({ message: "User ID and response ID are required." });
     }
 
     // Find the Value entry with the given responseId
-    const updatedImagineIdeal = await ImagineIdeal.findOne({ responseId });
+    const updatedImagineIdeal = await ImagineIdeal.findOne({ referenceId });
     updatedImagineIdeal.userId = userId;
     updatedImagineIdeal.save();
 
