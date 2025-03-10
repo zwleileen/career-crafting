@@ -238,4 +238,27 @@ router.get("/images/:responseId", verifyToken, async (req, res) => {
   }
 });
 
+router.get("/:userId", verifyToken, async (req, res) => {
+  try {
+    const responses = await ImagineCareer.find({
+      userId: req.params.userId,
+    }).populate("userId", "username");
+
+    if (!responses)
+      return res.status(404).json({ message: "Response not found." });
+
+    res.status(200).json(
+      responses.map((response) => ({
+        responseId: response._id,
+        jobTitle: response.jobTitle,
+        narrative: response.jobNarrative,
+        images: response.dallEImages,
+      }))
+    );
+  } catch (err) {
+    console.error("Error in fetching responses by userId:", err);
+    res.status(500).json({ err: err.message });
+  }
+});
+
 module.exports = router;

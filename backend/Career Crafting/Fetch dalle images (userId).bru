@@ -1,11 +1,11 @@
 meta {
-  name: Fetch values insights (with userId)
+  name: Fetch dalle images (userId)
   type: http
-  seq: 12
+  seq: 20
 }
 
 get {
-  url: {{HOST}}/values/:userId
+  url: {{HOST}}/imagine/:userId
   body: json
   auth: inherit
 }

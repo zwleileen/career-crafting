@@ -99,38 +99,19 @@ router.post("/results", async (req, res) => {
     let insight = chatResponse.choices[0].message.content.trim();
     // console.log("Raw AI response from ChatGPT:", insight);
 
-    // Check if response ends properly
-    if (!insight.endsWith("}")) {
-      console.error("Incomplete JSON response from ChatGPT:", insight);
-      insight += "}"; // Try appending a closing brace (temporary fix)
-    }
-
     try {
       insight = JSON.parse(insight);
       console.log("Parsed AI insights:", insight);
     } catch (error) {
       console.error("Failed to parse JSON from ChatGPT:", insight);
-
-      try {
-        // Try to clean up the response by replacing newlines within JSON values
-        const cleanedInsight = insight.replace(
-          /([{,]\s*"[^"]+"\s*:\s*"[^"]*)\n([^"]*")/g,
-          "$1 $2"
-        );
-        insight = JSON.parse(cleanedInsight);
-        console.log("Successfully parsed after cleaning:", insight);
-      } catch (secondError) {
-        console.error("Failed to parse JSON even after cleanup:", secondError);
-        // Return a more informative error to the client
-        return res.status(500).json({
-          message: "Failed to process AI response",
-          error: "Invalid JSON format in AI response",
-        });
-      }
+      return res.status(500).json({
+        message: "Invalid AI response format",
+        error: "AI response is not valid JSON",
+      });
     }
 
-    // Convert to a string before saving to MongoDB
-    response.aiInsights = JSON.stringify(insight);
+    // Save in MongoDB as object
+    response.aiInsights = insight;
     await response.save();
 
     res

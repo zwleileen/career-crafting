@@ -1,0 +1,15 @@
+meta {
+  name: Fetch dalle images
+  type: http
+  seq: 19
+}
+
+get {
+  url: {{HOST}}/imagine/images/:responseId
+  body: json
+  auth: inherit
+}
+
+params:path {
+  responseId: 67ce5d73132c3604326cdf0e
+}
