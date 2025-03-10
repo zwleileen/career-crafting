@@ -73,31 +73,31 @@ router.post("/results", async (req, res) => {
         {
           role: "system",
           content: `
-            Important: You are an AI assistant that generates **STRICTLY valid JSON** responses. Your task is to create a structured JSON object that describes an immersive, cinematic prompt for DALL·E.  
-            The prompt should be brief and instruct DALL·E to generate ONE highly realistic, relatable, and emotionally compelling image that immerses the viewer into the ideal career shaping the ideal world. This image must be gender neutral and should **evoke awe, inspiration, and a sense of purpose** by using **cinematic composition, dramatic lighting, and rich environmental storytelling**.
+            You are an AI assistant that generates **STRICTLY valid JSON** responses. 
+            Your tasks are to: 
+            1. Summarise the user's responses about their ideal world and ideal career into a short, inspiring paragraph that encapsulates the kind of work user flourishes in and how it shapes the ideal world. Make it inspiring and motivating for the user to embark on this ideal path.
+            2. Generate a structured JSON object that describes an inspiring, impressionistic-style prompt for DALL·E.  
             
-            Rules for response formatting:
-            - **ONLY return valid JSON** (Do not include any extra text before or after the JSON).
-            - **NO line breaks inside JSON values** (Use space instead).
-            - **ENSURE JSON is complete** (No missing brackets).
-            - **Cinematic Composition:** Use depth of field, dynamic angles, rule of thirds, and leading lines.
-            - **Lighting:** Natural authentic light, golden hour effects, or dramatic spotlighting.
-            - **Texture & Detail:** Rich, realistic, tactile surfaces and authentic work environments.
-            - **Lifelike Diversity:** Represent gender-neutral, inclusive, real-world settings.
+            Rules for Dall-E image prompt:
+            - The prompt should be brief and instruct DALL·E to generate ONE highly relatable and emotionally compelling panoramic image of the ideal world. 
+            - This image should **evoke awe, inspiration, and a sense of purpose** by using **impressionistic-style composition and natural lighting**.
+            - **Impressionistic-style composition with soft, natural, authentic lighting.
+            - **Lifelike Diversity:** Represent gender-neutral, inclusive, real-world authentic settings.
             
-            STRICTLY this output format:
+            STRICTLY this output JSON format:
                 {
-                "Ideal world": "Generate prompt for DALL·E...",
+                "Summary": "Short inspiring summary of user's answers about ideal world and ideal career...",
+                "Ideal world": "DALL·E prompt for generate the image..."
                 }
-            Do not exceed 250 tokens.
+            Do not include any extra text before or after this JSON format. NO line breaks inside JSON values (Use space instead). Ensure JSON is complete.
             `,
         },
         {
           role: "user",
-          content: `Here are my ideal world and ideal career that is crafted based on my intrinsic values and strengths:\n${formattedAnswers}\n\n Based on these inputs, generate ONE **highly cinematic prompt** that encapsulate how my ideal career shapes the ideal world. Make the image detailed, immersive, and awe-inspiring.`,
+          content: `Here are my ideal world and ideal career that is crafted based on my intrinsic values and strengths:\n${formattedAnswers}\n\n Based on these inputs, provide BOTH of these: a summary of these inputs, and a Dall-E prompt in the exact JSON format request.`,
         },
       ],
-      max_tokens: 300,
+      max_tokens: 500,
     });
 
     const insight = chatResponse.choices[0].message.content;
@@ -122,17 +122,21 @@ router.post("/results", async (req, res) => {
       }
     }
 
-    console.log("Generated Dall-E prompt:", JSON.stringify(parsedInsight));
+    console.log(
+      "Generated Dall-E prompt and summary:",
+      JSON.stringify(parsedInsight)
+    );
 
-    response.dallEPrompt = parsedInsight;
+    response.dallEPrompt["Summary"] = parsedInsight["Summary"];
+    response.dallEPrompt["Ideal world"] = parsedInsight["Ideal world"];
     await response.save();
 
     res.status(200).json({
       prompt: parsedInsight,
-      message: "Dall-E prompt saved successfully",
+      message: "Dall-E prompt and summary saved successfully",
     });
   } catch (error) {
-    console.error("Error generating Dall-E prompt:", error);
+    console.error("Error generating Dall-E prompt and summary:", error);
     res.status(500).json({ message: "Internal server error." });
   }
 });
@@ -189,7 +193,7 @@ router.post("/image", async (req, res) => {
   }
 });
 
-router.get("/image/:referenceId", async (req, res) => {
+router.get("/results/:referenceId", async (req, res) => {
   try {
     const { referenceId } = req.params;
     const response = await ImagineIdeal.findOne({ referenceId });
@@ -198,11 +202,43 @@ router.get("/image/:referenceId", async (req, res) => {
       return res.status(404).json({ message: "Response not found." });
 
     res.status(200).json({
-      image: response.dallEImage,
+      summary: response.dallEPrompt["Summary"],
     });
   } catch (err) {
-    console.error("Error in GET /:responseId for image:", err);
+    console.error("Error in GET for summary:", err);
     res.status(500).json({ err: err.message });
+  }
+});
+
+router.put("/updateId/:responseId", verifyToken, async (req, res) => {
+  try {
+    const { responseId } = req.params;
+    const { userId } = req.body;
+
+    if (!userId || !responseId) {
+      return res
+        .status(400)
+        .json({ message: "User ID and response ID are required." });
+    }
+
+    // Find the Value entry with the given responseId
+    const updatedImagineIdeal = await ImagineIdeal.findOne({ responseId });
+    updatedImagineIdeal.userId = userId;
+    updatedImagineIdeal.save();
+
+    if (!updatedImagineIdeal) {
+      return res
+        .status(404)
+        .json({ message: "No ideal found with the given responseId." });
+    }
+
+    res.status(200).json({
+      message: "User ID successfully added to imagine ideal.",
+      updatedImagineIdeal,
+    });
+  } catch (error) {
+    console.error("Error updating ideal with userId:", error);
+    res.status(500).json({ message: "Internal server error." });
   }
 });
 

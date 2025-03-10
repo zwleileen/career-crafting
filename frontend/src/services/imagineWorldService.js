@@ -114,12 +114,13 @@ const generateImages = async (referenceId) => {
 
 const show = async (referenceId) => {
   try {
-    const res = await fetch(`${BASE_URL}/image/${referenceId}`, {
+    const res = await fetch(`${BASE_URL}/results/${referenceId}`, {
+      method: "GET",
       //   headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     });
 
     let responseData = await res.json();
-    // console.log("API Response:", responseData);
+    console.log("API Response:", responseData);
     // console.log("Type of responseData:", typeof responseData);
 
     if (typeof responseData === "string") {
@@ -138,6 +139,40 @@ const show = async (referenceId) => {
   }
 };
 
+const update = async (responseId, userId) => {
+  try {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      throw new Error("No authentication token found.");
+    }
+
+    console.log(
+      `Updating values for responseId: ${responseId} with userId: ${userId}`
+    );
+
+    const res = await fetch(`${BASE_URL}/updateId/${responseId}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userId }),
+    });
+
+    if (!res.ok) {
+      const errorData = await res
+        .json()
+        .catch(() => ({ error: "Invalid JSON response" }));
+      throw new Error(errorData.error || "Failed to update ideal with userId");
+    }
+
+    console.log("Successfully updated ideal with userId!");
+  } catch (error) {
+    console.error("Error updating imagine ideal:", error.message);
+  }
+};
+
 const showUserId = async (userId) => {
   try {
     const res = await fetch(`${BASE_URL}/${userId}`, {
@@ -150,4 +185,12 @@ const showUserId = async (userId) => {
   }
 };
 
-export { index, create, generateDallEPrompt, generateImages, show, showUserId };
+export {
+  index,
+  create,
+  generateDallEPrompt,
+  generateImages,
+  show,
+  update,
+  showUserId,
+};

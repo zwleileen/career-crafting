@@ -1,49 +1,53 @@
 import { useEffect, useState } from "react";
 import * as imagineWorldService from "../../services/imagineWorldService"
+import { useNavigate } from "react-router";
 
 
-const IdealCareer = ({responseId}) => {
-    const [responses, setResponses] = useState(null);
+const IdealCareer = ({responseId, refreshKey}) => {
+    const [image, setImage] = useState(null);
+    const [summary, setSummary] = useState({});
     const [isLoading, setIsLoading] = useState(true);
+    const navigate = useNavigate();
 
     useEffect(() => {
-      const fetchImage = async () => {
-        try {
-            setIsLoading(true);
+        const fetchImage = async () => {
+            try {
+                setIsLoading(true);
 
-          if (!responseId) {
-            console.error("No responseId");
-            setResponses(null);
-            setIsLoading(false);
-            return;
-          }
-
-        const existingData = await imagineWorldService.show(responseId);
-
-            if (existingData) {
-                setResponses(existingData.image)
-            } else {
-            console.log("No existing image found, generating new image...");
-        
-            const data = await imagineWorldService.generateImages(responseId);
-            console.log("Fetched new image:", data.image);
-
-                if (data) {
-                    setResponses(data.image);  
-                } else {
-                    setResponses(null);  
+                if (!responseId) {
+                    console.error("No responseId");
+                    setImage(null);
+                    setSummary({});
+                    setIsLoading(false);
+                    return;
                 }
-            }
+
+            const dataImage = await imagineWorldService.generateImages(responseId);
+            console.log("Fetched new image:", dataImage.image);
+
+                if (dataImage) {
+                    setImage(dataImage.image);  
+                } else {
+                    setImage(null);  
+                }
+            const dataSummary = await imagineWorldService.show(responseId);
+                
+                if (dataSummary) {
+                    setSummary(dataSummary.summary);
+                } else {
+                    setSummary({});
+                }
 
         } catch (error) {
           console.error("Error fetching image:", error.message);
-          setResponses(null);
+          setImage(null);
+          setSummary({});
         } finally {
           setIsLoading(false);
         }
       };
       fetchImage();
-    }, [responseId]);
+    }, [responseId, refreshKey]);
 
     if (isLoading) {
       return (
@@ -54,22 +58,36 @@ const IdealCareer = ({responseId}) => {
     }
   
     return (
+        <>
         <div className="p-6 bg-white shadow-md rounded-md flex flex-col items-center text-center">
-            <h2 className="text-2xl md:text-3xl text-[#D6A36A] font-normal font-[DM_Sans] mb-8">A day in the life of...</h2>
-            <p className="text-lg mb-6 font-[DM_Sans] text-[#586E75] max-w-2xl">Narrative</p>
+            <h2 className="text-2xl md:text-3xl text-[#D6A36A] font-normal font-[DM_Sans] mb-8">In an ideal world</h2>
+            {summary && (
+            <p className="text-lg mb-6 font-[DM_Sans] text-[#586E75] max-w-2xl">{summary}</p>
+            )}
 
-            {responses && (
+            {image && (
                 <div className="mt-6">
-                <h3 className="text-lg font-semibold text-[#586E75] mb-2">A morning in the job</h3>
                 <img 
-                    src={responses} 
+                    src={image} 
                     alt="A day in the job scene" 
                     className="w-full max-w-lg h-auto rounded-lg shadow-lg object-cover mx-auto"
                 />
             </div>
             )}
-
         </div>
+        
+        <div className="p-6 bg-white shadow-md rounded-md flex flex-col">
+        <p className="text-base font-[DM_Sans] text-[#D6A36A]">Sign up to save your results and explore more features for free</p>
+        <button
+        type="button" 
+        onClick={() => navigate(`/sign-up?search=${responseId}`)}
+        className="max-w-fit mt-2 px-6 py-3 bg-[#D6A36A] text-white font-medium rounded-lg hover:bg-[#e69c23] transition-colors focus:outline-none focus:ring-2 focus:ring-[#f9a825] focus:ring-offset-2 cursor-pointer"
+        >
+        Sign Up
+        </button>
+        </div>
+
+        </>
     )
 
 }

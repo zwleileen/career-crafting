@@ -9,6 +9,7 @@ const ImagineIdeal = () => {
     const [idealWorldAnswers, setIdealWorldAnswers] = useState({});
     const { responseId } = useParams(); 
     const [showResults, setShowResults] = useState(false);
+    const [refreshKey, setRefreshKey] = useState(0);
 
     const idealWorld = {
             id: "1", 
@@ -42,6 +43,7 @@ const ImagineIdeal = () => {
                 throw new Error(response?.error || "Unexpected error");
             }
             setShowResults(true);
+            setRefreshKey(prevKey => prevKey + 1); //force IdealCareer to reload
     
         // console.log("Response with insights:", response);
 
@@ -82,7 +84,7 @@ const ImagineIdeal = () => {
         </button>
     </form>
 
-    {showResults && <IdealCareer responseId={responseId} />}
+    {showResults && <IdealCareer responseId={responseId} refreshKey={refreshKey} />}
 
     </div>
     </main>

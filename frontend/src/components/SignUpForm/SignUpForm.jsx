@@ -3,11 +3,12 @@ import { useLocation, useNavigate } from 'react-router';
 import { signUp } from '../../services/authService';
 import { UserContext } from '../../contexts/UserContext';
 import * as valuesService from "../../services/valuesService"
+import * as imagineWorldService from "../../services/imagineWorldService"
 
 
 const SignUpForm = () => {
     const navigate = useNavigate();
-    const { setUser, valuesId } = useContext(UserContext);
+    const { setUser } = useContext(UserContext);
     const [message, setMessage] = useState('');
     const [formData, setFormData] = useState({
         username: '',
@@ -52,11 +53,12 @@ const SignUpForm = () => {
       
         if (responseId) {
         await valuesService.update(responseId, newUser._id);
+        await imagineWorldService.update(responseId, newUser._id);
     } else {
         console.warn("No responseId found, skipping update.");
     }
 
-      navigate(`/values/results/${valuesId}`);
+      navigate(`/home`);
     } catch (err) {
       setMessage(err.message);
     }
