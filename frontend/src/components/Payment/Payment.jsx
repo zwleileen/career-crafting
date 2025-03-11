@@ -1,7 +1,8 @@
 import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router';
-import { signIn } from '../../services/authService';
 import { UserContext } from '../../contexts/UserContext';
+import * as userService from "../../services/userService"
+
 
 const Payment = () => {
   const navigate = useNavigate();
@@ -22,9 +23,9 @@ const Payment = () => {
   const handleSubmit = async (evt) => {
     evt.preventDefault();
     try {
-      const paidUser = await payment(formData);
-      paidUser.status = "paid";
-      navigate('/home');
+      const paidUser = await userService.update(user._id);
+      console.log("paidUser:", paidUser);
+      navigate("/home")
     } catch (err) {
       setMessage(err.message);
     }
