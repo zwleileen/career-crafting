@@ -156,7 +156,7 @@ const update = async (responseId, userId) => {
       `Updating values for responseId: ${responseId} with userId: ${userId}`
     );
 
-    const res = await fetch(`${BASE_URL}/update/${responseId}`, {
+    const res = await fetch(`${BASE_URL}/updateId/${responseId}`, {
       method: "PUT",
       headers: {
         Authorization: `Bearer ${token}`,

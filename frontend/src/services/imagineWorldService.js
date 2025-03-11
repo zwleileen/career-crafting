@@ -139,7 +139,7 @@ const show = async (referenceId) => {
   }
 };
 
-const update = async (responseId, userId) => {
+const update = async (referenceId, userId) => {
   try {
     const token = localStorage.getItem("token");
 
@@ -148,10 +148,10 @@ const update = async (responseId, userId) => {
     }
 
     console.log(
-      `Updating values for responseId: ${responseId} with userId: ${userId}`
+      `Updating values for responseId: ${referenceId} with userId: ${userId}`
     );
 
-    const res = await fetch(`${BASE_URL}/updateId/${responseId}`, {
+    const res = await fetch(`${BASE_URL}/updateId/${referenceId}`, {
       method: "PUT",
       headers: {
         Authorization: `Bearer ${token}`,

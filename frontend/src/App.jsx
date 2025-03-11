@@ -42,7 +42,9 @@ return (
     <Route path="/career" element={user ? (<CareerForm />) : <Navigate to="/" />} />
     <Route path="/career/results/:responseId" element={user ? (<CareerResults />) : <Navigate to="/" />} />
     <Route path="/career/imagine/:responseId" element={user ? (<ImagineCareer />) : <Navigate to="/" />} />
-
+    <Route path='/ideal/:responseId' element={<ImagineIdeal />}>
+      <Route path='/ideal/:responseId/results' element={<IdealCareer />} />
+    </Route> 
     
     {/* Protected routes - only available when paid */}
     <Route path="/jobs/results/:responseId" element={user ? (<MatchJobs />) : <Navigate to="/" />} />

@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState } from 'react';
 import * as valuesService from '../services/valuesService';
 import * as careerService from "../services/careerService"
-import * as imagineService from "../services/imagineService"
+import * as imagineWorldService from "../services/imagineWorldService"
 
 
 const UserContext = createContext();
@@ -18,7 +18,7 @@ function UserProvider({ children }) {
   const [user, setUser] = useState(getUserFromToken());
   const [valuesId, setValuesId] = useState(null);
   const [careersId, setCareersId] = useState(null);
-  const [imagesIds, setImagesIds] = useState([]);
+  const [imagineId, setImagineId] = useState("");
 
   useEffect(() => {
     const fetchIds = async () => {
@@ -32,20 +32,21 @@ function UserProvider({ children }) {
                 if (career && career._id) {
                     setCareersId(career._id);
                 }
-                const images = await imagineService.showUserId(user._id);
-                if (images && Array.isArray(images)) {
-                    setImagesIds(images.map(img => img.responseId));
+                const imagine = await imagineWorldService.showUserId(user._id);
+                if (imagine) {
+                    setImagineId(imagine[0].referenceId);
                 }
             } catch (error) {
                 console.error("Error fetching ids:", error);
-            }
         }
+    }
     };
     fetchIds();
   }, [user]);
+  console.log("imagineId:", imagineId)
 
   return (
-    <UserContext.Provider value={{ user, setUser, valuesId, careersId, imagesIds }}>
+    <UserContext.Provider value={{ user, setUser, valuesId, careersId, imagineId }}>
       {children}
     </UserContext.Provider>
   );

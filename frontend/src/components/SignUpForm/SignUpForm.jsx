@@ -20,7 +20,7 @@ const SignUpForm = () => {
     const { username, password, passwordConf, gender } = formData;
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
-    const responseId = queryParams.get("responseId");
+    const responseId = queryParams.get("search");
 
   const handleChange = (evt) => {
     const { name, value } = evt.target;
@@ -53,10 +53,15 @@ const SignUpForm = () => {
       
         if (responseId) {
         await valuesService.update(responseId, newUser._id);
-        await imagineWorldService.update(responseId, newUser._id);
     } else {
         console.warn("No responseId found, skipping update.");
     }
+        const referenceId = responseId
+        if (referenceId) {
+            await imagineWorldService.update(referenceId, newUser._id);
+        } else {
+            console.warn("No referenceId found, skipping update.");
+        }
 
       navigate(`/home`);
     } catch (err) {

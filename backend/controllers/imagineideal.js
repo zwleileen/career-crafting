@@ -86,8 +86,8 @@ router.post("/results", async (req, res) => {
             
             STRICTLY this output JSON format:
                 {
-                "Summary": "Short inspiring summary of user's answers about ideal world and ideal career...",
-                "Ideal world": "DALL·E prompt for generate the image..."
+                "summary": "Short inspiring summary of user's answers about ideal world and ideal career...",
+                "ideal world": "DALL·E prompt for generate the image..."
                 }
             Do not include any extra text before or after this JSON format. NO line breaks inside JSON values (Use space instead). Ensure JSON is complete.
             `,
@@ -127,8 +127,15 @@ router.post("/results", async (req, res) => {
       JSON.stringify(parsedInsight)
     );
 
-    response.dallEPrompt["Summary"] = parsedInsight["Summary"];
-    response.dallEPrompt["Ideal world"] = parsedInsight["Ideal world"];
+    const formattedInsight = Object.fromEntries(
+      Object.entries(parsedInsight).map(([key, value]) => [
+        key.toLowerCase(),
+        value,
+      ])
+    ); //Object.fromEntries converts array back to object
+
+    response.dallEPrompt["summary"] = formattedInsight["summary"];
+    response.dallEPrompt["ideal world"] = formattedInsight["ideal world"];
     await response.save();
 
     res.status(200).json({
@@ -150,7 +157,7 @@ router.post("/image", async (req, res) => {
       return res.status(404).json({ message: "Dall-E prompts not found" });
     }
 
-    const idealWorldPrompt = response.dallEPrompt["Ideal world"];
+    const idealWorldPrompt = response.dallEPrompt["ideal world"];
 
     //function to generate image
     async function generateImage(prompt) {
@@ -202,7 +209,7 @@ router.get("/results/:referenceId", async (req, res) => {
       return res.status(404).json({ message: "Response not found." });
 
     res.status(200).json({
-      summary: response.dallEPrompt["Summary"],
+      summary: response.dallEPrompt["summary"],
     });
   } catch (err) {
     console.error("Error in GET for summary:", err);
@@ -242,23 +249,16 @@ router.put("/updateId/:referenceId", verifyToken, async (req, res) => {
   }
 });
 
-router.get("/:userId", verifyToken, async (req, res) => {
+router.get("/:userId", async (req, res) => {
   try {
-    const responses = await ImagineIdeal.find({
+    const response = await ImagineIdeal.find({
       userId: req.params.userId,
     }).populate("userId", "username");
 
-    if (!responses)
+    if (!response)
       return res.status(404).json({ message: "Response not found." });
 
-    res.status(200).json(
-      responses.map((response) => ({
-        responseId: response._id,
-        jobTitle: response.jobTitle,
-        narrative: response.jobNarrative,
-        images: response.dallEImages,
-      }))
-    );
+    res.status(200).json(response);
   } catch (err) {
     console.error("Error in fetching responses by userId:", err);
     res.status(500).json({ err: err.message });

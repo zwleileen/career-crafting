@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import * as imagineWorldService from "../../services/imagineWorldService"
 import { UserContext } from '../../contexts/UserContext';
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import IdealCareer from "../IdealCareer/IdealCareer";
 
 const ImagineIdeal = () => {
@@ -10,6 +10,7 @@ const ImagineIdeal = () => {
     const { responseId } = useParams(); 
     const [showResults, setShowResults] = useState(false);
     const [refreshKey, setRefreshKey] = useState(0);
+    const navigate = useNavigate();
 
     const idealWorld = {
             id: "1", 
@@ -75,13 +76,23 @@ const ImagineIdeal = () => {
             rows={4}
             className="w-full p-3 border border-gray-200 rounded-lg mt-4 text-base font-[DM_Sans]"
         />
-
+        
+        <div className="flex justify-between mb-4">
         <button 
         type="submit" 
         className="mt-6 px-6 py-3 bg-[#D6A36A] text-white font-medium rounded-lg hover:bg-[#e69c23] transition-colors focus:outline-none focus:ring-2 focus:ring-[#f9a825] focus:ring-offset-2 cursor-pointer"
         >
         Submit
         </button>
+
+        <button 
+        type="button" 
+        onClick={() => navigate(`/values/results/${responseId}`)}
+        className="mt-6 px-6 py-3 bg-[#D6A36A] text-white font-medium rounded-lg hover:bg-[#e69c23] transition-colors focus:outline-none focus:ring-2 focus:ring-[#f9a825] focus:ring-offset-2 cursor-pointer"
+        >
+        Cancel
+        </button>
+        </div>
     </form>
 
     {showResults && <IdealCareer responseId={responseId} refreshKey={refreshKey} />}

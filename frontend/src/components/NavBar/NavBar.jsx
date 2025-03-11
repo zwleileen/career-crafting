@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import { UserContext } from '../../contexts/UserContext';
 
 const NavBar = () => {
-  const { user, setUser, valuesId, careersId, imagesIds } = useContext(UserContext);
+  const { user, setUser, valuesId, imagineId } = useContext(UserContext);
 
   const handleSignOut = () => {
     localStorage.removeItem('token');
@@ -38,32 +38,11 @@ const NavBar = () => {
             )}
 
             <Link 
-            to={`/career/results/${careersId}`}
+            to={`/ideal/${imagineId}/results`}
             className="text-[#586E75] text-sm font-normal font-[DM_Sans] ml-2 hover:text-[#f9a825]"
             >
-            Career Paths
+            Ideal world
             </Link>
-
-            {imagesIds.length > 0 && (
-            <div className="dropdown">
-                <button className="text-[#586E75] text-sm font-normal font-[DM_Sans] ml-2 hover:text-[#f9a825]">
-                Career Reimagined ▼
-                </button>
-                <div className="dropdown-menu">
-                {imagesIds.map((id) => (
-                    <Link 
-                    key={id} 
-                    to={`/career/imagine/${id}`} 
-                    className="dropdown-item text-[#586E75] text-sm font-normal font-[DM_Sans] ml-2 hover:text-[#f9a825]"
-                    >
-                    View Career {id.slice(-4)} {/* Show last 4 characters for identification */}
-                    </Link>
-                ))}
-                </div>
-            </div>
-)}
-
-
         </div>
 
         <div className="absolute right-4 md:right-8 bottom-2 flex items-center cursor-pointer">
