@@ -121,7 +121,7 @@ const ValuesResults = ({setTopValues, topValues, setTopStrengths, topStrengths})
             Redo Questionnaire
         </button>
         
-        { !user ? (
+        {!user && responseId ? (
         <button
         type="button" 
         onClick={() => navigate(`/ideal/${responseId}`)}
@@ -129,8 +129,18 @@ const ValuesResults = ({setTopValues, topValues, setTopStrengths, topStrengths})
         >
         Next: Imagine
         </button>
-        ) : ("")}
+        ) : (
+            <button
+            type="button" 
+            onClick={() => navigate("/careerpath")}
+            className="mt-6 px-6 py-3 bg-[#D6A36A] text-white font-medium rounded-lg hover:bg-[#e69c23] transition-colors focus:outline-none focus:ring-2 focus:ring-[#f9a825] focus:ring-offset-2 cursor-pointer"        
+            >
+            Next: Imagine
+            </button>
+    
+        )}
         </div>
+        
 
     </div>
     </>

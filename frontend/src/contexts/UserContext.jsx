@@ -1,7 +1,8 @@
 import { createContext, useEffect, useState } from 'react';
 import * as valuesService from '../services/valuesService';
-import * as careerService from "../services/careerService"
-import * as imagineWorldService from "../services/imagineWorldService"
+import * as careerService from "../services/careerService";
+import * as imagineWorldService from "../services/imagineWorldService";
+import * as userService from "../services/userService";
 
 const UserContext = createContext();
 
@@ -18,6 +19,25 @@ function UserProvider({ children }) {
   const [valuesId, setValuesId] = useState(null);
   const [careersId, setCareersId] = useState(null);
   const [imagineId, setImagineId] = useState("");
+
+  useEffect(() => {
+    const fetchLatestUser = async () => {
+        if (!user && !user._id) return;
+
+            try {
+            const updatedUser = await userService.show(user._id); 
+            if (updatedUser && updatedUser.status !== user.status) {
+                console.log("User status updated:", updatedUser.status);
+                setUser(updatedUser); // Update user context with new status
+            }
+            } catch (error) {
+            console.error("Error fetching latest user data:", error);
+            }
+    };
+    fetchLatestUser();
+  }, [user]);
+  console.log("current user:", user);
+
 
   useEffect(() => {
     const fetchIds = async () => {

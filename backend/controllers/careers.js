@@ -38,6 +38,7 @@ router.post("/", verifyToken, async (req, res) => {
 
       res.status(201).json({
         message: "Responses saved successfully!",
+        userId: userId,
         responseId: newResponse._id,
       });
     }

@@ -46,7 +46,7 @@ return (
     <Route path='/upgrade' element={user? <Payment />: <Navigate to="/" />} />
 
     {/* Protected routes - only available when paid */}
-    <Route path='/home' element={user.status === "paid" ? <Homepage topValues={topValues} setTopValues={setTopValues} topStrengths={topStrengths} setTopStrengths={setTopStrengths} /> : <Navigate to="/careerpath/results" />} />
+    <Route path='/home' element={user && user.status === "paid" ? <Homepage topValues={topValues} setTopValues={setTopValues} topStrengths={topStrengths} setTopStrengths={setTopStrengths} /> : <Navigate to="/careerpath/results" />} />
 
 
   </Routes>

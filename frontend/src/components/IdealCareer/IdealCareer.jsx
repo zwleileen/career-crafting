@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import * as imagineWorldService from "../../services/imagineWorldService"
 import { useNavigate } from "react-router";
+import { UserContext } from "../../contexts/UserContext";
 
 
 const IdealCareer = ({responseId, refreshKey}) => {
@@ -8,6 +9,7 @@ const IdealCareer = ({responseId, refreshKey}) => {
     const [summary, setSummary] = useState({});
     const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
+    const { user } = useContext(UserContext);
 
     useEffect(() => {
         const fetchImage = async () => {
@@ -77,6 +79,7 @@ const IdealCareer = ({responseId, refreshKey}) => {
             )}
         </div>
         
+        {!user && responseId (
         <div className="p-6 bg-white shadow-md rounded-md flex flex-col">
         <p className="text-base font-[DM_Sans] text-[#D6A36A]">Sign up to save your results and explore more features for free</p>
         <button
@@ -87,6 +90,7 @@ const IdealCareer = ({responseId, refreshKey}) => {
         Sign Up
         </button>
         </div>
+        )}
 
         </>
     )
