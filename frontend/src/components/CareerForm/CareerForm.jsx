@@ -114,7 +114,6 @@ const CareerForm = () => {
         
         // console.log("Response with insights:", response);
 
-        navigate("/career/results")
         } catch (error) {
         console.error("Form submission error:", error.message);
         }
