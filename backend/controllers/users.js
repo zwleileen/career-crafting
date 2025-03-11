@@ -33,4 +33,41 @@ router.get("/:userId", verifyToken, async (req, res) => {
   }
 });
 
+router.put("/updateStatus", verifyToken, async (req, res) => {
+  try {
+    const { userId } = req.body;
+
+    if (!userId) {
+      return res.status(400).json({ message: "User ID is required." });
+    }
+
+    if (req.user._id !== userId) {
+      return res
+        .status(403)
+        .json({
+          message: "Unauthorized: Cannot update another user's status.",
+        });
+    }
+
+    const updatedStatus = await User.findByIdAndUpdate(
+      userId,
+      { status: "paid" },
+      { new: true }
+    );
+
+    if (!updatedStatus) {
+      return res
+        .status(404)
+        .json({ message: "No user found with the given User ID." });
+    }
+
+    res.status(200).json({
+      message: "User status successfully updated",
+      updatedStatus,
+    });
+  } catch (error) {
+    console.error("Error updating user status:", error);
+  }
+});
+
 module.exports = router;

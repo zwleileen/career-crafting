@@ -1,0 +1,17 @@
+meta {
+  name: Update user status
+  type: http
+  seq: 27
+}
+
+put {
+  url: {{HOST}}/users/updateStatus
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "userId": "67cf9f60747f0d5e34ec4885"
+  }
+}
