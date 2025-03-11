@@ -38,7 +38,7 @@ const NavBar = () => {
             )}
 
             <Link 
-            to={"/careerpath"}
+            to={"/careerpath/results"}
             className="text-[#586E75] text-sm font-normal font-[DM_Sans] ml-2 hover:text-[#f9a825]"
             >
             Career Paths

@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { UserContext } from '../../contexts/UserContext';
 import * as careerService from "../../services/careerService"
 // import * as jobKeywordService from "../../services/jobKeywordService"
-import * as imagineService from "../../services/imagineService"
+import * as jobKeywordService from "../../services/jobKeywordService"
 import { useNavigate } from "react-router";
 
 const CareerResults = () => {
@@ -42,36 +42,7 @@ const CareerResults = () => {
       fetchUserStatus();
     }, [user]);
 
-    // const handleFindJobs = async () => {
-    //     try {
-    //         if (selectedRoleIndex === null) {
-    //             return;
-    //         };
-
-    //         const selectedCareer = response["Possible career paths"][selectedRoleIndex];
-    //         const careerPath = selectedCareer["Career path"];
-    //         const whyItFits = selectedCareer["Why it fits"];
-
-    //         const result = await jobKeywordService.create({
-    //             userId: user._id,
-    //             careerPath: careerPath,
-    //             whyItFits: whyItFits
-    //         });
-
-    //         if (!result || result.error) {
-    //             throw new Error(result?.error || "Unexpected error");
-    //         }
-
-    //         if (result.responseId) {
-    //             localStorage.setItem("latestResponseId:", result.responseId)
-    //         }
-    //             navigate(`/jobs/results/${result.responseId}`);
-    //     } catch (error) {
-    //         console.error("Error saving career path:", error);
-    //     }
-    // }
-
-        const handleImagineCareer = async () => {
+    const handleDiscoverPath = async () => {
         try {
             if (selectedRoleIndex === null) {
                 return;
@@ -82,8 +53,7 @@ const CareerResults = () => {
             const whyItFits = selectedCareer["Why it fits"];
             const narrative = selectedCareer["Narrative"];
 
-
-            const result = await imagineService.create({
+            const result = await jobKeywordService.create({
                 userId: user._id,
                 careerPath: careerPath,
                 whyItFits: whyItFits,
@@ -97,11 +67,43 @@ const CareerResults = () => {
             if (result.responseId) {
                 localStorage.setItem("latestResponseId:", result.responseId)
             }
-                navigate(`/career/imagine/${result.responseId}`);
+                navigate(`/careerpath/results/${result.responseId}`);
         } catch (error) {
             console.error("Error saving career path:", error);
         }
     }
+
+    //     const handleImagineCareer = async () => {
+    //     try {
+    //         if (selectedRoleIndex === null) {
+    //             return;
+    //         };
+
+    //         const selectedCareer = response["Possible career paths"][selectedRoleIndex];
+    //         const careerPath = selectedCareer["Career path"];
+    //         const whyItFits = selectedCareer["Why it fits"];
+    //         const narrative = selectedCareer["Narrative"];
+
+
+    //         const result = await imagineService.create({
+    //             userId: user._id,
+    //             careerPath: careerPath,
+    //             whyItFits: whyItFits,
+    //             narrative: narrative
+    //         });
+
+    //         if (!result || result.error) {
+    //             throw new Error(result?.error || "Unexpected error");
+    //         }
+
+    //         if (result.responseId) {
+    //             localStorage.setItem("latestResponseId:", result.responseId)
+    //         }
+    //             navigate(`/career/imagine/${result.responseId}`);
+    //     } catch (error) {
+    //         console.error("Error saving career path:", error);
+    //     }
+    // }
 
     if (isLoading) {
       return (
@@ -130,7 +132,7 @@ const CareerResults = () => {
   
     return (
         <div className="p-6 bg-white shadow-md rounded-md">
-            <h2 className="text-2xl md:text-3xl text-[#D6A36A] font-normal font-[DM_Sans] mb-8">Your Career Insights</h2>
+            <h2 className="text-2xl md:text-3xl text-[#D6A36A] font-normal font-[DM_Sans] mb-8">Your Ideal Career Paths</h2>
             
             {response["Summary"] && (
                 <div className="font-[DM_Sans] mb-8 text-[#586E75]">
@@ -141,7 +143,7 @@ const CareerResults = () => {
 
             {response["Possible career paths"] && (
                 <div className="flex flex-col font-[DM_Sans] text-[#586E75]">
-                    <h2 className="text-lg font-semibold mb-4">Select a career path below to have a glimpse into a day on that path:</h2>
+                    <h2 className="text-lg font-semibold mb-4">Select a career path below to find out what skills are needed:</h2>
                     <div className="flex flex-col space-y-2">
                         {response["Possible career paths"].map((path, index) => (
                             <label key={index} className="flex items-start p-3 text-base border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
@@ -163,26 +165,15 @@ const CareerResults = () => {
                 </div>
             )}
 
-        <div className="flex justify-between">
-        <button
-        type="button" 
-        onClick={() => navigate("/career")}
-        className="mt-6 px-6 py-3 bg-[#D6A36A] text-white font-medium rounded-lg hover:bg-[#e69c23] transition-colors focus:outline-none focus:ring-2 focus:ring-[#f9a825] focus:ring-offset-2 cursor-pointer"        
-        >
-            Redo Questionnaire
-        </button>
-        
         <button
         type="button"
-        onClick={handleImagineCareer}
+        onClick={handleDiscoverPath}
         disabled={selectedRoleIndex === null}
         className="mt-6 px-6 py-3 bg-[#D6A36A] text-white font-medium rounded-lg hover:bg-[#e69c23] transition-colors focus:outline-none focus:ring-2 focus:ring-[#f9a825] focus:ring-offset-2 cursor-pointer"        
         >
-            Next: Match Jobs
+            Let's Find Out
         </button>
         
-        </div>
-
         </div>
     )
 };

@@ -42,11 +42,10 @@ return (
     <Route path="/values/results/:responseId" element={<ValuesResults setTopValues={setTopValues} topValues={topValues} setTopStrengths={setTopStrengths} topStrengths={topStrengths} />} />
     <Route path='/careerpath' element={<CareerPath />} />
     <Route path='/careerpath/results' element={<CareerResults />} />
-
-    <Route path="/career" element={user ? (<CareerForm />) : <Navigate to="/" />} />
-    <Route path="/career/imagine/:responseId" element={user ? (<ImagineCareer />) : <Navigate to="/" />} />
+    <Route path="/careerpath/results/:responseId" element={user ? (<ImagineCareer />) : <Navigate to="/" />} />
     
     {/* Protected routes - only available when paid */}
+    <Route path="/career" element={user ? (<CareerForm />) : <Navigate to="/" />} />
     <Route path="/jobs/results/:responseId" element={user ? (<MatchJobs />) : <Navigate to="/" />} />
 
 

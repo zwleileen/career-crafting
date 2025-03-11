@@ -4,8 +4,10 @@ const JobKeywordSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   jobTitle: { type: String, required: true },
   jobDetails: { type: String, required: true },
+  jobNarrative: { type: String, required: true },
   industryKeywords: { type: [String], required: true },
   skillsKeywords: { type: [String], required: true },
+  typicalPath: { type: String, default: "" },
   createdAt: { type: Date, default: Date.now },
 });
 
