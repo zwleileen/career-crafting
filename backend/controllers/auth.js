@@ -25,6 +25,7 @@ router.post("/sign-up", async (req, res) => {
       username: user.username,
       _id: user._id,
       gender: user.gender,
+      status: user.status,
     };
 
     const token = jwt.sign({ payload }, process.env.JWT_SECRET, {
@@ -56,6 +57,32 @@ router.post("/sign-in", async (req, res) => {
       username: user.username,
       _id: user._id,
       gender: user.gender,
+      status: user.status,
+    };
+
+    const token = jwt.sign({ payload }, process.env.JWT_SECRET, {
+      expiresIn: "1d",
+    });
+
+    res.status(200).json({ token });
+  } catch (err) {
+    res.status(500).json({ err: err.message });
+  }
+});
+
+router.post("/refresh-token/:userId", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.userId);
+
+    if (!user) {
+      return res.status(401).json({ err: "Invalid credentials." });
+    }
+
+    const payload = {
+      username: user.username,
+      _id: user._id,
+      gender: user.gender,
+      status: user.status,
     };
 
     const token = jwt.sign({ payload }, process.env.JWT_SECRET, {

@@ -6,7 +6,7 @@ import * as userService from "../../services/userService"
 
 const Payment = () => {
   const navigate = useNavigate();
-  const { user } = useContext(UserContext);
+  const { user, refreshUser } = useContext(UserContext);
   const [message, setMessage] = useState('');
   const [formData, setFormData] = useState({
     name: '',
@@ -24,6 +24,7 @@ const Payment = () => {
     evt.preventDefault();
     try {
       const paidUser = await userService.update(user._id);
+      await refreshUser();
       console.log("paidUser:", paidUser);
       navigate("/home")
     } catch (err) {

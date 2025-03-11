@@ -1,0 +1,18 @@
+meta {
+  name: Refresh token (paid user)
+  type: http
+  seq: 26
+}
+
+post {
+  url: {{HOST}}/auth/sign-in
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+  "username": "potter",
+  "password": "123"
+  }
+}

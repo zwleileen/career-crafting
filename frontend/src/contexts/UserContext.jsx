@@ -2,7 +2,7 @@ import { createContext, useEffect, useState } from 'react';
 import * as valuesService from '../services/valuesService';
 import * as careerService from "../services/careerService";
 import * as imagineWorldService from "../services/imagineWorldService";
-import * as userService from "../services/userService";
+import * as authService from "../services/authService";
 
 const UserContext = createContext();
 
@@ -20,23 +20,42 @@ function UserProvider({ children }) {
   const [careersId, setCareersId] = useState(null);
   const [imagineId, setImagineId] = useState("");
 
-  useEffect(() => {
-    const fetchLatestUser = async () => {
-        if (!user && !user._id) return;
-
-            try {
-            const updatedUser = await userService.show(user._id); 
-            if (updatedUser && updatedUser.status !== user.status) {
-                console.log("User status updated:", updatedUser.status);
-                setUser(updatedUser); // Update user context with new status
-            }
-            } catch (error) {
-            console.error("Error fetching latest user data:", error);
-            }
+  const refreshUser = async () => {
+    if (!user || !user._id) return;
+  
+    try {
+        console.log("Refreshing user token for user ID:", user._id);
+        
+        await authService.refreshToken(user._id);
+        
+        const updatedUser = getUserFromToken();
+        setUser(updatedUser);
+        
+        console.log("User refreshed from token:", updatedUser);
+      } catch (error) {
+        console.error("Error refreshing user token:", error);
+      }
     };
-    fetchLatestUser();
-  }, [user]);
-  console.log("current user:", user);
+      
+    // Initial token refresh effect
+  useEffect(() => {
+    const refreshOnMount = async () => {
+      const initialUser = getUserFromToken();
+      if (initialUser && initialUser._id) {
+        try {
+          console.log("Initial token refresh for user:", initialUser._id);
+          await authService.refreshToken(initialUser._id);
+          setUser(getUserFromToken()); // Update with fresh token data
+        } catch (error) {
+          console.error("Error with initial token refresh:", error);
+        }
+      }
+    };
+    
+    refreshOnMount();
+  }, []); // This effect runs once on mount with no dependencies // Empty dependency array to only run once on mount
+    
+    console.log("Current user in context:", user);
 
 
   useEffect(() => {
@@ -65,7 +84,7 @@ function UserProvider({ children }) {
 //   console.log("Ids:", valuesId, careersId, imagineId);
 
   return (
-    <UserContext.Provider value={{ user, setUser, valuesId, careersId, imagineId }}>
+    <UserContext.Provider value={{ user, setUser, valuesId, careersId, imagineId, refreshUser }}>
       {children}
     </UserContext.Provider>
   );

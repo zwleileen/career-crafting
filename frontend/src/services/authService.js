@@ -54,4 +54,39 @@ const signIn = async (formData) => {
   }
 };
 
-export { signUp, signIn };
+const refreshToken = async (userId) => {
+  try {
+    const response = await fetch(`${BASE_URL}/refresh-token/${userId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+
+    // console.log("Raw response:", response);
+
+    if (!response.ok) {
+      throw new Error("Token refresh failed");
+    }
+
+    const data = await response.json();
+
+    if (data.err) {
+      throw new Error(data.err);
+    }
+
+    if (data.token) {
+      // console.log("saving token to localstorage:", data.token);
+      localStorage.setItem("token", data.token);
+      return JSON.parse(atob(data.token.split(".")[1])).payload;
+    }
+
+    throw new Error("Invalid response from server");
+  } catch (err) {
+    console.log(err);
+    throw new Error(err);
+  }
+};
+
+export { signUp, signIn, refreshToken };

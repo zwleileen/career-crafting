@@ -79,7 +79,7 @@ const IdealCareer = ({responseId, refreshKey}) => {
             )}
         </div>
         
-        {!user && responseId (
+        {!user && responseId && (
         <div className="p-6 bg-white shadow-md rounded-md flex flex-col">
         <p className="text-base font-[DM_Sans] text-[#D6A36A]">Sign up to save your results and explore more features for free</p>
         <button

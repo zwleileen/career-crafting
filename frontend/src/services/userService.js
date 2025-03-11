@@ -1,4 +1,5 @@
 const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}/users`;
+import * as authService from "../services/authService";
 
 const index = async () => {
   try {
@@ -98,10 +99,27 @@ const update = async (userId) => {
       throw new Error(errorData.error || "Failed to update status with userId");
     }
 
+    const userData = await res.json();
+    console.log("Status update response:", userData);
+
+    // After updating the status, refresh the token to update localStorage
+    try {
+      console.log("Refreshing token after status update");
+      await authService.refreshToken(userId);
+      console.log("Token refreshed successfully");
+    } catch (refreshError) {
+      console.error(
+        "Error refreshing token after status update:",
+        refreshError
+      );
+      // Continue even if token refresh fails - at least the database was updated
+    }
+
     console.log("Successfully updated status with userId!");
-    return res;
+    return userData;
   } catch (error) {
     console.error("Error updating status:", error.message);
+    throw error; // Re-throw to allow caller to handle the error
   }
 };
 
