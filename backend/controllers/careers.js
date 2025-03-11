@@ -3,36 +3,37 @@ const router = express.Router();
 const OpenAI = require("openai");
 const verifyToken = require("../middleware/verify-token");
 const Career = require("../models/Career.js");
-const Value = require("../models/Value.js");
+const ImagineIdeal = require("../models/ImagineIdeal.js");
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 router.post("/", verifyToken, async (req, res) => {
   try {
-    const { userId, answers } = req.body;
-    if (!userId || !answers) {
-      return res
-        .status(400)
-        .json({ message: "User ID and answers are required." });
+    const { userId } = req.body;
+    if (!userId) {
+      return res.status(400).json({ message: "User ID is required." });
     }
 
-    const previousValue = await Value.findOne({ userId });
-    const valuesInsights = previousValue ? previousValue.aiInsights : "";
+    const previous = await ImagineIdeal.findOne({ userId });
+    console.log(previous);
+    const worldVision = previous ? previous.worldVision : "";
+    const valuesInsights = previous ? previous.valuesInsights : "";
 
     // Check if a response already exists for this user
     let existingResponse = await Career.findOne({ userId });
 
     if (existingResponse) {
-      existingResponse.answers = answers;
+      existingResponse.worldVision = worldVision;
       existingResponse.valuesInsights = valuesInsights;
       existingResponse.createdAt = new Date();
       await existingResponse.save();
 
       return res.status(200).json({
         message: "Responses updated successfully!",
+        userId: existingResponse.userId,
         responseId: existingResponse._id,
       });
     } else {
-      const newResponse = new Career({ userId, answers, valuesInsights });
+      const newResponse = new Career({ userId, worldVision, valuesInsights });
       await newResponse.save();
 
       res.status(201).json({
@@ -58,16 +59,10 @@ router.post("/results", verifyToken, async (req, res) => {
     if (!response)
       return res.status(404).json({ message: "Response not found." });
 
-    // Convert answers from object to array format for ChatGPT
-    const formattedAnswers = Object.entries(response.answers)
-      .map(([questionId, answer]) => {
-        return `Question ${questionId}: ${answer})`;
-      })
-      .join("\n");
-
-    const previousInsightsText = response.valuesInsights
-      ? `\n\nPrevious insights about my ideal career based on intrinsic values/strengths: ${response.valuesInsights}`
-      : "";
+    const previousInsightsText =
+      response.worldVision && response.valuesInsights
+        ? `\n\nInsights about my ideal career based on intrinsic values/strengths: ${response.valuesInsights} and my ideal world that I would like to contribute to shaping through my career: ${response.worldVision}.`
+        : "";
 
     // Call OpenAI to analyze the responses
     const chatResponse = await openai.chat.completions.create({
@@ -83,11 +78,11 @@ router.post("/results", verifyToken, async (req, res) => {
           
             Important: Present the response succinctly in structured JSON format as follows:
                 {
-                "Summary": "Provide a succinct yet inspiring summary of the user's ideal world vision and how their intrinsic values and strengths position them uniquely to contribute towards shaping that ideal world. Acknowledge user's career challenges, but assure and encourage them that they will be able to overcome these challenges. Make it emotionally resonant, compelling, and inspiring.",
+                "Summary": "Provide a succinct yet inspiring summary of the user's ideal world vision and how their intrinsic values and strengths position them uniquely to contribute towards shaping that ideal world.",
                 "Possible career paths": [
                     {
-                        "Career path": "Suggest the most relevant yet diverse career direction/path that balances user's ideal career with user's career challenges and existing skills/experiences. Make sure the career path considers user's years of work experience or the seniority level, in order for it to be practical yet inspiring.",
-                        "Why it fits": "Explain why this path/direction aligns with their unique profile and career aspirations, while addressing their practical career challenges. Suggest the ideal industry or department in which they can pursue this career path, the work environment and job tasks that are typical in such career.", 
+                        "Career path": "Suggest the most relevant yet diverse career path that considers user's ideal career and ideal world. Make sure the career path is relevant, practical yet inspiring.",
+                        "Why it fits": "Explain why this path/direction aligns with their unique profile and career aspirations. Suggest the ideal industry or department in which they can pursue this career path, the work environment and job tasks that are typical in such career.", 
                         "Narrative": "Suggest an encapsulating and inspiring storyline of a normal day in this career path, the types of stakeholders they work with, day-to-day tasks and the impact that the work has in shaping the ideal world. Be realistic, relatable and inspiring, and help user imagine themselves on this career path."
                     },
                     {
@@ -117,7 +112,7 @@ router.post("/results", verifyToken, async (req, res) => {
         },
         {
           role: "user",
-          content: `Here are the impact I want to make, my career challenges, as well as existing skills and experiences:\n${formattedAnswers}\nBased on this and ${previousInsightsText}, what are the most relevant yet diverse career paths that satisfy me ideal career and allow me to shape my ideal world vision at the same time?`,
+          content: `Here are my inputs about the ideal world I want to contribute to shaping through my career: ${previousInsightsText}. What are the most relevant yet diverse career paths that satisfy my ideal career and allow me to shape my ideal world vision at the same time?`,
         },
       ],
       max_tokens: 1000,
@@ -138,14 +133,14 @@ router.post("/results", verifyToken, async (req, res) => {
       parsedInsight = insight; //store as-is if already an object
     }
 
-    response.aiInsights = parsedInsight;
+    response.careerPaths = parsedInsight;
     await response.save();
 
     res
       .status(200)
-      .json({ insight, message: "AI insights saved successfully" });
+      .json({ insight, message: "Career paths saved successfully" });
   } catch (error) {
-    console.error("Error generating AI insights:", error);
+    console.error("Error generating career paths:", error);
     res.status(500).json({ message: "Internal server error." });
   }
 });
@@ -176,7 +171,7 @@ router.get("/:userId", verifyToken, async (req, res) => {
     if (!response)
       return res.status(404).json({ message: "Response not found." });
 
-    let chatResponse = response.aiInsights;
+    let chatResponse = response.careerPaths;
     console.log("Raw AI Response:", chatResponse);
 
     return res.status(200).json(chatResponse);

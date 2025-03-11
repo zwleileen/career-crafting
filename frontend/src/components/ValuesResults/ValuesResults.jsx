@@ -121,6 +121,7 @@ const ValuesResults = ({setTopValues, topValues, setTopStrengths, topStrengths})
             Redo Questionnaire
         </button>
         
+        { !user ? (
         <button
         type="button" 
         onClick={() => navigate(`/ideal/${responseId}`)}
@@ -128,6 +129,7 @@ const ValuesResults = ({setTopValues, topValues, setTopStrengths, topStrengths})
         >
         Next: Imagine
         </button>
+        ) : ("")}
         </div>
 
     </div>

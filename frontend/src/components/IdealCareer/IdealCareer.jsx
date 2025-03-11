@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import * as imagineWorldService from "../../services/imagineWorldService"
 import { useNavigate } from "react-router";
-// import { UserContext } from "../../contexts/UserContext";
 
 
 const IdealCareer = ({responseId, refreshKey}) => {
-    // const { user } = useContext(UserContext);
     const [image, setImage] = useState(null);
     const [summary, setSummary] = useState({});
     const [isLoading, setIsLoading] = useState(true);
@@ -13,17 +11,16 @@ const IdealCareer = ({responseId, refreshKey}) => {
 
     useEffect(() => {
         const fetchImage = async () => {
+        try {
+            setIsLoading(true);
 
-            if (!responseId) {
-                console.error("No responseId");
-                setImage(null);
-                setSummary({});
-                setIsLoading(false);
-                return;
-            }
-
-            try {
-                setIsLoading(true);
+                if (!responseId) {
+                    console.error("No responseId");
+                    setImage(null);
+                    setSummary({});
+                    setIsLoading(false);
+                    return;
+                }
 
             const dataImage = await imagineWorldService.generateImages(responseId);
             console.log("Fetched new image:", dataImage.image);
@@ -40,6 +37,7 @@ const IdealCareer = ({responseId, refreshKey}) => {
                 } else {
                     setSummary({});
                 }
+
 
         } catch (error) {
           console.error("Error fetching image:", error.message);

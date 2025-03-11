@@ -38,10 +38,10 @@ const NavBar = () => {
             )}
 
             <Link 
-            to={`/ideal/${imagineId}/results`}
+            to={"/careerpath"}
             className="text-[#586E75] text-sm font-normal font-[DM_Sans] ml-2 hover:text-[#f9a825]"
             >
-            Ideal world
+            Career Paths
             </Link>
         </div>
 

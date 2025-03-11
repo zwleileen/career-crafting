@@ -31,18 +31,11 @@ const index = async () => {
   }
 };
 
-const create = async (answers) => {
+const create = async (userId) => {
   try {
     const token = localStorage.getItem("token");
 
-    if (!token) {
-      throw new Error("No authentication token found");
-    }
-
-    const requestBody = {
-      userId: answers.userId,
-      answers: answers.answers,
-    };
+    const requestBody = userId;
 
     console.log(
       "Sending data to backend:",
@@ -55,7 +48,7 @@ const create = async (answers) => {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(answers),
+      body: JSON.stringify(requestBody),
     });
 
     if (!res.ok) {
@@ -66,12 +59,13 @@ const create = async (answers) => {
     }
 
     const saveResponse = await res.json();
+    console.log("saveResponse:", saveResponse);
 
-    const insightsResponse = await generateInsights(answers.userId);
+    const insightsResponse = await generateInsights(saveResponse.userId);
 
     return {
       ...saveResponse,
-      insights: insightsResponse.insight,
+      insights: insightsResponse.careerPaths,
     };
   } catch (error) {
     return { error: error.message };
@@ -81,10 +75,6 @@ const create = async (answers) => {
 const generateInsights = async (userId) => {
   try {
     const token = localStorage.getItem("token");
-
-    if (!token) {
-      throw new Error("No authentication token found");
-    }
 
     const res = await fetch(`${BASE_URL}/results`, {
       method: "POST",

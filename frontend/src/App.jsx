@@ -14,6 +14,7 @@ import MatchJobs from './components/MatchJobs/MatchJobs';
 import ImagineCareer from './components/ImagineCareer/ImagineCareer';
 import ImagineIdeal from './components/ImagineIdeal/ImagineIdeal';
 import IdealCareer from './components/IdealCareer/IdealCareer';
+import CareerPath from './components/CareerPath/CareerPath';
 
 function App() {
   const { user } = useContext(UserContext);
@@ -31,7 +32,7 @@ return (
     <Route path="/values/new" element={<ValuesForm />} />
     <Route path="/values/results/:responseId" element={<ValuesResults setTopValues={setTopValues} topValues={topValues} setTopStrengths={setTopStrengths} topStrengths={topStrengths} />} />
     <Route path='/ideal/:responseId' element={<ImagineIdeal />}>
-      <Route path='/ideal/:responseId/results' element={<IdealCareer />} />
+      <Route path='results' element={<IdealCareer />} />
     </Route> 
     <Route path='/sign-up' element={<SignUpForm />} />
     <Route path='/sign-in' element={<SignInForm />} />
@@ -39,12 +40,11 @@ return (
     {/* Protected routes - only available when logged in */}
     <Route path='/home' element={user ? <Homepage topValues={topValues} setTopValues={setTopValues} topStrengths={topStrengths} setTopStrengths={setTopStrengths} /> : <Navigate to="/" />} />
     <Route path="/values/results/:responseId" element={<ValuesResults setTopValues={setTopValues} topValues={topValues} setTopStrengths={setTopStrengths} topStrengths={topStrengths} />} />
+    <Route path='/careerpath' element={<CareerPath />} />
+    <Route path='/careerpath/results' element={<CareerResults />} />
+
     <Route path="/career" element={user ? (<CareerForm />) : <Navigate to="/" />} />
-    <Route path="/career/results/:responseId" element={user ? (<CareerResults />) : <Navigate to="/" />} />
     <Route path="/career/imagine/:responseId" element={user ? (<ImagineCareer />) : <Navigate to="/" />} />
-    <Route path='/ideal/:responseId' element={<ImagineIdeal />}>
-      <Route path='/ideal/:responseId/results' element={<IdealCareer />} />
-    </Route> 
     
     {/* Protected routes - only available when paid */}
     <Route path="/jobs/results/:responseId" element={user ? (<MatchJobs />) : <Navigate to="/" />} />

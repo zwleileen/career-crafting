@@ -63,7 +63,7 @@ const SignUpForm = () => {
             console.warn("No referenceId found, skipping update.");
         }
 
-      navigate(`/home`);
+      navigate("/careerpath");
     } catch (err) {
       setMessage(err.message);
     }
