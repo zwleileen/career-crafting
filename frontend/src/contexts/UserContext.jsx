@@ -3,7 +3,6 @@ import * as valuesService from '../services/valuesService';
 import * as careerService from "../services/careerService"
 import * as imagineWorldService from "../services/imagineWorldService"
 
-
 const UserContext = createContext();
 
 const getUserFromToken = () => {
@@ -43,7 +42,7 @@ function UserProvider({ children }) {
     };
     fetchIds();
   }, [user]);
-  console.log("imagineId:", imagineId)
+//   console.log("Ids:", valuesId, careersId, imagineId);
 
   return (
     <UserContext.Provider value={{ user, setUser, valuesId, careersId, imagineId }}>

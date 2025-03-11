@@ -42,11 +42,9 @@ router.put("/updateStatus", verifyToken, async (req, res) => {
     }
 
     if (req.user._id !== userId) {
-      return res
-        .status(403)
-        .json({
-          message: "Unauthorized: Cannot update another user's status.",
-        });
+      return res.status(403).json({
+        message: "Unauthorized: Cannot update another user's status.",
+      });
     }
 
     const updatedStatus = await User.findByIdAndUpdate(

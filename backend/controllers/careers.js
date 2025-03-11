@@ -171,10 +171,9 @@ router.get("/:userId", verifyToken, async (req, res) => {
     if (!response)
       return res.status(404).json({ message: "Response not found." });
 
-    let chatResponse = response.careerPaths;
-    console.log("Raw AI Response:", chatResponse);
+    console.log("Raw AI Response:", response);
 
-    return res.status(200).json(chatResponse);
+    return res.status(200).json(response);
   } catch (err) {
     console.error("Error in GET /:userId:", err);
     res.status(500).json({ err: err.message });

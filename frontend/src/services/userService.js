@@ -105,45 +105,16 @@ const update = async (userId) => {
   }
 };
 
-// const showUserId = async (userId) => {
-//   try {
-//     const res = await fetch(`${BASE_URL}/${userId}`, {
-//       method: "GET",
-//       headers: {
-//         // Authorization: `Bearer ${localStorage.getItem("token")}`,
-//         "Content-Type": "application/json",
-//       },
-//     });
+const show = async (userId) => {
+  try {
+    const res = await fetch(`${BASE_URL}/${userId}`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    });
+    return await res.json();
+  } catch (error) {
+    console.error("Error fetching status:", error);
+    return null;
+  }
+};
 
-//     if (!res.ok) {
-//       const errorData = await res
-//         .json()
-//         .catch(() => ({ error: "Invalid JSON response" }));
-//       throw new Error(errorData.error || "Failed to fetch results");
-//     }
-
-//     const responseData = await res.json();
-//     // console.log("Response data received:", responseData);
-
-//     if (typeof responseData.aiInsights === "string") {
-//       try {
-//         responseData.aiInsights = JSON.parse(responseData.aiInsights);
-//       } catch (error) {
-//         console.error("Error parsing aiInsights:", error);
-//         responseData.aiInsights = null; // If parsing fails, set it to `null` instead of causing a crash
-//       }
-//     }
-//     // console.log("API Response:", responseData);
-
-//     return responseData;
-//   } catch (error) {
-//     console.log(error);
-//     return {
-//       topValues: [],
-//       topStrengths: [],
-//       aiInsights: null,
-//     };
-//   }
-// };
-
-export { index, update };
+export { index, update, show };

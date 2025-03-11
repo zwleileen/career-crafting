@@ -1,10 +1,5 @@
-import { useContext } from "react";
-import { useNavigate } from "react-router";
-import { UserContext } from "../../contexts/UserContext";
 
 const Homepage = ({topValues, topStrengths}) => {
-    const navigate = useNavigate();
-    const { user, valuesId, careersId, imagesIds } = useContext(UserContext);
 
 
     return (
@@ -17,7 +12,6 @@ const Homepage = ({topValues, topStrengths}) => {
         <div className="text-white text-lg md:text-xl font-normal font-[DM_Sans] space-y-4 mb-10">            
             <div
             className="bg-[#D6A36A] mb-10 px-5 py-5 rounded-2xl border-none text-lg font-normal font-[DM_Sans] hover:bg-[#f9a825] transition-colors shadow-md cursor-pointer"
-            onClick={() => navigate(`/values/results/${valuesId}`)}
             >
               <span className="font-bold">Insights</span>
               <p>Your top values are {topValues. join(', ')} and top strengths are {topStrengths.join(', ')}.</p>
@@ -25,7 +19,6 @@ const Homepage = ({topValues, topStrengths}) => {
 
             <p
             className="bg-[#D6A36A] mb-10 px-5 py-5 rounded-2xl border-none text-lg font-normal font-[DM_Sans] hover:bg-[#f9a825] transition-colors shadow-md cursor-pointer"
-            onClick={() => navigate(`/career/results/${careersId}`)}
             >
               <span className="font-bold">Career paths</span>
               <br/>Your ideal career paths are...
@@ -33,7 +26,6 @@ const Homepage = ({topValues, topStrengths}) => {
 
             <p
             className="bg-[#D6A36A] px-4 py-2 rounded-2xl border-none text-lg font-normal font-[DM_Sans] hover:bg-[#f9a825] transition-colors shadow-md cursor-pointer"
-            onClick={() => navigate('/jobs/results')}
             >
               <span className="font-bold">Matched jobs</span>
               <br/>Your matched jobs are...

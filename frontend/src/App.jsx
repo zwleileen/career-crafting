@@ -8,9 +8,7 @@ import Homepage from './components/Homepage/Homepage';
 import { Navigate, Route, Routes } from 'react-router';
 import ValuesForm from './components/ValuesForm/ValuesForm';
 import ValuesResults from './components/ValuesResults/ValuesResults';
-import CareerForm from './components/CareerForm/CareerForm';
 import CareerResults from './components/CareerResults/CareerResults';
-import MatchJobs from './components/MatchJobs/MatchJobs';
 import ImagineCareer from './components/ImagineCareer/ImagineCareer';
 import ImagineIdeal from './components/ImagineIdeal/ImagineIdeal';
 import IdealCareer from './components/IdealCareer/IdealCareer';
@@ -40,19 +38,15 @@ return (
     <Route path='/sign-in' element={<SignInForm />} />
         
     {/* Protected routes - only available when logged in */}
-    <Route path='/home' element={user ? <Homepage topValues={topValues} setTopValues={setTopValues} topStrengths={topStrengths} setTopStrengths={setTopStrengths} /> : <Navigate to="/" />} />
     <Route path="/values/results/:responseId" element={<ValuesResults setTopValues={setTopValues} topValues={topValues} setTopStrengths={setTopStrengths} topStrengths={topStrengths} />} />
-    <Route path='/careerpath' element={<CareerPath />} />
-    <Route path='/careerpath/results' element={<CareerResults />} />
+    <Route path='/careerpath' element={user ? <CareerPath /> : <Navigate to="/" />} />
+    <Route path='/careerpath/results' element={user ? <CareerResults />: <Navigate to="/" />} />
     <Route path="/careerpath/results/:responseId" element={user ? (<ImagineCareer />) : <Navigate to="/" />} />
-    <Route path='/plan/features' element={<PaidFeatures />} />
-    <Route path='/upgrade' element={<Payment />} />
-
-
+    <Route path='/plan/features' element={user ? <PaidFeatures />: <Navigate to="/" />} />
+    <Route path='/upgrade' element={user? <Payment />: <Navigate to="/" />} />
 
     {/* Protected routes - only available when paid */}
-    <Route path="/career" element={user ? (<CareerForm />) : <Navigate to="/" />} />
-    <Route path="/jobs/results/:responseId" element={user ? (<MatchJobs />) : <Navigate to="/" />} />
+    <Route path='/home' element={user.status === "paid" ? <Homepage topValues={topValues} setTopValues={setTopValues} topStrengths={topStrengths} setTopStrengths={setTopStrengths} /> : <Navigate to="/careerpath/results" />} />
 
 
   </Routes>

@@ -25,7 +25,7 @@ const CareerResults = () => {
             if (!data) {
                 setResponse(null);
               } else {
-                setResponse(data); 
+                setResponse(data.careerPaths); 
               }
           } else {
             throw new Error("User not logged in or invalid user ID");
