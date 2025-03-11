@@ -26,41 +26,25 @@ function UserProvider({ children }) {
     try {
         console.log("Refreshing user token for user ID:", user._id);
         
-        await authService.refreshToken(user._id);
+        const newToken = await authService.refreshToken(user._id);
         
+        if (newToken) {
         const updatedUser = getUserFromToken();
-        setUser(updatedUser);
-        
         console.log("User refreshed from token:", updatedUser);
+        setUser(updatedUser);
+        }
       } catch (error) {
         console.error("Error refreshing user token:", error);
       }
     };
       
-    // Initial token refresh effect
-  useEffect(() => {
-    const refreshOnMount = async () => {
-      const initialUser = getUserFromToken();
-      if (initialUser && initialUser._id) {
-        try {
-          console.log("Initial token refresh for user:", initialUser._id);
-          await authService.refreshToken(initialUser._id);
-          setUser(getUserFromToken()); // Update with fresh token data
-        } catch (error) {
-          console.error("Error with initial token refresh:", error);
-        }
-      }
-    };
-    
-    refreshOnMount();
-  }, []); // This effect runs once on mount with no dependencies // Empty dependency array to only run once on mount
-    
     console.log("Current user in context:", user);
 
 
   useEffect(() => {
+    if (!user || !user._id) return;
+
     const fetchIds = async () => {
-        if (user && user._id) {
             try{
                 const values = await valuesService.showUserId(user._id);
                 if (values && values._id) {
@@ -77,7 +61,6 @@ function UserProvider({ children }) {
             } catch (error) {
                 console.error("Error fetching ids:", error);
         }
-    }
     };
     fetchIds();
   }, [user]);
