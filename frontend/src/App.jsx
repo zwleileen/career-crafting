@@ -15,6 +15,7 @@ import ImagineCareer from './components/ImagineCareer/ImagineCareer';
 import ImagineIdeal from './components/ImagineIdeal/ImagineIdeal';
 import IdealCareer from './components/IdealCareer/IdealCareer';
 import CareerPath from './components/CareerPath/CareerPath';
+import PaidFeatures from './components/PaidFeatures/PaidFeatures';
 
 function App() {
   const { user } = useContext(UserContext);
@@ -43,7 +44,9 @@ return (
     <Route path='/careerpath' element={<CareerPath />} />
     <Route path='/careerpath/results' element={<CareerResults />} />
     <Route path="/careerpath/results/:responseId" element={user ? (<ImagineCareer />) : <Navigate to="/" />} />
-    
+    <Route path='/plan/features' element={<PaidFeatures />} />
+
+
     {/* Protected routes - only available when paid */}
     <Route path="/career" element={user ? (<CareerForm />) : <Navigate to="/" />} />
     <Route path="/jobs/results/:responseId" element={user ? (<MatchJobs />) : <Navigate to="/" />} />
