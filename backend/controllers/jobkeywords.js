@@ -163,4 +163,21 @@ router.get("/user/:userId", verifyToken, async (req, res) => {
   }
 });
 
+router.delete("/:responseId", verifyToken, async (req, res) => {
+  try {
+    const { responseId } = req.params;
+
+    const deletedEntry = await JobKeyword.findByIdAndDelete(responseId);
+
+    if (!deletedEntry) {
+      return res.status(404).json({ error: "Entry not found" });
+    }
+
+    res.status(200).json({ message: "Entry deleted successfully" });
+  } catch (err) {
+    console.error("Error deleting entry:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 module.exports = router;

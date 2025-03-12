@@ -1,0 +1,15 @@
+meta {
+  name: Delete jobkeywords
+  type: http
+  seq: 27
+}
+
+get {
+  url: {{HOST}}/jobkeywords/user/:userId
+  body: json
+  auth: inherit
+}
+
+params:path {
+  userId: 67d03fa65a055146887c177a
+}
