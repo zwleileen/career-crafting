@@ -10,7 +10,6 @@ const CareerResults = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [selectedRoleIndex, setSelectedRoleIndex] = useState(null);
     const navigate = useNavigate();
-    const [searches, setSearches] = useState([]);
 
 
     useEffect(() => {
@@ -29,18 +28,6 @@ const CareerResults = () => {
               }
           } else {
             throw new Error("User not logged in or invalid user ID");
-          }
-
-          const pathsSearched = await jobKeywordService.showUserId(user._id);
-          console.log(pathsSearched);
-          if (!pathsSearched) {
-            setSearches([]);
-          } else {
-            const filteredData = pathsSearched.map(item => ({
-              role: item.jobTitle,
-              responseId: item._id
-            }))
-            setSearches(filteredData)
           }
 
         } catch (error) {
@@ -83,14 +70,6 @@ const CareerResults = () => {
         } catch (error) {
             console.error("Error saving career path:", error);
         }
-    }
-
-    const handleDelete = async (responseId) => {
-      try {
-        await jobKeywordService.deleteById(responseId)
-      } catch (error) {
-        console.error('Error deleting item:', error)
-      }
     }
  
     //     const handleImagineCareer = async () => {
@@ -151,8 +130,7 @@ const CareerResults = () => {
 
   
     return (
-      <div className="flex">
-        <div className="w-4/5 p-6 bg-white shadow-md rounded-md">
+        <div className="p-6 bg-white shadow-md rounded-md">
             <h2 className="text-2xl md:text-3xl text-[#D6A36A] font-normal font-[DM_Sans] mb-8">Your Ideal Career Paths</h2>
             
             {response["Summary"] && (
@@ -195,33 +173,6 @@ const CareerResults = () => {
             Let's Find Out
         </button>
         </div>
-
-        <div className="w-1/5 p-6 bg-white shadow-md rounded-md flex flex-col">
-            <p className="font-[DM_Sans] mb-8 text-[#D6A36A] text-lg">List of career paths explored</p>
-            <div className="space-y-4">
-              {searches.length > 0 ? (
-                searches.map((job, index) => (
-                <div 
-                  key={index} 
-                  className="flex flex-col justify-between h-35 w-35 p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"
-                  onClick={()=>navigate(`/careerpath/results/${job.responseId}`)}
-                  >
-                  <h3 className="text-base font-semibold text-[#586E75]">{job.role}</h3>
-                  {/* <p className="text-base text-[#586E75]">{job.Detail}</p> */}
-                  <span 
-                  onClick={handleDelete(job.responseId)}
-                  className="material-symbols-outlined cursor-pointer"
-                  >
-                    delete
-                  </span>
-                </div>
-          ))
-        ) : (
-          <p className="text-gray-500">None so far...</p>
-        )}
-      </div>
-        </div>
-    </div>
     )
 };
 

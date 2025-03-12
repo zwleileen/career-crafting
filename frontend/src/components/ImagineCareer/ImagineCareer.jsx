@@ -1,14 +1,16 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import * as jobKeywordService from "../../services/jobKeywordService"
+import { UserContext } from "../../contexts/UserContext";
 
 
 const ImagineCareer = () => {
+    const { user } = useContext(UserContext);
     const [responses, setResponses] = useState({});
     const [isLoading, setIsLoading] = useState(true);
     const { responseId } = useParams();
     const navigate = useNavigate();
-
+    const [searches, setSearches] = useState([]);
 
     useEffect(() => {
       const fetchJobDetails = async () => {
@@ -36,6 +38,18 @@ const ImagineCareer = () => {
                 setResponses({});  
             }
 
+            const pathsSearched = await jobKeywordService.showUserId(user._id);
+            console.log(pathsSearched);
+            if (!pathsSearched) {
+              setSearches([]);
+            } else {
+              const filteredData = pathsSearched.map(item => ({
+                role: item.jobTitle,
+                responseId: item._id
+              }))
+              setSearches(filteredData)
+            }
+  
         } catch (error) {
           console.error("Error fetching job details:", error.message);
           setResponses({});
@@ -44,7 +58,16 @@ const ImagineCareer = () => {
         }
       };
       fetchJobDetails();
-    }, [responseId]);
+    }, [responseId, user._id]);
+
+    const handleDelete = async (deleteId) => {
+      try {
+        await jobKeywordService.deleteById(deleteId)
+        navigate(`/careerpath/results/${responseId}`)
+      } catch (error) {
+        console.error('Error deleting item:', error)
+      }
+    }
 
     if (isLoading) {
       return (
@@ -55,8 +78,9 @@ const ImagineCareer = () => {
     }
   
     return (
-        <>
-        <div className="p-6 bg-white shadow-md rounded-md flex flex-col">
+      <>
+      <div className="flex">
+      <div className="w-4/5 p-6 bg-white shadow-md rounded-md flex flex-col">
             <h2 className="text-2xl md:text-3xl text-[#D6A36A] font-normal font-[DM_Sans] mb-6">A day in the life of {responses.jobTitle}</h2>
 
             {responses.narrative && (
@@ -90,9 +114,36 @@ const ImagineCareer = () => {
         >
         Select another path
         </button>
-        </div>
+      </div>
 
-        <div className="p-6 bg-white shadow-md rounded-md flex flex-col items-start">
+      <div className="w-1/5 p-6 bg-white shadow-md rounded-md flex flex-col">
+            <p className="font-[DM_Sans] mb-8 text-[#D6A36A] text-lg">List of career paths explored</p>
+            <div className="space-y-4">
+              {searches.length > 0 ? (
+                searches.map((job, index) => (
+                <div 
+                  key={index} 
+                  className="flex flex-col justify-between h-35 w-35 p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"
+                  onClick={()=>navigate(`/careerpath/results/${job.responseId}`)}
+                  >
+                  <h3 className="text-base font-semibold text-[#586E75]">{job.role}</h3>
+                  {/* <p className="text-base text-[#586E75]">{job.Detail}</p> */}
+                  <span 
+                  onClick={() => handleDelete(job.responseId)}
+                  className="material-symbols-outlined cursor-pointer"
+                  >
+                    delete
+                  </span>
+                </div>
+          ))
+        ) : (
+          <p className="text-gray-500">None so far...</p>
+        )}
+        </div>
+      </div>
+      </div>
+
+      <div className="p-6 bg-white shadow-md rounded-md flex flex-col items-center text-center">
         <p className="text-base font-[DM_Sans] text-[#D6A36A] place-items-end">Upgrade your plan to find out how you can leverage on your skills and experiences to pursue desired career path and many more features!</p>
         <button
         type="button" 
@@ -101,7 +152,7 @@ const ImagineCareer = () => {
         >
         See features
         </button>
-        </div>
+      </div>
 
 
         </>
