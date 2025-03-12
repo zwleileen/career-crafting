@@ -72,7 +72,7 @@ const IdealCareer = ({responseId, refreshKey}) => {
                 <div className="mt-6">
                 <img 
                     src={image} 
-                    alt="A day in the job scene" 
+                    alt="Ideal world" 
                     className="w-full max-w-lg h-auto rounded-lg shadow-lg object-cover mx-auto"
                 />
             </div>

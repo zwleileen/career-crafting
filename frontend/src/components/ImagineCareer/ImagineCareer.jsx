@@ -28,8 +28,8 @@ const ImagineCareer = () => {
                 setResponses({
                     jobTitle: data.jobTitle,
                     narrative: data.jobNarrative,
-                    industry: data.industryKeywords,
-                    skills: data.skillsKeywords,
+                    industry: data.industryKeywords.join(', '),
+                    skills: data.skillsKeywords.join(', '),
                     typicalPath: data.typicalPath
                 });  
             } else {
@@ -56,39 +56,44 @@ const ImagineCareer = () => {
   
     return (
         <>
-        <div className="p-6 bg-white shadow-md rounded-md flex flex-col items-center text-center">
-            <h2 className="text-2xl md:text-3xl text-[#D6A36A] font-normal font-[DM_Sans] mb-8">A day in the life of {responses.jobTitle}</h2>
+        <div className="p-6 bg-white shadow-md rounded-md flex flex-col">
+            <h2 className="text-2xl md:text-3xl text-[#D6A36A] font-normal font-[DM_Sans] mb-6">A day in the life of {responses.jobTitle}</h2>
 
             {responses.narrative && (
-                <div className="mt-6">
-                <p className="text-base font-normal text-[#586E75] mb-2">{responses.narrative}</p>
-            </div>
+                <p className="text-base font-normal text-[#586E75] mb-4">{responses.narrative}</p>
             )}
 
             {responses.industry && responses.skills && (
-                <div className="mt-6">
-                <p className="text-base font-normal text-[#586E75] mb-2">Industries: {responses.industry}</p>
-                <p className="text-base font-normal text-[#586E75] mb-2">Essential skills: {responses.skills}</p>
+                <div className="mb-2">
+                <p className="text-base font-normal text-[#586E75] mb-4">
+                  <span className="font-semibold">Industries: </span>
+                  <br/>{responses.industry}
+                </p>
+                <p className="text-base font-normal text-[#586E75] mb-4">
+                  <span className="font-semibold">Essential skills: </span>
+                  <br/>{responses.skills}
+                </p>
             </div>
             )}
 
             {responses.typicalPath && (
-                <div className="mt-6">
-                <p className="text-base font-normal text-[#586E75] mb-2">A typical path: {responses.typicalPath}</p>
-            </div>
+                <p className="text-base font-normal text-[#586E75] mb-2">
+                  <span className="font-semibold">A typical path: </span>
+                  <br/>{responses.typicalPath}
+                </p>
             )}
 
         <button 
         type="button" 
         onClick={() => navigate("/careerpath/results")}
-        className="mt-6 px-6 py-3 bg-[#D6A36A] text-white font-medium rounded-lg hover:bg-[#e69c23] transition-colors focus:outline-none focus:ring-2 focus:ring-[#f9a825] focus:ring-offset-2 cursor-pointer"        
+        className="max-w-fit mt-6 px-6 py-3 bg-[#D6A36A] text-white font-medium rounded-lg hover:bg-[#e69c23] transition-colors focus:outline-none focus:ring-2 focus:ring-[#f9a825] focus:ring-offset-2 cursor-pointer"        
         >
         Select another path
         </button>
         </div>
 
-        <div className="p-6 bg-white shadow-md rounded-md flex flex-col items-center text-center">
-        <p className="text-base font-[DM_Sans] text-[#D6A36A]">Upgrade your plan to find out how you can leverage on your skills and experiences to pursue desired career path and many more features!</p>
+        <div className="p-6 bg-white shadow-md rounded-md flex flex-col items-start">
+        <p className="text-base font-[DM_Sans] text-[#D6A36A] place-items-end">Upgrade your plan to find out how you can leverage on your skills and experiences to pursue desired career path and many more features!</p>
         <button
         type="button" 
         onClick={() => navigate("/plan/features")}

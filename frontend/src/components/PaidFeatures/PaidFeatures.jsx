@@ -15,8 +15,8 @@ const PaidFeatures = () => {
             <div
             className="bg-[#D6A36A] mb-10 px-5 py-5 rounded-2xl border-none font-[DM_Sans]"
             >
-                <span className="font-bold text-lg">RoleMatch</span>
-                <p className="mb-2 mt-2 text-base">Drop in any job description, and we’ll assess how well it aligns with your skills, ideal career, and desired impact on the world. Instantly see what are the possible gaps you need to close!</p>
+                <span className="font-bold text-lg">FitCheck</span>
+                <p className="mb-2 mt-2 text-base">Not sure if a role is the right fit? Drop in any job description, and we’ll assess how well it aligns with your skills, ideal career, and desired impact on the world. Instantly see what are the possible gaps you need to close!</p>
                 <p className="mb-2 text-base">Upgrade to unlock: Personalized resume tweaks and LinkedIn headline suggestions to boost your chances of getting the role.</p>
             </div>
 

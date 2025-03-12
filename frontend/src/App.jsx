@@ -15,6 +15,8 @@ import IdealCareer from './components/IdealCareer/IdealCareer';
 import CareerPath from './components/CareerPath/CareerPath';
 import PaidFeatures from './components/PaidFeatures/PaidFeatures';
 import Payment from './components/Payment/Payment';
+import FitCheck from './components/FitCheck/FitCheck';
+import CareerForm from './components/CareerForm/CareerForm';
 
 function App() {
   const { user } = useContext(UserContext);
@@ -47,7 +49,8 @@ return (
 
     {/* Protected routes - only available when paid */}
     <Route path='/home' element={user && user.status === "paid" ? <Homepage topValues={topValues} setTopValues={setTopValues} topStrengths={topStrengths} setTopStrengths={setTopStrengths} /> : <Navigate to="/careerpath/results" />} />
-
+    <Route path='/statuscheck' element={user && user.status === "paid" ? <CareerForm /> : <Navigate to="/careerpath/results" />} />
+    <Route path='/fitcheck' element={user && user.status === "paid" ? <FitCheck /> : <Navigate to="/careerpath/results" />} />
 
   </Routes>
   </div>

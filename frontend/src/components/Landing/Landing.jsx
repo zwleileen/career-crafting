@@ -22,11 +22,11 @@ const Landing = () => {
             </p>
             
             <p>
-              <span className="font-bold">Match</span> - Match with jobs in the market and find out how your skills and experiences fit in.
+              <span className="font-bold">Align</span> - Align better with current job or desired jobs in the market using in-house tools.
             </p>
             
             <p>
-              <span className="font-bold">Micro-Action</span> - Take micro-actions towards the path of meaningful career.
+              <span className="font-bold">Micro-Action</span> - Take micro-actions towards the path of meaningful career, be it adjusting current career or starting your own project.
             </p>
             
             <p className="mt-6">

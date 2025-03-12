@@ -130,4 +130,60 @@ const show = async (responseId) => {
   }
 };
 
-export { index, create, generateKeyWords, show };
+const showUserId = async (userId) => {
+  try {
+    const res = await fetch(`${BASE_URL}/user/${userId}`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    });
+
+    let responseData = await res.json();
+    // console.log("API Response:", responseData);
+    // console.log("Type of responseData:", typeof responseData);
+
+    if (typeof responseData === "string") {
+      try {
+        responseData = JSON.parse(responseData);
+        // console.log("Parsed responseData:", responseData);
+      } catch (error) {
+        console.error("Error parsing responseData:", error);
+        responseData = null; // Prevent crashes if parsing fails
+      }
+    }
+
+    return responseData;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const deleteById = async (responseId) => {
+  try {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      throw new Error("No authentication token found");
+    }
+
+    const res = await fetch(`${BASE_URL}/${responseId}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!res.ok) {
+      const errorData = await res
+        .json()
+        .catch(() => ({ error: "Invalid JSON response" }));
+      throw new Error(errorData.error || "Failed to delete entry");
+    }
+
+    return { message: "Entry deleted successfully" };
+  } catch (error) {
+    console.error("Error deleting entry:", error.message);
+    return { error: error.message };
+  }
+};
+
+export { index, create, generateKeyWords, show, showUserId, deleteById };

@@ -144,11 +144,14 @@ router.get("/:responseId", verifyToken, async (req, res) => {
   }
 });
 
-router.get("/:userId", verifyToken, async (req, res) => {
+router.get("/user/:userId", verifyToken, async (req, res) => {
   try {
-    const response = await JobKeyword.findOne({
-      userId: req.params.userId,
-    }).populate("userId", "username");
+    const { userId } = req.params;
+    const response = await JobKeyword.find({ userId }).populate(
+      "userId",
+      "username"
+    );
+    console.log("Fetched response:", response);
 
     if (!response)
       return res.status(404).json({ message: "Response not found." });

@@ -11,14 +11,7 @@ const CareerForm = () => {
     const careerQuestions = [
         {
             id: "1", 
-            label: "Imagine a future where society has improved in a way that truly excites you. What does that world look like? You can consider what problems no longer exist, how do people live, work, or interact differently.",
-            type: "text",
-            placeholder: "My ideal world looks like...",
-            alwaysShow: true
-        },
-        {
-            id: "2", 
-            label: "What’s currently making it difficult to move into a career that contributes to your ideal world?",
+            label: "What’s currently making it difficult to move into a career that can give you more meaning and fulfillment?",
             type: "multiselect",
             options: [
                 { value: "I’m not sure which career path is right for me.", label: "I’m not sure which career path is right for me." },
@@ -32,7 +25,7 @@ const CareerForm = () => {
             alwaysShow: true
         },
         {
-            id: "3", 
+            id: "2", 
             label: "What are your existing skills and qualifications? Do remember to state any skills and experiences that may not seem career-worthy because you never know how they can give you an edge in your next move!",
             type: "text",
             placeholder: "I have 10 years of work experience in philanthropy with diploma in design...",
@@ -50,7 +43,7 @@ const CareerForm = () => {
         },
         {
             id: "5", 
-            label: "What are your plans in the next few months?",
+            label: "What's your career priority in the next few months?",
             type: "select",
             options: [
                 { value: "I would like to explore how to make my current job more engaging.", label: "I would like to explore how to make my current job more engaging." },
@@ -58,6 +51,13 @@ const CareerForm = () => {
                 { value: 'I would like to explore side hustles or start a business on my own.', label: 'I would like to explore side hustles or start a business on my own.' },
                 { value: "I'm not sure what my plans are.", label: "I'm not sure what my plans are." },
             ],
+            alwaysShow: true
+        },
+        {
+            id: "6", 
+            label: "Any other thoughts you would like to share for us to take into consideration when assessing your fit with a particular job e.g. new topics or skills you would like to develop?",
+            type: "text",
+            placeholder: "I would like to learn more about permaculture...",
             alwaysShow: true
         },
     ];
@@ -204,17 +204,17 @@ const CareerForm = () => {
 
     <form onSubmit={handleSubmit}>
         <h1 className="text-[#D6A36A] text-2xl md:text-3xl font-normal font-[DM_Sans] mb-8">
-        Imagining your ideal career paths
+        Tell us more about you
         </h1>
         <p className="text-[#586E75] text-lg md:text-xl font-normal font-[DM_Sans] mb-8">
-        Please respond to all the questions below so that we can generate the most meaningful career paths for you.
+        Please respond to all the questions below so that we can generate the most meaningful insights for FitCheck.
         </p>
         
         {careerQuestions.map((question) => (
             <div key={question.id} className="mb-8">
                 <label htmlFor={question.id} className="text-[#D6A36A] text-lg md:text-xl font-normal font-[DM_Sans]">
                     {question.label}
-                    {question.type === "multiselect" && "(Select up to 2 only)"}
+                    {question.type === "multiselect" && "(Select all that apply)"}
                 </label>
                 {renderQuestionInput(question)}
             </div> 
