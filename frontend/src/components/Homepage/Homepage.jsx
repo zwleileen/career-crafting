@@ -25,13 +25,6 @@ const Homepage = () => {
             <div
             className="bg-[#D6A36A] mb-10 px-5 py-5 rounded-2xl border-none font-[DM_Sans] hover:bg-[#e69c23] transition-colors cursor-pointer"
             >
-                <span className="font-bold text-lg">MicroShift</span>
-                <p className="mb-2 mt-2 text-base">Struggling to feel fulfilled at work? <br/> MicroShift suggests small but powerful actions to align your current job with your ideal tasks and workplace relationships.</p>
-            </div>
-
-            <div
-            className="bg-[#D6A36A] mb-10 px-5 py-5 rounded-2xl border-none font-[DM_Sans] hover:bg-[#e69c23] transition-colors cursor-pointer"
-            >
                 <span className="font-bold text-lg">ImpactLab</span>
                 <p className="mb-2 mt-2 text-base">Want to make an impact but don’t know where to start? <br/>ImpactLab suggests high-impact project ideas tailored to your vision of a better world, plus your unique skills and experiences.</p>
             </div>

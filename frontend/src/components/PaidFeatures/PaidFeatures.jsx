@@ -23,14 +23,6 @@ const PaidFeatures = () => {
             <div
             className="bg-[#D6A36A] mb-10 px-5 py-5 rounded-2xl border-none font-[DM_Sans]"
             >
-                <span className="font-bold text-lg">MicroShift</span>
-                <p className="mb-2 mt-2 text-base">Struggling to feel fulfilled at work? MicroShift suggests small but powerful actions to align your current job with your ideal tasks and workplace relationships. Learn how to redesign your role without shifting jobs!</p>
-                <p className="mb-2 text-base">Upgrade to unlock: Personalized job-crafting plan + a manager-friendly roadmap for making meaningful changes.</p>
-            </div>
-
-            <div
-            className="bg-[#D6A36A] mb-10 px-5 py-5 rounded-2xl border-none font-[DM_Sans]"
-            >
                 <span className="font-bold text-lg">ImpactLab</span>
                 <p className="mb-2 mt-2 text-base">Want to make an impact but don’t know where to start? ImpactLab suggests high-impact project ideas tailored to your vision of a better world, plus your unique skills and experiences.</p>
                 <p className="mb-2 text-base">Upgrade to unlock: Step-by-step project roadmap + expert-backed guidance to kickstart your idea.</p>

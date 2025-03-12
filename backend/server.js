@@ -13,8 +13,6 @@ const careerRouter = require("./controllers/careers");
 const jobkeywordsRouter = require("./controllers/jobkeywords");
 const imagineIdealRouter = require("./controllers/imagineideal");
 const fitCheckRouter = require("./controllers/fitcheck");
-// const matchJobsRouter = require("./controllers/matchjobs");
-// const imagineRouter = require("./controllers/imagine");
 
 // Connect to MongoDB using the connection string in the .env file
 mongoose.connect(process.env.MONGODB_URI);
@@ -24,7 +22,7 @@ mongoose.connection.on("connected", () => {
 });
 
 app.use(cors());
-app.use(express.json()); // ✅ Important: Allows Express to parse JSON requests
+app.use(express.json());
 app.use(morgan("dev"));
 
 app.use("/auth", authRouter);
@@ -34,8 +32,6 @@ app.use("/career", careerRouter);
 app.use("/jobkeywords", jobkeywordsRouter);
 app.use("/imagineideal", imagineIdealRouter);
 app.use("/fitcheck", fitCheckRouter);
-// app.use("/matchjobs", matchJobsRouter);
-// app.use("/imagine", imagineRouter);
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

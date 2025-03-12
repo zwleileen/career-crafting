@@ -127,10 +127,10 @@ const ImagineCareer = () => {
                 searches.map((job, index) => (
                 <div 
                   key={index} 
-                  className="flex flex-col justify-between h-35 w-35 p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"
+                  className="flex flex-col justify-between h-40 w-35 p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"
                   onClick={()=>navigate(`/careerpath/results/${job.responseId}`)}
                   >
-                  <h3 className="text-base font-semibold text-[#586E75]">{job.role}</h3>
+                  <h3 className="text-sm font-semibold text-[#586E75]">{job.role}</h3>
                   {/* <p className="text-base text-[#586E75]">{job.Detail}</p> */}
                   <span 
                   onClick={() => handleDelete(job.responseId)}
