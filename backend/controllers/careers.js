@@ -18,7 +18,6 @@ router.post("/", verifyToken, async (req, res) => {
     const worldVision = previous ? previous.worldVision : "";
     const valuesInsights = previous ? previous.valuesInsights : "";
 
-    // Check if a response already exists for this user
     let existingResponse = await Career.findOne({ userId });
 
     if (existingResponse) {
