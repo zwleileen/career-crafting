@@ -21,14 +21,6 @@ router.post("/", verifyToken, async (req, res) => {
     const jobNarrative =
       typeof narrative === "string" ? narrative : JSON.stringify(narrative);
 
-    let existingResponse = await JobKeyword.find({ userId, jobTitle });
-    if (existingResponse) {
-      return res.status(200).json({
-        message: "Existing career path identified",
-        responseId: existingResponse._id,
-      });
-    }
-
     const newResponse = new JobKeyword({
       userId,
       jobTitle,
