@@ -75,7 +75,7 @@ router.post("/results", async (req, res) => {
           content: `
             You are an AI assistant that generates **STRICTLY valid JSON** responses. 
             Your tasks are to: 
-            1. Summarise the user's responses about their ideal world and ideal career into a short, inspiring paragraph that encapsulates the kind of work user flourishes in and how it shapes the ideal world. Make it inspiring and motivating for the user to embark on this ideal path.
+            1. Summarise the user's responses about their ideal world and ideal career into a short, inspiring paragraph that encapsulates the kind of work user flourishes in and how it shapes the ideal world. Make it inspiring and motivating for the user to embark on this ideal path. Speak directly to the user.
             2. Generate a structured JSON object that describes an inspiring, impressionistic-style prompt for DALL·E.  
             
             Rules for Dall-E image prompt:

@@ -7,7 +7,7 @@ const ValuesForm = () => {
     const navigate = useNavigate();
     const [valuesAnswers, setValuesAnswers] = useState({});
     const { user, valuesId } = useContext(UserContext);
-    
+    const [processing, setProcessing] = useState(false);  
   
     const valuesQuestions = [
         {
@@ -205,6 +205,7 @@ const ValuesForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();        
+        setProcessing(true);
 
         const { topValues, topStrengths } = countTopValues(valuesAnswers);
 
@@ -235,6 +236,8 @@ const ValuesForm = () => {
         }
         } catch (error) {
         console.error("Form submission error:", error.message);
+        } finally {
+            setProcessing(false);
         }
     };
 
@@ -276,8 +279,9 @@ const ValuesForm = () => {
         <button 
         type="submit" 
         className="mt-6 px-6 py-3 bg-[#D6A36A] text-white font-medium rounded-lg hover:bg-[#e69c23] transition-colors focus:outline-none focus:ring-2 focus:ring-[#f9a825] focus:ring-offset-2 cursor-pointer"
+        disabled={processing}
         >
-        Submit
+        { processing ? "Processing..." : "Submit" }
         </button>
 
         <button 

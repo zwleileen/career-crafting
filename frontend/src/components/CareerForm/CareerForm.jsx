@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import * as careerService from "../../services/careerService"
+import * as fitCheckService from "../../services/fitCheckService"
 import { UserContext } from '../../contexts/UserContext';
 import { useNavigate } from "react-router";
 
@@ -105,7 +105,7 @@ const CareerForm = () => {
         console.log("Request body before submission:", JSON.stringify(requestBody, null, 2)); 
 
         try {
-        const response = await careerService.create(requestBody);
+        const response = await fitCheckService.create(requestBody);
         
             if (!response || response.error) {
                 throw new Error(response?.error || "Unexpected error");
@@ -113,7 +113,7 @@ const CareerForm = () => {
         
         
         // console.log("Response with insights:", response);
-
+        navigate('/fitcheck')
         } catch (error) {
         console.error("Form submission error:", error.message);
         }
@@ -185,7 +185,6 @@ const CareerForm = () => {
         } else if (question.type === "text") {
             return (
                 <textarea
-                    required
                     name={question.id}
                     id={question.id}
                     onChange={handleChange}

@@ -11,7 +11,7 @@ const CareerPath = () => {
     const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
     const { user, imagineId } = useContext(UserContext);
-     
+    const [processing, setProcessing] = useState(false);
 
     useEffect(() => {
         const fetchIdealWorld = async () => {
@@ -60,6 +60,7 @@ const CareerPath = () => {
 
     const handleCareerPaths = async (e) => {
         e.preventDefault();
+        setProcessing(true);
 
         const requestBody = ({ userId: user._id});
         try {
@@ -72,6 +73,8 @@ const CareerPath = () => {
             navigate("/careerpath/results")
         } catch (error) {
             console.error("Generate career paths error:", error.message);
+        } finally {
+          setProcessing(false);
         }
     }
   
@@ -97,8 +100,9 @@ const CareerPath = () => {
         type="submit" 
         onClick={handleCareerPaths}
         className="max-w-fit mt-8 px-6 py-3 bg-[#D6A36A] text-white font-medium rounded-lg hover:bg-[#e69c23] transition-colors focus:outline-none focus:ring-2 focus:ring-[#f9a825] focus:ring-offset-2 cursor-pointer"
+        disabled={processing}
         >
-        Generate Career Paths
+        { processing ? "Processing..." : "Generate Career Paths" }
         </button>       
         </div>
     

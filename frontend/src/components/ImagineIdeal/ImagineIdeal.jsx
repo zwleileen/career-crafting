@@ -11,6 +11,7 @@ const ImagineIdeal = () => {
     const [showResults, setShowResults] = useState(false);
     const [refreshKey, setRefreshKey] = useState(0);
     const navigate = useNavigate();
+    const [processing, setProcessing] = useState(false);
 
     const idealWorld = {
             id: "1", 
@@ -31,6 +32,7 @@ const ImagineIdeal = () => {
     
     const handleSubmit = async (e) => {
         e.preventDefault();        
+        setProcessing(true);
 
         const requestBody = user && user._id
         ? { responseId: responseId, userId: user._id, worldVision: idealWorldAnswers[idealWorld.id] || "" }
@@ -50,6 +52,8 @@ const ImagineIdeal = () => {
 
         } catch (error) {
         console.error("Form submission error:", error.message);
+        } finally {
+            setProcessing(false);
         }
     };
 
@@ -73,7 +77,7 @@ const ImagineIdeal = () => {
             onChange={handleChange}
             value={idealWorldAnswers[idealWorld.id] || ""}
             placeholder={idealWorld.placeholder}
-            rows={4}
+            rows={8}
             className="w-full p-3 border border-gray-200 rounded-lg mt-4 text-base font-[DM_Sans]"
         />
         
@@ -81,8 +85,9 @@ const ImagineIdeal = () => {
         <button 
         type="submit" 
         className="mt-6 px-6 py-3 bg-[#D6A36A] text-white font-medium rounded-lg hover:bg-[#e69c23] transition-colors focus:outline-none focus:ring-2 focus:ring-[#f9a825] focus:ring-offset-2 cursor-pointer"
+        disabled={processing}
         >
-        Submit
+        { processing ? "Processing..." : "Submit" }
         </button>
 
         <button 

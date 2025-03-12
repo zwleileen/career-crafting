@@ -3,6 +3,7 @@ const router = express.Router();
 const OpenAI = require("openai");
 const verifyToken = require("../middleware/verify-token");
 const FitCheck = require("../models/FitCheck.js");
+const ImagineIdeal = require("../models/ImagineIdeal.js");
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 router.post("/", verifyToken, async (req, res) => {
@@ -60,10 +61,10 @@ router.post("/", verifyToken, async (req, res) => {
 // Generate ChatGPT insights based on user responses
 router.post("/results", verifyToken, async (req, res) => {
   try {
-    const { responseId } = req.body;
+    const { userId } = req.body;
 
     // Fetch responses from MongoDB
-    const response = await FitCheck.findById(responseId);
+    const response = await FitCheck.findOne(userId);
     if (!response)
       return res.status(404).json({ message: "Response not found." });
 

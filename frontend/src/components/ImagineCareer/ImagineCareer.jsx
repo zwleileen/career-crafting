@@ -63,7 +63,11 @@ const ImagineCareer = () => {
     const handleDelete = async (deleteId) => {
       try {
         await jobKeywordService.deleteById(deleteId)
+        if (responseId !== deleteId) {
         navigate(`/careerpath/results/${responseId}`)
+        } else {
+          navigate('/careerpath/results')
+        }
       } catch (error) {
         console.error('Error deleting item:', error)
       }
@@ -116,7 +120,7 @@ const ImagineCareer = () => {
         </button>
       </div>
 
-      <div className="w-1/5 p-6 bg-white shadow-md rounded-md flex flex-col">
+      <div className="w-1/5 p-6 bg-white shadow-md rounded-md flex flex-col items-center text-center">
             <p className="font-[DM_Sans] mb-8 text-[#D6A36A] text-lg">List of career paths explored</p>
             <div className="space-y-4">
               {searches.length > 0 ? (
@@ -143,8 +147,8 @@ const ImagineCareer = () => {
       </div>
       </div>
 
-      <div className="p-6 bg-white shadow-md rounded-md flex flex-col items-center text-center">
-        <p className="text-base font-[DM_Sans] text-[#D6A36A] place-items-end">Upgrade your plan to find out how you can leverage on your skills and experiences to pursue desired career path and many more features!</p>
+      <div className="p-6 bg-white flex flex-col items-end text-end">
+        <p className="text-base font-[DM_Sans] text-[#D6A36A] max-w-150">Upgrade your plan to find out how you can leverage on your skills and experiences to pursue desired career path and many more features!</p>
         <button
         type="button" 
         onClick={() => navigate("/plan/features")}

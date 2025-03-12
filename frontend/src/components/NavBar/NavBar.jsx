@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import { UserContext } from '../../contexts/UserContext';
 
 const NavBar = () => {
-  const { user, setUser, valuesId, imagineId } = useContext(UserContext);
+  const { user, setUser, valuesId } = useContext(UserContext);
 
   const handleSignOut = () => {
     localStorage.removeItem('token');
@@ -20,9 +20,9 @@ const NavBar = () => {
         </div>
         { user ? (
         <>
-        <div className="absolute left-4 md: bottom-3 flex items-center cursor-pointer space-x-2" >
+        <div className="absolute left-4 md: bottom-3 flex items-center cursor-pointer space-x-5" >
             <Link 
-            to="/home"
+            to={ user?.status === "paid" ? "/home" : "/plan/features"}
             className="text-[#586E75] text-sm font-normal font-[DM_Sans] ml-2 hover:text-[#f9a825]"
             >
             Home
@@ -33,15 +33,22 @@ const NavBar = () => {
             to={`/values/results/${valuesId}`}
             className="text-[#586E75] text-sm font-normal font-[DM_Sans] ml-2 hover:text-[#f9a825]"
             >
-            Insights
+            Ideal Career Traits
             </Link>
             )}
+
+            <Link 
+            to={"/careerpath"}
+            className="text-[#586E75] text-sm font-normal font-[DM_Sans] ml-2 hover:text-[#f9a825]"
+            >
+            Ideal World
+            </Link>
 
             <Link 
             to={"/careerpath/results"}
             className="text-[#586E75] text-sm font-normal font-[DM_Sans] ml-2 hover:text-[#f9a825]"
             >
-            Career Paths
+            Ideal Career Paths
             </Link>
         </div>
 
