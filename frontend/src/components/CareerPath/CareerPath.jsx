@@ -7,9 +7,10 @@ import { UserContext } from "../../contexts/UserContext";
 
 const CareerPath = () => {
     const [summary, setSummary] = useState({});
+    const [image, setImage] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
-    const { user } = useContext(UserContext);
+    const { user, imagineId } = useContext(UserContext);
      
 
     useEffect(() => {
@@ -32,6 +33,13 @@ const CareerPath = () => {
                 setSummary(userData.dallEPrompt?.summary || "");
             }
 
+            const newImage = await imagineWorldService.generateImages(imagineId)
+            if (newImage) {
+              setImage(newImage.image);
+            } else {
+              setImage(null);
+            }
+
         } catch (error) {
           console.error("Error fetching data:", error.message);
           setSummary({});
@@ -40,7 +48,7 @@ const CareerPath = () => {
         }
       };
       fetchIdealWorld();
-    }, [user]);
+    }, [user, imagineId]);
 
     if (isLoading) {
       return (
@@ -75,10 +83,20 @@ const CareerPath = () => {
             <p className="text-lg mb-6 font-[DM_Sans] text-[#586E75] max-w-2xl">{summary}</p>
             )}
 
+            {image && (
+                <div className="mt-6">
+                <img 
+                    src={image} 
+                    alt="Ideal world" 
+                    className="w-full max-w-lg h-auto rounded-lg shadow-lg object-cover mx-auto"
+                />
+            </div>
+            )}
+
         <button
         type="submit" 
         onClick={handleCareerPaths}
-        className="max-w-fit mt-2 px-6 py-3 bg-[#D6A36A] text-white font-medium rounded-lg hover:bg-[#e69c23] transition-colors focus:outline-none focus:ring-2 focus:ring-[#f9a825] focus:ring-offset-2 cursor-pointer"
+        className="max-w-fit mt-8 px-6 py-3 bg-[#D6A36A] text-white font-medium rounded-lg hover:bg-[#e69c23] transition-colors focus:outline-none focus:ring-2 focus:ring-[#f9a825] focus:ring-offset-2 cursor-pointer"
         >
         Generate Career Paths
         </button>       

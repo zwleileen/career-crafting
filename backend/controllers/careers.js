@@ -95,16 +95,32 @@ router.post("/results", verifyToken, async (req, res) => {
                         "Why it fits": "Explanation",
                         "Narrative": "Suggestion"
                     },
-                                        {
+                    {
                         "Career path": "You must suggest a fourth career path that is still highly relevant to user's profile yet interestingly different and refreshing compared to the other suggested career paths.",
                         "Why it fits": "Explanation",
                         "Narrative": "Suggestion"
                     },
-                                        {
+                    {
                         "Career path": "You must suggest a fifth career path that is still highly relevant to user's profile yet interestingly different and refreshing compared to the other suggested career paths.",
                         "Why it fits": "Explanation",
                         "Narrative": "Suggestion"
-                    }
+                    },
+                    {
+                        "Career path": "You must suggest a sixth career path that is still highly relevant to user's profile yet interestingly different and refreshing compared to the other suggested career paths.",
+                        "Why it fits": "Explanation",
+                        "Narrative": "Suggestion"
+                    },
+                    {
+                        "Career path": "You must suggest a seventh career path that is still highly relevant to user's profile yet interestingly different and refreshing compared to the other suggested career paths.",
+                        "Why it fits": "Explanation",
+                        "Narrative": "Suggestion"
+                    },
+                    {
+                        "Career path": "You must suggest a eighth career path that is still highly relevant to user's profile yet interestingly different and refreshing compared to the other suggested career paths.",
+                        "Why it fits": "Explanation",
+                        "Narrative": "Suggestion"
+                    },
+
                 ],
                 }
             Do not return any extra text, just the JSON object. Be empathetic, encouraging, succinct and clear. Speak directly to the user, make them feel seen and understood, and be in awe at such brilliant suggestions and insights.
