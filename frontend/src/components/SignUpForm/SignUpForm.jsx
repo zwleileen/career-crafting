@@ -22,22 +22,30 @@ const SignUpForm = () => {
     const queryParams = new URLSearchParams(location.search);
     const responseId = queryParams.get("search");
 
-  const handleChange = (evt) => {
-    const { name, value } = evt.target;
-    const updatedFormData = { ...formData, [name]: value };
-    setFormData(updatedFormData);
 
-    if (name === 'password' || name === 'passwordConf') {
-        if (
-          (name === 'password' && value !== updatedFormData.passwordConf && updatedFormData.passwordConf) || 
-          (name === 'passwordConf' && value !== updatedFormData.password)
-        ) {
-          setMessage("Your passwords do not match.");
-        } else {
-          setMessage('');
-        }
-      }
-  };
+    const validatePassword = (password) => {
+      const minLength = 8;
+      const hasNumber = /\d/.test(password);
+      const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+    
+      return password.length >= minLength && hasNumber && hasSpecialChar;
+    };
+
+  const handleChange = (evt) => {
+  const { name, value } = evt.target;
+  const updatedFormData = { ...formData, [name]: value };
+  setFormData(updatedFormData);
+
+  if (name === 'password' || name === 'passwordConf') {
+    if (updatedFormData.password !== updatedFormData.passwordConf && updatedFormData.passwordConf) {
+      setMessage("Your passwords do not match.");
+    } else if (name === 'password' && !validatePassword(value)) {
+      setMessage("Password must be at least 8 characters, and include at least a number and a special character.");
+    } else {
+      setMessage('');
+    }
+  }
+};
 
   const handleSubmit = async (evt) => {
     evt.preventDefault();
@@ -70,7 +78,7 @@ const SignUpForm = () => {
   };
 
   const isFormInvalid = () => {
-    return !(username && password && password === passwordConf);
+    return !(username && password && password === passwordConf && validatePassword(password));
   };
 
   return (
@@ -79,9 +87,6 @@ const SignUpForm = () => {
         <h2 className="text-[#D6A36A] text-2xl md:text-3xl font-normal font-[DM_Sans] mb-8">
             Please sign up and create an account.
         </h2>
-        <p className="text-[#D6A36A] text-xl md:text-2xl font-normal font-[DM_Sans] mb-8">
-        {message}
-        </p>
         <form onSubmit={handleSubmit}>
         <div className=" text-[#586E75] text-lg md:text-xl font-normal font-[DM_Sans] space-x-2 mb-5">
           <label htmlFor='username'>Username:</label>
@@ -106,6 +111,11 @@ const SignUpForm = () => {
             onChange={handleChange}
             required
           />
+          {!validatePassword(password) && password.length > 0 && (
+          <p className="text-[#e69c23] text-sm mt-1">
+            {message}
+          </p>
+          )}
         </div>
         <div className=" text-[#586E75] text-lg md:text-xl font-normal font-[DM_Sans] space-x-2 mb-10">
           <label htmlFor='confirm'>Confirm Password:</label>
@@ -118,6 +128,9 @@ const SignUpForm = () => {
             onChange={handleChange}
             required
           />
+          <p className="text-[#e69c23] text-sm mt-1">
+            {message}
+          </p>
         </div>
         <div className=" text-[#586E75] text-lg md:text-xl font-normal font-[DM_Sans] space-x-2 mb-5">
           <label htmlFor='gender'>Gender you identify with:</label>

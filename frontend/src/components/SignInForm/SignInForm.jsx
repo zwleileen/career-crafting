@@ -34,9 +34,6 @@ const SignInForm = () => {
         <h2 className="text-[#D6A36A] text-2xl md:text-3xl font-normal font-[DM_Sans] mb-8">
             Please sign in to your account.
         </h2>
-        <p className="text-[#D6A36A] text-xl md:text-2xl font-normal font-[DM_Sans] mb-8">
-        {message}
-        </p>
       <form autoComplete='off' onSubmit={handleSubmit}>
         <div className=" text-[#586E75] text-lg md:text-xl font-normal font-[DM_Sans] space-x-2 mb-5">
           <label htmlFor='email'>Username:</label>
@@ -79,6 +76,9 @@ const SignInForm = () => {
             Cancel
         </button>
         </div>
+        <p className="text-[#e69c23] text-sm mt-4">
+          {message}
+        </p>
       </form>
     </div>
     </main>
