@@ -32,7 +32,7 @@ const FitCheck = () => {
                     throw new Error(response?.error || "Unexpected error");
                 }
                 setShowResults(true);
-                setRefreshKey(prevKey => prevKey + 1); //force IdealCareer to reload
+                setRefreshKey(prevKey => prevKey + 1); //force IdealWorld to reload
         
             // console.log("Response with insights:", response);
     
@@ -84,7 +84,7 @@ const FitCheck = () => {
             </div>
         </form>
     
-        {/* {showResults && <IdealCareer responseId={responseId} refreshKey={refreshKey} />} */}
+        {/* {showResults && <IdealWorld responseId={responseId} refreshKey={refreshKey} />} */}
     
         </div>
         </main>

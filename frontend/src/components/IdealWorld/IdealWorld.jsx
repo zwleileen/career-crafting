@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 import { UserContext } from "../../contexts/UserContext";
 
 
-const IdealCareer = ({responseId, refreshKey}) => {
+const IdealWorld = ({responseId, refreshKey}) => {
     const [image, setImage] = useState(null);
     const [summary, setSummary] = useState({});
     const [isLoading, setIsLoading] = useState(true);
@@ -97,4 +97,4 @@ const IdealCareer = ({responseId, refreshKey}) => {
 
 }
 
-export default IdealCareer
+export default IdealWorld

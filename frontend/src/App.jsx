@@ -11,12 +11,12 @@ import ValuesResults from './components/ValuesResults/ValuesResults';
 import CareerResults from './components/CareerResults/CareerResults';
 import ImagineCareer from './components/ImagineCareer/ImagineCareer';
 import ImagineIdeal from './components/ImagineIdeal/ImagineIdeal';
-import IdealCareer from './components/IdealCareer/IdealCareer';
 import CareerPath from './components/CareerPath/CareerPath';
 import PaidFeatures from './components/PaidFeatures/PaidFeatures';
 import Payment from './components/Payment/Payment';
 import FitCheck from './components/FitCheck/FitCheck';
 import CareerForm from './components/CareerForm/CareerForm';
+import IdealWorld from './components/IdealWorld/IdealWorld';
 
 function App() {
   const { user } = useContext(UserContext);
@@ -34,7 +34,7 @@ return (
     <Route path="/values/new" element={<ValuesForm />} />
     <Route path="/values/results/:responseId" element={<ValuesResults setTopValues={setTopValues} topValues={topValues} setTopStrengths={setTopStrengths} topStrengths={topStrengths} />} />
     <Route path='/ideal/:responseId' element={<ImagineIdeal />}>
-      <Route path='results' element={<IdealCareer />} />
+      <Route path='results' element={<IdealWorld />} />
     </Route> 
     <Route path='/sign-up' element={<SignUpForm />} />
     <Route path='/sign-in' element={<SignInForm />} />

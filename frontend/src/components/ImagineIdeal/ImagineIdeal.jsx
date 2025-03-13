@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import * as imagineWorldService from "../../services/imagineWorldService"
 import { UserContext } from '../../contexts/UserContext';
 import { useNavigate, useParams } from "react-router";
-import IdealCareer from "../IdealCareer/IdealCareer";
+import IdealWorld from "../IdealWorld/IdealWorld";
 
 const ImagineIdeal = () => {
     const { user } = useContext(UserContext);
@@ -46,7 +46,7 @@ const ImagineIdeal = () => {
                 throw new Error(response?.error || "Unexpected error");
             }
             setShowResults(true);
-            setRefreshKey(prevKey => prevKey + 1); //force IdealCareer to reload
+            setRefreshKey(prevKey => prevKey + 1); //force IdealWorld to reload
     
         // console.log("Response with insights:", response);
 
@@ -100,7 +100,7 @@ const ImagineIdeal = () => {
         </div>
     </form>
 
-    {showResults && <IdealCareer responseId={responseId} refreshKey={refreshKey} />}
+    {showResults && <IdealWorld responseId={responseId} refreshKey={refreshKey} />}
 
     </div>
     </main>
