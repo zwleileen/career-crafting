@@ -2,23 +2,21 @@ const nodemailer = require("nodemailer");
 require("dotenv").config();
 
 const transporter = nodemailer.createTransport({
-  service: "gmail",
+  service: "Gmail",
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
   },
 });
 
-const sendAuthEmail = async (userEmail, token) => {
-  const link = `http://localhost:3000/verify-email?token=${token}`;
-
+const sendAuthEmail = async (userEmail, verificationUrl) => {
   const mailOptions = {
-    from: process.env.EMAIL_USER,
+    from: `Career Crafting Team <${process.env.EMAIL_USER}>`,
     to: userEmail,
     subject: "Verify Your Email",
     html: `<h3>Welcome to Arvo!</h3>
            <p>Click the link below to verify your email:</p>
-           <a href="${link}">Verify Email</a>`,
+           <a href="${verificationUrl}">Verify Email</a>`,
   };
 
   try {

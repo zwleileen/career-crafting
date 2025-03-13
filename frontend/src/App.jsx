@@ -17,6 +17,7 @@ import Payment from './components/Payment/Payment';
 import FitCheck from './components/FitCheck/FitCheck';
 import CareerForm from './components/CareerForm/CareerForm';
 import IdealWorld from './components/IdealWorld/IdealWorld';
+import VerifyEmail from './components/VerifyEmail/VerifyEmail';
 
 function App() {
   const { user } = useContext(UserContext);
@@ -37,6 +38,7 @@ return (
       <Route path='results' element={<IdealWorld />} />
     </Route> 
     <Route path='/sign-up' element={<SignUpForm />} />
+    <Route path="/verify-email" element={<VerifyEmail />} />
     <Route path='/sign-in' element={<SignInForm />} />
         
     {/* Protected routes - only available when logged in */}

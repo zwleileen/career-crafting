@@ -9,21 +9,15 @@ const signUp = async (formData) => {
     });
 
     const data = await res.json();
-    // console.log(data);
 
-    if (data.err) {
-      throw new Error(data.err);
+    if (!res.ok) {
+      throw new Error(data?.err || "Signup failed.");
     }
 
-    if (data.token) {
-      localStorage.setItem("token", data.token);
-      return JSON.parse(atob(data.token.split(".")[1])).payload;
-    }
-
-    throw new Error("Invalid response from server");
+    return data;
   } catch (err) {
-    console.log(err);
-    throw new Error(err);
+    console.error("Signup error:", err.message);
+    throw new Error(err.message);
   }
 };
 

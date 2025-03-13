@@ -2,22 +2,22 @@ import { useState, useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { signUp } from '../../services/authService';
 import { UserContext } from '../../contexts/UserContext';
-import * as valuesService from "../../services/valuesService"
-import * as imagineWorldService from "../../services/imagineWorldService"
+// import * as valuesService from "../../services/valuesService"
+// import * as imagineWorldService from "../../services/imagineWorldService"
 
 
 const SignUpForm = () => {
     const navigate = useNavigate();
-    const { setUser } = useContext(UserContext);
+    // const { setUser } = useContext(UserContext);
     const [message, setMessage] = useState('');
     const [formData, setFormData] = useState({
-        username: '',
+        email: '',
         password: '',
         passwordConf: '',
         gender: '',
     });
 
-    const { username, password, passwordConf, gender } = formData;
+    const { email, password, passwordConf, gender } = formData;
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const responseId = queryParams.get("search");
@@ -47,38 +47,54 @@ const SignUpForm = () => {
   }
 };
 
+  // const handleSubmit = async (evt) => {
+  //   evt.preventDefault();
+  //   try {
+  //       const newUser = await signUp(formData);
+
+  //       if (!newUser || !newUser._id) {
+  //           throw new Error("User ID is missing from response");
+  //       }
+
+  //       setUser(newUser);
+  //       console.log("Extracted responseId:", responseId);
+      
+  //       if (responseId) {
+  //       await valuesService.update(responseId, newUser._id);
+  //   } else {
+  //       console.warn("No responseId found, skipping update.");
+  //   }
+  //       const referenceId = responseId
+  //       if (referenceId) {
+  //           await imagineWorldService.update(referenceId, newUser._id);
+  //       } else {
+  //           console.warn("No referenceId found, skipping update.");
+  //       }
+
+  //     navigate("/careerpath");
+  //   } catch (err) {
+  //     setMessage(err.message);
+  //   }
+  // };
+
   const handleSubmit = async (evt) => {
     evt.preventDefault();
     try {
-        const newUser = await signUp(formData);
-
-        if (!newUser || !newUser._id) {
-            throw new Error("User ID is missing from response");
-        }
-
-        setUser(newUser);
-        console.log("Extracted responseId:", responseId);
-      
-        if (responseId) {
-        await valuesService.update(responseId, newUser._id);
-    } else {
-        console.warn("No responseId found, skipping update.");
-    }
-        const referenceId = responseId
-        if (referenceId) {
-            await imagineWorldService.update(referenceId, newUser._id);
-        } else {
-            console.warn("No referenceId found, skipping update.");
-        }
-
-      navigate("/careerpath");
+      const response = await signUp(formData);
+  
+      if (!response || response.error) {
+        throw new Error(response?.error || "Signup failed.");
+      }
+  
+      setMessage(response.Message);
+  
     } catch (err) {
       setMessage(err.message);
     }
   };
 
   const isFormInvalid = () => {
-    return !(username && password && password === passwordConf && validatePassword(password));
+    return !(email && password && password === passwordConf && validatePassword(password));
   };
 
   return (
@@ -89,13 +105,13 @@ const SignUpForm = () => {
         </h2>
         <form onSubmit={handleSubmit}>
         <div className=" text-[#586E75] text-lg md:text-xl font-normal font-[DM_Sans] space-x-2 mb-5">
-          <label htmlFor='username'>Username:</label>
+          <label htmlFor='email'>Email:</label>
           <input
             className="border-1 border-[#D6A36A] rounded-lg h-10 w-50 indent-2"
-            type='text'
+            type='email'
             id='name'
-            value={username}
-            name='username'
+            value={email}
+            name='email'
             onChange={handleChange}
             required
           />

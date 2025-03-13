@@ -9,8 +9,8 @@ const saltRounds = 12;
 
 router.post("/sign-up", async (req, res) => {
   try {
-    const { username, password, gender, email } = req.body;
-    const userInDatabase = await User.findOne({ username: req.body.username });
+    const { email, password, gender } = req.body;
+    const userInDatabase = await User.findOne({ email: req.body.email });
 
     if (userInDatabase) {
       return res.status(409).json({ err: "Username already taken." });
@@ -19,7 +19,6 @@ router.post("/sign-up", async (req, res) => {
     const hashedPassword = bcrypt.hashSync(password, saltRounds);
 
     const user = await User.create({
-      username,
       email,
       hashedPassword,
       gender,
@@ -34,14 +33,14 @@ router.post("/sign-up", async (req, res) => {
     // };
 
     //token generated for email auth
-    const token = jwt.sign({ email }, process.env.JWT_SECRET, {
+    const emailToken = jwt.sign({ email: user.email }, process.env.JWT_SECRET, {
       expiresIn: "1d",
     });
-    await sendAuthEmail(email, token);
+    const verificationUrl = `${process.env.FRONTEND_URL}/verify-email?token=${emailToken}`;
+    await sendAuthEmail(user.email, verificationUrl);
 
     res.status(201).json({
-      message:
-        "User registered successfully. Please check your email for verification.",
+      message: "Sign-up successful. Check your email to verify your account.",
     });
   } catch (err) {
     res.status(500).json({ err: err.message });
@@ -81,7 +80,7 @@ router.get("/verify-email", async (req, res) => {
 
 router.post("/sign-in", async (req, res) => {
   try {
-    const user = await User.findOne({ username: req.body.username });
+    const user = await User.findOne({ email: req.body.email });
     if (!user) {
       return res.status(401).json({ err: "Invalid credentials." });
     }
@@ -97,15 +96,13 @@ router.post("/sign-in", async (req, res) => {
       user.hashedPassword
     );
     if (!isPasswordCorrect) {
-      return res
-        .status(401)
-        .json({
-          err: "Invalid credentials. Please check your username and password.",
-        });
+      return res.status(401).json({
+        err: "Invalid credentials. Please check your username and password.",
+      });
     }
 
     const payload = {
-      username: user.username,
+      email: user.email,
       _id: user._id,
       gender: user.gender,
       status: user.status,
@@ -130,7 +127,7 @@ router.post("/refresh-token/:userId", async (req, res) => {
     }
 
     const payload = {
-      username: user.username,
+      email: user.email,
       _id: user._id,
       gender: user.gender,
       status: user.status,

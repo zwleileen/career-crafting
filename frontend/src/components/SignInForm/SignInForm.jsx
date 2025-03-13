@@ -8,7 +8,7 @@ const SignInForm = () => {
   const { setUser } = useContext(UserContext);
   const [message, setMessage] = useState('');
   const [formData, setFormData] = useState({
-    username: '',
+    email: '',
     password: '',
   });
 
@@ -36,14 +36,14 @@ const SignInForm = () => {
         </h2>
       <form autoComplete='off' onSubmit={handleSubmit}>
         <div className=" text-[#586E75] text-lg md:text-xl font-normal font-[DM_Sans] space-x-2 mb-5">
-          <label htmlFor='email'>Username:</label>
+          <label htmlFor='email'>Email:</label>
           <input
             className="border-1 border-[#D6A36A] rounded-lg h-10 w-50 indent-2"
-            type='text'
+            type='email'
             autoComplete='off'
-            id='username'
-            value={formData.username}
-            name='username'
+            id='email'
+            value={formData.email}
+            name='email'
             onChange={handleChange}
             required
           />
