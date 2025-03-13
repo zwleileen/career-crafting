@@ -19,7 +19,7 @@ const CareerResults = () => {
 
           if (user && user._id) {
             const data = await careerService.show(user._id);
-            // console.log("Fetched values results:", data);
+            console.log("Fetched values results:", data);
 
             if (!data) {
                 setResponse(null);
@@ -77,38 +77,6 @@ const CareerResults = () => {
         }
     }
  
-    //     const handleImagineCareer = async () => {
-    //     try {
-    //         if (selectedRoleIndex === null) {
-    //             return;
-    //         };
-
-    //         const selectedCareer = response["Possible career paths"][selectedRoleIndex];
-    //         const careerPath = selectedCareer["Career path"];
-    //         const whyItFits = selectedCareer["Why it fits"];
-    //         const narrative = selectedCareer["Narrative"];
-
-
-    //         const result = await imagineService.create({
-    //             userId: user._id,
-    //             careerPath: careerPath,
-    //             whyItFits: whyItFits,
-    //             narrative: narrative
-    //         });
-
-    //         if (!result || result.error) {
-    //             throw new Error(result?.error || "Unexpected error");
-    //         }
-
-    //         if (result.responseId) {
-    //             localStorage.setItem("latestResponseId:", result.responseId)
-    //         }
-    //             navigate(`/career/imagine/${result.responseId}`);
-    //     } catch (error) {
-    //         console.error("Error saving career path:", error);
-    //     }
-    // }
-
     if (isLoading) {
       return (
         <div className="flex justify-center items-center h-64">

@@ -104,9 +104,21 @@ const show = async (userId) => {
     const res = await fetch(`${BASE_URL}/${userId}`, {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     });
-    return await res.json();
+
+    let responseData = await res.json();
+
+    if (typeof responseData === "string") {
+      try {
+        responseData = JSON.parse(responseData); // Explicitly parse if it's a string
+      } catch (error) {
+        console.error("Error parsing API response:", error);
+        responseData = null; // Prevent app crash
+      }
+    }
+
+    return responseData;
   } catch (error) {
-    console.error("Error fetching status:", error);
+    console.log("Error fetching career paths:", error);
     return null;
   }
 };
