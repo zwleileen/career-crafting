@@ -79,6 +79,7 @@ const SignUpForm = () => {
 
   const handleSubmit = async (evt) => {
     evt.preventDefault();
+    setMessage("");
     try {
       const response = await signUp(formData);
   
@@ -86,7 +87,7 @@ const SignUpForm = () => {
         throw new Error(response?.error || "Signup failed.");
       }
   
-      setMessage(response.Message);
+      setMessage(response.message);
   
     } catch (err) {
       setMessage(err.message);
