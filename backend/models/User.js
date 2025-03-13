@@ -5,6 +5,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  email: { type: String, required: true, unique: true },
   hashedPassword: {
     type: String,
     minLength: 4,
@@ -20,6 +21,7 @@ const userSchema = new mongoose.Schema({
     enum: ["paid", ""], // Allows only "paid" or ""
     default: "",
   },
+  verified: { type: Boolean, default: false },
 });
 
 userSchema.set("toJSON", {
