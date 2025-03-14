@@ -21,7 +21,23 @@ mongoose.connection.on("connected", () => {
   console.log(`Connected to MongoDB ${mongoose.connection.name}.`);
 });
 
-app.use(cors());
+// Configure CORS with more specific options
+const corsOptions = {
+  origin: ["https://career-crafting.vercel.app", "http://localhost:3000"], // Allow all origins, or specify your frontend URL like 'http://localhost:3000'
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: [
+    "Origin",
+    "X-Requested-With",
+    "Content-Type",
+    "Accept",
+    "Authorization",
+  ],
+  credentials: true, // Allow cookies if your app uses them
+  optionsSuccessStatus: 200, // Some legacy browsers choke on 204
+};
+
+app.use(cors(corsOptions));
+
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(express.static("public"));
