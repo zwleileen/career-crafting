@@ -5,6 +5,7 @@ const cors = require("cors");
 const OpenAI = require("openai");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
+const path = require("path");
 
 const authRouter = require("./controllers/auth");
 const usersRouter = require("./controllers/users");
@@ -24,6 +25,7 @@ mongoose.connection.on("connected", () => {
 app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
+app.use(express.static("public"));
 
 app.use("/auth", authRouter);
 app.use("/users", usersRouter);
@@ -32,10 +34,6 @@ app.use("/career", careerRouter);
 app.use("/jobkeywords", jobkeywordsRouter);
 app.use("/imagineideal", imagineIdealRouter);
 app.use("/fitcheck", fitCheckRouter);
-
-const path = require("path");
-// Serve static files
-app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/", (req, res) => {
   res.send("Backend is running on Vercel!");
