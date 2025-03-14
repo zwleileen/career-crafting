@@ -33,7 +33,10 @@ app.use("/jobkeywords", jobkeywordsRouter);
 app.use("/imagineideal", imagineIdealRouter);
 app.use("/fitcheck", fitCheckRouter);
 
-app.get("/", (req, res) => {
-  res.send("Backend is running on Vercel!");
-});
-module.exports = app;
+// app.get("/", (req, res) => {
+//   res.send("Backend is running on Vercel!");
+// });
+// module.exports = app;
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
