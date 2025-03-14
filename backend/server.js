@@ -34,6 +34,16 @@ app.use("/imagineideal", imagineIdealRouter);
 app.use("/fitcheck", fitCheckRouter);
 app.use(express.static("public"));
 
+const path = require("path");
+
+app.get("/favicon.ico", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "favicon.ico"));
+});
+
+app.get("/favicon.png", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "favicon.png"));
+});
+
 app.get("/", (req, res) => {
   res.send("Backend is running on Vercel!");
 });
