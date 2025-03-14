@@ -69,6 +69,7 @@ router.post("/results", async (req, res) => {
     // Call OpenAI to analyze the responses
     const chatResponse = await openai.chat.completions.create({
       model: "gpt-4",
+      response_format: "json",
       messages: [
         {
           role: "system",
@@ -104,10 +105,11 @@ router.post("/results", async (req, res) => {
       insight = JSON.parse(insight);
       console.log("Parsed AI insights:", insight);
     } catch (error) {
-      console.error("Failed to parse JSON from ChatGPT:", insight);
+      console.error("JSON Parsing Error:", insight);
       return res.status(500).json({
         message: "Invalid AI response format",
-        error: "AI response is not valid JSON",
+        error: error.message,
+        rawResponse: insight,
       });
     }
 
