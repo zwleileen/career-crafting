@@ -33,4 +33,7 @@ app.use("/jobkeywords", jobkeywordsRouter);
 app.use("/imagineideal", imagineIdealRouter);
 app.use("/fitcheck", fitCheckRouter);
 
+app.get("/", (req, res) => {
+  res.send("Backend is running on Vercel!");
+});
 module.exports = app;
