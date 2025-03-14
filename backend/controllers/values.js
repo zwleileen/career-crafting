@@ -69,7 +69,6 @@ router.post("/results", async (req, res) => {
     // Call OpenAI to analyze the responses
     const chatResponse = await openai.chat.completions.create({
       model: "gpt-4",
-      response_format: { type: "json_object" },
       messages: [
         {
           role: "system",
