@@ -33,10 +33,13 @@ const corsOptions = {
     "Authorization",
   ],
   credentials: true, // Allow cookies if your app uses them
-  optionsSuccessStatus: 200, // Some legacy browsers choke on 204
+  optionsSuccessStatus: 204, // Some legacy browsers choke on 204
 };
 
 app.use(cors(corsOptions));
+app.options("*", (req, res) => {
+  res.status(204).end(); // Prevents redirections by returning a proper status
+});
 
 app.use(express.json());
 app.use(morgan("dev"));
