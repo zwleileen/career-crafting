@@ -23,7 +23,7 @@ mongoose.connection.on("connected", () => {
 
 // Configure CORS with more specific options
 const corsOptions = {
-  origin: ["https://career-crafting.vercel.app", "http://localhost:3000"], // Allow all origins, or specify your frontend URL like 'http://localhost:3000'
+  origin: ["https://career-crafting.vercel.app/", "http://localhost:3000"], // Allow all origins, or specify your frontend URL like 'http://localhost:3000'
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: [
     "Origin",
@@ -45,13 +45,13 @@ app.use(express.json());
 app.use(morgan("dev"));
 app.use(express.static("public"));
 
-app.use("/auth", authRouter);
-app.use("/users", usersRouter);
-app.use("/values", valuesRouter);
-app.use("/career", careerRouter);
-app.use("/jobkeywords", jobkeywordsRouter);
-app.use("/imagineideal", imagineIdealRouter);
-app.use("/fitcheck", fitCheckRouter);
+app.use("auth", authRouter);
+app.use("users", usersRouter);
+app.use("values", valuesRouter);
+app.use("career", careerRouter);
+app.use("jobkeywords", jobkeywordsRouter);
+app.use("imagineideal", imagineIdealRouter);
+app.use("fitcheck", fitCheckRouter);
 
 app.get("/", (req, res) => {
   res.send("Backend is running on Vercel!");
