@@ -1,19 +1,13 @@
 {
     "version": 2,
     "builds": [{ "src": "server.js", "use": "@vercel/node" }],
-    "functions": {
-        "server.js": {
-        "maxDuration": 40
-        }
-    },
     "routes": [
-      { "src": "/values(.*)", "dest": "/server.js" },
-      { "src": "/auth(.*)", "dest": "/server.js" },
-      { "src": "/users(.*)", "dest": "/server.js" },
-      { "src": "/career(.*)", "dest": "/server.js" },
-      { "src": "/jobkeywords(.*)", "dest": "/server.js" },
-      { "src": "/imagineideal(.*)", "dest": "/server.js" },
-      { "src": "/fitcheck(.*)", "dest": "/server.js" },
+      { "src": "/favicon.ico", "dest": "/public/favicon.ico" },
+      { "src": "/favicon.png", "dest": "/public/favicon.png" },
       { "src": "/(.*)", "dest": "/server.js" }
-    ]
+    ],
+    "staticFiles": {
+      "public/favicon.ico": "public/favicon.ico",
+      "public/favicon.png": "public/favicon.png"
+    }
   }
