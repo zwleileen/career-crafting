@@ -1,13 +1,12 @@
 {
     "version": 2,
-    "builds": [{ "src": "server.js", "use": "@vercel/node" }],
+    "builds": [
+      { "src": "server.js", "use": "@vercel/node" },
+      { "src": "public/**", "use": "@vercel/static" }
+    ],
     "routes": [
       { "src": "/favicon.ico", "dest": "/public/favicon.ico" },
       { "src": "/favicon.png", "dest": "/public/favicon.png" },
       { "src": "/(.*)", "dest": "/server.js" }
-    ],
-    "staticFiles": {
-      "public/favicon.ico": "public/favicon.ico",
-      "public/favicon.png": "public/favicon.png"
-    }
+    ]
   }
