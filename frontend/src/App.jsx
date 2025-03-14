@@ -38,7 +38,7 @@ return (
       <Route path='results' element={<IdealWorld />} />
     </Route> 
     <Route path='/sign-up' element={<SignUpForm />} />
-    <Route path="/verify-email" element={<VerifyEmail />} />
+    <Route path="/auth/verify-email" element={<VerifyEmail />} />
     <Route path='/sign-in' element={<SignInForm />} />
         
     {/* Protected routes - only available when logged in */}
