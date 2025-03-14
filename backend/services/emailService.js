@@ -14,7 +14,7 @@ const sendAuthEmail = async (userEmail, verificationUrl) => {
     from: `Career Crafting Team <${process.env.EMAIL_USER}>`,
     to: userEmail,
     subject: "Verify Your Email",
-    html: `<h3>Welcome to Arvo!</h3>
+    html: `<h3>Welcome to Career Crafting App!</h3>
            <p>Click the link below to verify your email:</p>
            <a href="${verificationUrl}">Verify Email</a>`,
   };

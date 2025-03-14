@@ -18,7 +18,7 @@ const VerifyEmail = () => {
 
       try {
         const res = await fetch(
-          `${import.meta.env.VITE_BACK_END_SERVER_URL}/auth/verify-email?token=${token}`
+          `${import.meta.env.VITE_BACK_END_SERVER_URL}/auth/auth/verify-email?token=${token}`
         );
         const data = await res.json();
 
