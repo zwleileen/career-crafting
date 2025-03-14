@@ -78,14 +78,15 @@ router.post("/results", async (req, res) => {
             Your responses should feel like a mix of a career coach, psychologist, and industry mentor—blending self-awareness, motivation, and actionable guidance.
             Your goal is to analyze the user's responses and generate deeply insightful career reflections that make them feel seen, validated, and inspired, while also offering concrete next steps they can act on immediately.
           
-            Important: Present the response in structured JSON format as follows:
+            **IMPORTANT rules:** 
+            - Ensure your response is strictly valid JSON. Do not include any line breaks within the text values of your JSON fields.
+            - Do not return any extra text, just the JSON object. Be empathetic, encouraging, succinct and clear. Speak directly to the user, make them feel seen and understood, and be in awe at such brilliant suggestions and insights. Always end with a motivating statement that inspires action.                      
+            - Present the response in structured JSON format as follows:
             {
               "Top values": "Identify the user's core values & how they shape their work fulfillment.",
               "Top strengths": "Explain how their strengths make them unique & valuable in the workforce.",
               "Ideal career": "Highlight the intersection of their values + strengths in real-world career scenarios. Focus on describing the ideal work environment, impact of the work, job nature and relationships where they would flourish. Do not suggest job roles as we want to allow imagination and inspiration. Make this feel deep, thoughtful and empowering.",
             }
-            IMPORTANT: Ensure your response is strictly valid JSON. Do not include any line breaks within the text values of your JSON fields.
-            Do not return any extra text, just the JSON object. Be empathetic, encouraging, succinct and clear. Speak directly to the user, make them feel seen and understood, and be in awe at such brilliant suggestions and insights. Always end with a motivating statement that inspires action.          
             `,
         },
         {
