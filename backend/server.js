@@ -5,7 +5,6 @@ const cors = require("cors");
 const OpenAI = require("openai");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
-const path = require("path");
 
 const authRouter = require("./controllers/auth");
 const usersRouter = require("./controllers/users");
