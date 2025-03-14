@@ -33,8 +33,8 @@ app.use("/jobkeywords", jobkeywordsRouter);
 app.use("/imagineideal", imagineIdealRouter);
 app.use("/fitcheck", fitCheckRouter);
 
-app.get("/favicon.png", (req, res) => res.status(204));
-app.get("/favicon.ico", (req, res) => res.status(204));
+app.get("/favicon.png", (req, res) => res.status(204).end()); //respond instantly w no content when vercel calls for it
+app.get("/favicon.ico", (req, res) => res.status(204)).end();
 
 app.get("/", (req, res) => {
   res.send("Backend is running on Vercel!");
