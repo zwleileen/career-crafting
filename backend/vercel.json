@@ -1,5 +1,14 @@
 {
     "version": 2,
     "builds": [{ "src": "server.js", "use": "@vercel/node" }],
-    "routes": [{ "src": "/(.*)", "dest": "/server.js" }]
+    "routes": [
+      { "src": "/values(.*)", "dest": "/server.js" },
+      { "src": "/auth(.*)", "dest": "/server.js" },
+      { "src": "/users(.*)", "dest": "/server.js" },
+      { "src": "/career(.*)", "dest": "/server.js" },
+      { "src": "/jobkeywords(.*)", "dest": "/server.js" },
+      { "src": "/imagineideal(.*)", "dest": "/server.js" },
+      { "src": "/fitcheck(.*)", "dest": "/server.js" },
+      { "src": "/(.*)", "dest": "/server.js" }
+    ]
   }
