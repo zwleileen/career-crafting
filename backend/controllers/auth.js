@@ -69,12 +69,18 @@ router.get("/verify-email", async (req, res) => {
     );
 
     if (!user) {
-      return res.status(404).json({ err: "User not found." });
+      return res.redirect(
+        `${process.env.FRONTEND_URL}/auth/verify-email?verified=false`
+      );
     }
 
-    res.status(200).json({ message: "Email verified successfully!" });
+    return res.redirect(
+      `${process.env.FRONTEND_URL}/auth/verify-email?verified=true`
+    );
   } catch (err) {
-    res.status(500).json({ err: err.message });
+    return res.redirect(
+      `${process.env.FRONTEND_URL}/auth/verify-email?verified=false`
+    );
   }
 });
 

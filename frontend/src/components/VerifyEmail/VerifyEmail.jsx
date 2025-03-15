@@ -7,33 +7,16 @@ const VerifyEmail = () => {
   const location = useLocation();
 
   useEffect(() => {
-    const verifyEmail = async () => {
-      const queryParams = new URLSearchParams(location.search);
-      const token = queryParams.get("token");
+    const queryParams = new URLSearchParams(location.search);
+    const verified = queryParams.get("verified");
 
-      if (!token) {
-        setMessage("Invalid verification link.");
-        return;
-      }
-
-      try {
-        const res = await fetch(
-          `${import.meta.env.VITE_BACK_END_SERVER_URL}/auth/verify-email?token=${token}`
-        );
-        const data = await res.json();
-
-        if (!res.ok) {
-          throw new Error(data.err || "Verification failed.");
-        }
-
-        setMessage("Email verified successfully! Redirecting to login...");
-        setTimeout(() => navigate("/sign-in"), 3000);
-      } catch (error) {
-        setMessage(error.message);
-      }
-    };
-
-    verifyEmail();
+    if (verified === "true") {
+      setMessage("Email verified successfully! Redirecting to login...");
+      setTimeout(() => navigate("/sign-in"), 3000);
+    } else {
+      setMessage("Email verification failed. Please try again.");
+      setTimeout(() => navigate("/sign-up"), 5000);
+    }
   }, [location, navigate]);
 
   return (
