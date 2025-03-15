@@ -21,6 +21,24 @@ mongoose.connection.on("connected", () => {
   console.log(`Connected to MongoDB ${mongoose.connection.name}.`);
 });
 
+const connectWithRetry = () => {
+  console.log("Attempting to connect to MongoDB...");
+  mongoose
+    .connect(process.env.MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    })
+    .then(() => {
+      console.log("Connected to MongoDB!");
+    })
+    .catch((err) => {
+      console.error("MongoDB connection error:", err);
+      setTimeout(connectWithRetry, 5000); // Retry after 5 seconds
+    });
+};
+
+connectWithRetry();
+
 // Configure CORS with more specific options
 const corsOptions = {
   origin: ["https://career-crafting.vercel.app", "http://localhost:3000"], // Allow all origins, or specify your frontend URL like 'http://localhost:3000'
