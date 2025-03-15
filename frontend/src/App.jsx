@@ -46,7 +46,7 @@ return (
     <Route path='/careerpath' element={user ? <CareerPath /> : <Navigate to="/" />} />
     <Route path='/careerpath/results' element={user ? <CareerResults />: <Navigate to="/" />} />
     <Route path="/careerpath/results/:responseId" element={user ? (<ImagineCareer />) : <Navigate to="/" />} />
-    <Route path='/plan/features' element={user ? <PaidFeatures />: <Navigate to="/" />} />
+    <Route path='/plan/features/:responseId' element={user ? <PaidFeatures />: <Navigate to="/" />} />
     <Route path='/upgrade' element={user? <Payment />: <Navigate to="/" />} />
 
     {/* Protected routes - only available when paid */}

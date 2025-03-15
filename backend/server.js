@@ -41,7 +41,21 @@ connectWithRetry();
 
 // Configure CORS with more specific options
 const corsOptions = {
-  origin: ["https://career-crafting.vercel.app", "http://localhost:3000"], // Allow all origins, or specify your frontend URL like 'http://localhost:3000'
+  origin: function (origin, callback) {
+    const allowedOrigins = [
+      "https://career-crafting.vercel.app",
+      "http://localhost:3000",
+      "http://localhost:5174", // Add this line to allow frontend running on Vite (port 5174)
+    ];
+
+    // Allow requests with no origin (e.g., Postman, backend calls)
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      console.error("Blocked CORS request from:", origin);
+      callback(new Error("CORS Not Allowed"));
+    }
+  },
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: [
     "Origin",
@@ -50,13 +64,16 @@ const corsOptions = {
     "Accept",
     "Authorization",
   ],
-  credentials: true, // Allow cookies if your app uses them
-  preflightContinue: false, // Ensure the preflight request is terminated correctly
-  optionsSuccessStatus: 204, // Some legacy browsers choke on 204
+  credentials: true, // Required for cookies, authentication, etc.
+  preflightContinue: false, // Ensures preflight OPTIONS requests are handled properly
+  optionsSuccessStatus: 204, // Fixes older browser CORS issues
 };
 
+// Apply CORS middleware globally
 app.use(cors(corsOptions));
-app.options("*", cors(corsOptions)); // Handle OPTIONS preflight requests explicitly
+
+// Handle OPTIONS preflight requests explicitly
+app.options("*", cors(corsOptions));
 
 app.use(express.json());
 app.use(morgan("dev"));

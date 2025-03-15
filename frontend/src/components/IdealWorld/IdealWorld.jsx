@@ -84,7 +84,7 @@ const IdealWorld = ({responseId, refreshKey}) => {
         <p className="text-base font-[DM_Sans] text-[#D6A36A]">Sign up to save your results and explore more features for free</p>
         <button
         type="button" 
-        onClick={() => navigate(`/sign-up?search=${responseId}`)}
+        onClick={() => navigate(`/sign-up?responseId=${responseId}`)}
         className="max-w-fit mt-2 px-6 py-3 bg-[#D6A36A] text-white font-medium rounded-lg hover:bg-[#e69c23] transition-colors focus:outline-none focus:ring-2 focus:ring-[#f9a825] focus:ring-offset-2 cursor-pointer"
         >
         Sign Up

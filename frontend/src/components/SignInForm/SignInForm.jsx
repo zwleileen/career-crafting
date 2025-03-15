@@ -2,9 +2,15 @@ import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router';
 import { signIn } from '../../services/authService';
 import { UserContext } from '../../contexts/UserContext';
+import * as valuesService from "../../services/valuesService"
+import * as imagineWorldService from "../../services/imagineWorldService"
+
 
 const SignInForm = () => {
   const navigate = useNavigate();
+  const queryParams = new URLSearchParams(location.search);
+  const responseId = queryParams.get("responseId");
+
   const { setUser } = useContext(UserContext);
   const [message, setMessage] = useState('');
   const [formData, setFormData] = useState({
@@ -22,11 +28,28 @@ const SignInForm = () => {
     try {
       const signedInUser = await signIn(formData);
       setUser(signedInUser);
-      navigate('/plan/features');
+
+      console.log("Extracted responseId:", responseId);
+
+      if (responseId) {
+        await valuesService.update(responseId, signedInUser._id);
+    } else {
+        console.warn("No responseId found, skipping update.");
+    }
+        const referenceId = responseId
+        if (referenceId) {
+            await imagineWorldService.update(referenceId, signedInUser._id);
+        } else {
+            console.warn("No referenceId found, skipping update.");
+        }
+
+      navigate(`/plan/features/${responseId}`);
     } catch (err) {
       setMessage(err.message);
     }
   };
+    
+  
 
   return (
     <main className="min-h-screen flex flex-col bg-white">

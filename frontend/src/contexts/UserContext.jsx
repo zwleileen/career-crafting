@@ -55,10 +55,13 @@ function UserProvider({ children }) {
                     setCareersId(career._id);
                 }
                 const imagine = await imagineWorldService.showUserId(user._id);
-                if (imagine) {
-                    setImagineId(imagine[0].referenceId);
+                if (Array.isArray(imagine) && imagine.length > 0 && imagine[0]?.referenceId) {
+                  setImagineId(imagine[0].referenceId);
+                } else {
+                  console.warn("No valid imagine data found.");
+                  setImagineId(null);  // Prevents undefined values
                 }
-            } catch (error) {
+                } catch (error) {
                 console.error("Error fetching ids:", error);
         }
     };

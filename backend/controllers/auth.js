@@ -9,7 +9,7 @@ const saltRounds = 12;
 
 router.post("/sign-up", async (req, res) => {
   try {
-    const { email, password, gender } = req.body;
+    const { email, password, gender, responseId } = req.body;
     const userInDatabase = await User.findOne({ email: req.body.email });
 
     if (userInDatabase) {
@@ -33,9 +33,13 @@ router.post("/sign-up", async (req, res) => {
     // };
 
     //token generated for email auth
-    const emailToken = jwt.sign({ email: user.email }, process.env.JWT_SECRET, {
-      expiresIn: "1d",
-    });
+    const emailToken = jwt.sign(
+      { email: user.email, responseId },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1d",
+      }
+    );
     const verificationUrl = `${process.env.BACKEND_URL}/auth/verify-email?token=${emailToken}`;
     await sendAuthEmail(user.email, verificationUrl);
 
@@ -57,13 +61,15 @@ router.get("/verify-email", async (req, res) => {
 
     //decodes the email token only, not the same as the Bearer token for access to the features
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    if (!decoded || !decoded.email) {
+    const { email, responseId } = decoded;
+
+    if (!email) {
       return res.status(400).json({ err: "Invalid or expired token." });
     }
 
     // Find and update user to verified
     const user = await User.findOneAndUpdate(
-      { email: decoded.email },
+      { email },
       { verified: true },
       { new: true }
     );
@@ -75,7 +81,7 @@ router.get("/verify-email", async (req, res) => {
     }
 
     return res.redirect(
-      `${process.env.FRONTEND_URL}/auth/verify-email?verified=true`
+      `${process.env.FRONTEND_URL}/auth/verify-email?verified=true&responseId=${responseId}`
     );
   } catch (err) {
     return res.redirect(

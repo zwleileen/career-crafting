@@ -1,11 +1,11 @@
 const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}/auth`;
 
-const signUp = async (formData) => {
+const signUp = async (formData, responseId) => {
   try {
     const res = await fetch(`${BASE_URL}/sign-up`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
+      body: JSON.stringify({ ...formData, responseId }),
     });
 
     const data = await res.json();

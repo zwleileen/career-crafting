@@ -1,9 +1,6 @@
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { signUp } from '../../services/authService';
-import { UserContext } from '../../contexts/UserContext';
-// import * as valuesService from "../../services/valuesService"
-// import * as imagineWorldService from "../../services/imagineWorldService"
 
 
 const SignUpForm = () => {
@@ -20,7 +17,7 @@ const SignUpForm = () => {
     const { email, password, passwordConf, gender } = formData;
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
-    const responseId = queryParams.get("search");
+    const responseId = queryParams.get("responseId");
 
 
     const validatePassword = (password) => {
@@ -47,41 +44,11 @@ const SignUpForm = () => {
   }
 };
 
-  // const handleSubmit = async (evt) => {
-  //   evt.preventDefault();
-  //   try {
-  //       const newUser = await signUp(formData);
-
-  //       if (!newUser || !newUser._id) {
-  //           throw new Error("User ID is missing from response");
-  //       }
-
-  //       setUser(newUser);
-  //       console.log("Extracted responseId:", responseId);
-      
-  //       if (responseId) {
-  //       await valuesService.update(responseId, newUser._id);
-  //   } else {
-  //       console.warn("No responseId found, skipping update.");
-  //   }
-  //       const referenceId = responseId
-  //       if (referenceId) {
-  //           await imagineWorldService.update(referenceId, newUser._id);
-  //       } else {
-  //           console.warn("No referenceId found, skipping update.");
-  //       }
-
-  //     navigate("/careerpath");
-  //   } catch (err) {
-  //     setMessage(err.message);
-  //   }
-  // };
-
   const handleSubmit = async (evt) => {
     evt.preventDefault();
     setMessage("");
     try {
-      const response = await signUp(formData);
+      const response = await signUp(formData, responseId);
   
       if (!response || response.error) {
         throw new Error(response?.error || "Signup failed.");

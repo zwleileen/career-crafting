@@ -9,13 +9,14 @@ const VerifyEmail = () => {
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     const verified = queryParams.get("verified");
+    const responseId = queryParams.get("responseId");
 
     if (verified === "true") {
       setMessage("Email verified successfully! Redirecting to login...");
-      setTimeout(() => navigate("/sign-in"), 3000);
+      setTimeout(() => navigate(`/sign-in?responseId=${responseId}`), 3000);
     } else {
       setMessage("Email verification failed. Please try again.");
-      setTimeout(() => navigate("/sign-up"), 5000);
+      setTimeout(() => navigate(`/sign-up?responseId=${responseId}`), 5000);
     }
   }, [location, navigate]);
 
