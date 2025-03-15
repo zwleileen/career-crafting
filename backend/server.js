@@ -51,13 +51,12 @@ const corsOptions = {
     "Authorization",
   ],
   credentials: true, // Allow cookies if your app uses them
+  preflightContinue: false, // Ensure the preflight request is terminated correctly
   optionsSuccessStatus: 204, // Some legacy browsers choke on 204
 };
 
 app.use(cors(corsOptions));
-app.options("*", (req, res) => {
-  res.status(204).end(); // Prevents redirections by returning a proper status
-});
+app.options("*", cors(corsOptions)); // Handle OPTIONS preflight requests explicitly
 
 app.use(express.json());
 app.use(morgan("dev"));
