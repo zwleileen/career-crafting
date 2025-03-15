@@ -22,7 +22,7 @@ const NavBar = () => {
         <>
         <div className="absolute left-4 md: bottom-3 flex items-center cursor-pointer space-x-5" >
             <Link 
-            to={ user?.status === "paid" ? "/home" : "/plan/features"}
+            to={ user?.status === "paid" ? "/home" : `/plan/features/${valuesId}`}
             className="text-[#586E75] text-sm font-normal font-[DM_Sans] ml-2 hover:text-[#f9a825]"
             >
             Home
@@ -68,7 +68,7 @@ const NavBar = () => {
         <>
         <div className="absolute right-4 md:right-8 bottom-2 flex items-center cursor-pointer">
             <Link 
-            to='/sign-in' 
+            to={`/sign-in?responseId=${valuesId}`} 
             className="text-[#586E75] text-sm font-normal font-[DM_Sans] mr-2 hover:text-[#f9a825]"
             >
             Sign In
