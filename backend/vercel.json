@@ -6,6 +6,7 @@
     ],
     "routes": [
       { "src": "/favicon.(ico|png)", "dest": "/api/favicon.js" },
+      { "src": "/auth/verify-email", "dest": "/server.js" },
       { "src": "/(.*)", "dest": "/server.js" }
     ]
   }

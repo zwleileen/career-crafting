@@ -36,7 +36,7 @@ router.post("/sign-up", async (req, res) => {
     const emailToken = jwt.sign({ email: user.email }, process.env.JWT_SECRET, {
       expiresIn: "1d",
     });
-    const verificationUrl = `${process.env.FRONTEND_URL}/auth/verify-email?token=${emailToken}`;
+    const verificationUrl = `${process.env.BACKEND_URL}/auth/verify-email?token=${emailToken}`;
     await sendAuthEmail(user.email, verificationUrl);
 
     res.status(201).json({
