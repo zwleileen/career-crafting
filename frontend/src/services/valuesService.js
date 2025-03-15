@@ -198,12 +198,12 @@ const showUserId = async (userId) => {
     const responseData = await res.json();
     // console.log("Response data received:", responseData);
 
-    if (typeof responseData.aiInsights === "string") {
+    if (typeof responseData.valuesInsights === "string") {
       try {
-        responseData.aiInsights = JSON.parse(responseData.aiInsights);
+        responseData.valuesInsights = JSON.parse(responseData.valuesInsights);
       } catch (error) {
         console.error("Error parsing aiInsights:", error);
-        responseData.aiInsights = null; // If parsing fails, set it to `null` instead of causing a crash
+        responseData.valuesInsights = null; // If parsing fails, set it to `null` instead of causing a crash
       }
     }
     // console.log("API Response:", responseData);
@@ -214,7 +214,7 @@ const showUserId = async (userId) => {
     return {
       topValues: [],
       topStrengths: [],
-      aiInsights: null,
+      valuesInsights: null,
     };
   }
 };

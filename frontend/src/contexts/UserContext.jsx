@@ -64,7 +64,7 @@ function UserProvider({ children }) {
     };
     fetchIds();
   }, [user]);
-//   console.log("Ids:", valuesId, careersId, imagineId);
+  console.log("Ids:", valuesId, careersId, imagineId);
 
   return (
     <UserContext.Provider value={{ user, setUser, valuesId, careersId, imagineId, refreshUser }}>
