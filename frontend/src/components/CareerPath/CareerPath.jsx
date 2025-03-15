@@ -52,7 +52,7 @@ const CareerPath = () => {
 
     if (isLoading) {
       return (
-        <div className="flex justify-center items-center h-64 text-base md:text-lg font-[DM_Sans] text-[#586E75]">
+        <div className="flex justify-center items-center h-64 text-base font-normal font-[DM_Sans] text-[#586E75]">
           <p>Loading your results...</p>
         </div>
       );

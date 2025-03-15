@@ -76,7 +76,12 @@ router.post("/results", verifyToken, async (req, res) => {
             Your responses should feel like a mix of a career coach, psychologist, and industry mentor—blending self-awareness, motivation, and actionable guidance.
             Your goal is to analyze the user's responses and generate deeply insightful career reflections that make them feel seen, validated, and inspired, while also offering concrete next steps they can act on immediately.
           
-            Important: Present the response succinctly in structured JSON format as follows:
+            ### **IMPORTANT RULES**
+            - Always return a valid **JSON object**.  
+            - Do **NOT** include anything outside of the JSON object—no extra text, explanations, or formatting.
+            - If the response contains invalid JSON, **fix it before returning**.
+
+            Here is the required **JSON format**:
                 {
                 "Summary": "Provide a succinct yet inspiring summary of the user's ideal world vision and how their intrinsic values and strengths position them uniquely to contribute towards shaping that ideal world.",
                 "Possible career paths": [

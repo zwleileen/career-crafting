@@ -79,7 +79,7 @@ const CareerResults = () => {
  
     if (isLoading) {
       return (
-        <div className="flex justify-center items-center h-64">
+        <div className="flex justify-center items-center h-64 text-base font-normal font-[DM_Sans] text-[#586E75]">
           <p>Loading your results...</p>
         </div>
       );
@@ -87,7 +87,7 @@ const CareerResults = () => {
 
     if (!response) {
       return (
-        <div className="p-4">
+        <div className="flex justify-center items-center h-64 text-base font-normal font-[DM_Sans] text-[#586E75]">
           <p>No results found. Please complete the assessment first.</p>
         </div>
       );
